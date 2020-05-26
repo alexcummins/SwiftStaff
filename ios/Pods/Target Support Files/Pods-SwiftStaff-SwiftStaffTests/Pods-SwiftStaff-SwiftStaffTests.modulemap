@@ -1,0 +1,6 @@
+module Pods_SwiftStaff_SwiftStaffTests {
+  umbrella header "Pods-SwiftStaff-SwiftStaffTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
