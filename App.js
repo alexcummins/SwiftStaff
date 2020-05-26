@@ -31,7 +31,7 @@ const source = require('./resources/img/background.jpg');
 export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {userName: '', password: '', switchValue: true};
+    this.state = {userName: '', password: '', switchValue: true, spinnerEnable: true};
   }
 
   setSwitchValue(value) {
@@ -44,7 +44,8 @@ export default class App extends Component {
   }
 
   setPassword(pass) {
-    this.setState({password:  pass});
+    this.setState({password:  pass,
+                          spinnerEnable: false});
   }
   getUsername() {
     return this.state.userName;
@@ -56,8 +57,9 @@ export default class App extends Component {
     return (
       <>
         <StatusBar barStyle="dark-content" />
-        <SafeAreaView>
           <LoginScreen
+            spinnerEnable={this.state.spinnerEnable}
+            spinnerVisibility
             logoText="Swift Staff"
             source={source}
             switchValue={this.state.switchValue}
@@ -68,7 +70,6 @@ export default class App extends Component {
             passwordOnChangeText={password => this.setPassword(password)}
             loginButtonBackgroundColor="#a2a5a9"
           />
-        </SafeAreaView>
       </>
     );
   }
