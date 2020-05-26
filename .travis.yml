@@ -12,9 +12,9 @@ addons:
       - android-sdk
 jobs:
   include:
-  - stage: Unit Test
+    - stage: Unit Test
       script: npm test
-  - stage: Deploy
+    - stage: Deploy
       script: react-native run-android --variant=release && ls -al ./android/app/build/outputs/apk/release
 
 before_install:
