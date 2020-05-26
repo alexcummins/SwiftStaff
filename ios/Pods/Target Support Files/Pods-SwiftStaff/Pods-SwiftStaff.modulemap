@@ -1,0 +1,6 @@
+module Pods_SwiftStaff {
+  umbrella header "Pods-SwiftStaff-umbrella.h"
+
+  export *
+  module * { export * }
+}
