@@ -1,34 +1,27 @@
-matrix:
+os: osx
+osx_image: xcode11.4
+language: node_js
+node_js:
+  - "14"
+addons:
+  homebrew:
+    packages:
+      - watchman
+    casks:
+      - adoptopenjdk/openjdk/adoptopenjdk8
+      - android-sdk
+jobs:
   include:
-    - language: objective-c
-      os: osx
-      xcode_workspace: './ios/SwiftStaff.xcworkspace'
-      xcode_scheme: SwiftStaff
-      xcode_sdk: iphonesimulator13.4
-      osx_image: xcode11.4
-      podfile: ios/Podfile
-      node_js: false
-      sudo: true
-      before_install:
-        - echo "before_install"
-      install:
-        - echo "install"
-      script:
-        - echo "script"
-    - language: android
-      android:
-        components:
-          - tools
-          - platform-tools
-      sudo: true
-      before_install:
-        - echo "android before_install"
-      install:
-        - echo "android install"
-      script:
-        - echo "android script"
-    - if: branch = master
-      language: node_js
-      node_js: lts/*
-      install: true
-      script: echo "MASTER BRANCH"
+  - stage: Unit Test
+      script: npm test
+  - stage: Deploy
+      script: react-native run-android --variant=release && ls -al ./android/app/build/outputs/apk/release
+
+before_install:
+  - npm i -g npm@version-number
+  - export ANDROID_HOME=/usr/local/share/android-sdk
+  - export PATH=$PATH:$ANDROID_HOME/emulator
+  - export PATH=$PATH:$ANDROID_HOME/tools
+  - export PATH=$PATH:$ANDROID_HOME/tools/bin
+  - export PATH=$PATH:$ANDROID_HOME/platform-tools
+
