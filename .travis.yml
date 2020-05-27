@@ -17,12 +17,8 @@ jobs:
   include:
     - stage: Unit Test
       script: npm test
-    - stage: Deploy
-      script: cd android && ./gradlew assembleRelease && ls -al ./app/build/outputs/apk/release
-deploy:
-  provider: script
-  script: npm run upload
-  skip_cleanup: true
+    - stage: Generate and Deploy
+      script: cd android && ./gradlew assembleRelease && ls -al ./app/build/outputs/apk/release && cd .. && npm run upload
 
 before_install:
   - npm i -g
