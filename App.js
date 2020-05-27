@@ -39,13 +39,22 @@ export default class App extends Component {
   }
 
   setUsername(uN) {
-    this.setState({userName: uN});
-    console.log(this.state.userName);
+    this.setState({userName: uN}, () => {
+      this.setSpinner();
+    });
   }
 
+  setSpinner(direct){
+    if(direct){
+      this.state.spinnerEnable = this.getUsername() === '' || this.getPassword() === ''; // If we can set state while testing we can avoid this
+    } else {
+      this.setState({spinnerEnable: this.getUsername() === '' || this.getPassword() === ''})
+    }
+  }
   setPassword(pass) {
-    this.setState({password:  pass,
-                          spinnerEnable: false});
+    this.setState({password:  pass}, () => {
+      this.setSpinner();
+    });
   }
   getUsername() {
     return this.state.userName;
