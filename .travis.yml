@@ -9,6 +9,7 @@ addons:
   homebrew:
     packages:
       - watchman
+      - gradle
     casks:
       - android-sdk
 jobs:
