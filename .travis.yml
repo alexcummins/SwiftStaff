@@ -18,7 +18,7 @@ jobs:
     - stage: Unit Test
       script: npm test
     - stage: Deploy
-      script: cd android && ./gradlew assembleRelease && ls -al ./android/app/build/outputs/apk/release
+      script: cd android && ./gradlew assembleRelease && ls -al ./app/build/outputs/apk/release
 
 before_install:
   - npm i -g
