@@ -44,12 +44,8 @@ export default class App extends Component {
     });
   }
 
-  setSpinner(direct){
-    if(direct){
-      this.state.spinnerEnable = this.getUsername() === '' || this.getPassword() === ''; // If we can set state while testing we can avoid this
-    } else {
+  setSpinner(){
       this.setState({spinnerEnable: this.getUsername() === '' || this.getPassword() === ''})
-    }
   }
   setPassword(pass) {
     this.setState({password:  pass}, () => {

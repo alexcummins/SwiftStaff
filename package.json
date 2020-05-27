@@ -6,7 +6,7 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
+    "test": "jest --silent",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -28,6 +28,7 @@
     "@react-native-community/eslint-config": "0.0.5",
     "babel-jest": "24.9.0",
     "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
     "eslint": "6.8.0",
     "jest": "24.9.0",
     "metro-react-native-babel-preset": "0.58.0",
