@@ -2,6 +2,7 @@ os: osx
 osx_image: xcode11.4
 jdk:
   - oraclejdk8
+  - openjdk8
 language: node_js
 node_js:
   - "14"
@@ -9,13 +10,15 @@ addons:
   homebrew:
     packages:
       - watchman
-      - gradle
     casks:
+      - adoptopenjdk/openjdk/adoptopenjdk8
       - android-sdk
 jobs:
   include:
+    - stage: Unit Test
+      script: npm test
     - stage: Deploy
-      script: react-native run-android --variant=release && ls -al ./android/app/build/outputs/apk/release
+      script: cd android && ./gradlew assembleRelease && ls -al ./android/app/build/outputs/apk/release
 
 before_install:
   - npm i -g
@@ -24,4 +27,7 @@ before_install:
   - export PATH=$PATH:$ANDROID_HOME/tools
   - export PATH=$PATH:$ANDROID_HOME/tools/bin
   - export PATH=$PATH:$ANDROID_HOME/platform-tools
+  - export JAVA_HOME=/Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home
+  - yes | $ANDROID_HOME/tools/bin/sdkmanager --licenses
+
 
