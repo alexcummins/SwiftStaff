@@ -20,6 +20,9 @@ jobs:
     - stage: Deploy
       script: cd android && ./gradlew assembleRelease && ls -al ./app/build/outputs/apk/release
 
+after_success:
+  - npm run upload
+
 before_install:
   - npm i -g
   - export ANDROID_HOME=/usr/local/share/android-sdk

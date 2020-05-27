@@ -7,10 +7,12 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest --silent",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "upload": "node fileUpload.js"
   },
   "dependencies": {
     "@freakycoder/react-native-helpers": "0.1.0",
+    "dropbox-v2-api": "^2.4.17",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-ci": "0.2.1",
