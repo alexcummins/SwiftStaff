@@ -1,5 +1,7 @@
 os: osx
 osx_image: xcode11.4
+jdk:
+  - oraclejdk8
 language: node_js
 node_js:
   - "14"
@@ -8,12 +10,9 @@ addons:
     packages:
       - watchman
     casks:
-      - adoptopenjdk/openjdk/adoptopenjdk8
       - android-sdk
 jobs:
   include:
-    - stage: Unit Test
-      script: npm test
     - stage: Deploy
       script: react-native run-android --variant=release && ls -al ./android/app/build/outputs/apk/release
 
