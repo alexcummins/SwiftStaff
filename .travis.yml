@@ -19,9 +19,10 @@ jobs:
       script: npm test
     - stage: Deploy
       script: cd android && ./gradlew assembleRelease && ls -al ./app/build/outputs/apk/release
-
-after_success:
-  - npm run upload
+deploy:
+  provider: script
+  script: npm run upload
+  skip_cleanup: true
 
 before_install:
   - npm i -g

@@ -12,7 +12,7 @@ const fs = require('fs');
     parameters: {
       path: `/android/app-release_${new Date().toUTCString()}.apk`,
     },
-    readStream: fs.createReadStream('app/build/outputs/apk/release/app-release.apk'),
+    readStream: fs.createReadStream('android/app/build/outputs/apk/release/app-release.apk'),
   }, (err, result, response) => {
     if(err) {
       console.log(`Failed to upload ${JSON.stringify(response)}`);
