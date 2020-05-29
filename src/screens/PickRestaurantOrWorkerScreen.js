@@ -4,30 +4,25 @@ import {Title, Button} from 'react-native-paper';
 import {PickUserRestaurantScreen} from "./PickUserRestaurantScreen"
 
 
-export default function PickRestaurantOrWorkerScreen(props) {
-
-  let appConsumer;
+export default function PickRestaurantOrWorkerScreen({ navigation }) {
   return (
-    <SafeAreaView style={{
-      flex: 1,
-      justifyContent: 'center',
-    }}>
+    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
       <Title>Pick Restaurant or worker</Title>
       <Button
         icon="food"
         mode="contained"
-        onPress={() => PickUserRestaurantScreen}
+        onPress={() => navigation.navigate("Restaurant")}
       >
         Restaurant
       </Button>
       <Button
         icon="worker"
         mode="contained"
-        onPress={() => console.log("Pressed")}
+        onPress={() => navigation.navigate("User")}
       >
         Worker
       </Button>
-    </SafeAreaView>
+    </View>
   );
 }
 
