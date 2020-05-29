@@ -13,13 +13,15 @@ export default function UserScreen({ navigation }) {
   const [extraInfo, setExtraInfo] = useState("");
 
   function updateJobs() {
-    const data = getValues()
-    setName(data.name)
-    setDate(data.date)
-    setStartTime(data.startTime)
-    setEndTime(data.endTime)
-    setRate(data.hourlyRate)
-    setExtraInfo(data.extraInfo)
+     getValues().then((data)=> {
+      setName(data.name)
+      setDate(data.date)
+      setStartTime(data.startTime)
+      setEndTime(data.endTime)
+      setRate(data.hourlyRate)
+      setExtraInfo(data.extraInfo)
+    })
+
   }
 
   function clearValues() {
@@ -48,11 +50,19 @@ export default function UserScreen({ navigation }) {
     </View>
   );
 
-  function getValues() {
-    return axios.get('http://178.62.102.69:8080/api/v1/jobs').then(function (response) {
+  async function getValues() {
+    var dataObj = {
+      name: "",
+        date: "",
+      startTime: "",
+      endTime: "",
+      hourlyRate: "",
+      extraInfo: ""
+    }
+     await axios.get('http://178.62.102.69:8080/api/v1/jobs').then(function (response) {
       const jobs = response.data.jobsList;
       const job = jobs[jobs.length - 1]
-      const dataObj = {
+      dataObj = {
         name: "Test Restaurant",
         date: "Date: " + job.date,
         startTime: "Start Time:" + job.startTime,
@@ -62,20 +72,12 @@ export default function UserScreen({ navigation }) {
       }
       console.log(JSON.stringify(dataObj))
       notifyMessage('A job was found');
-      return dataObj
     }).catch(function (error) {
       console.log(JSON.stringify(error))
       notifyMessage('Sorry no jobs found');
-      return {
-        name: "",
-        date: "",
-        startTime: "",
-        endTime: "",
-        hourlyRate: "",
-        extraInfo: ""
-      }
-    });
 
+    });
+    return dataObj;
   }
 
   function notifyMessage(msg: string) {
