@@ -1,14 +1,90 @@
-import React from "react";
-import { View, Text, Button } from "react-native";
+import React, { useState } from "react";
+import {View, Text, Button, Platform, ToastAndroid, AlertIOS} from 'react-native';
+import { Card, Title, Paragraph } from "react-native-paper";
+import axios from 'axios';
 
 export default function UserScreen({ navigation }) {
+
+  const [name, setName] = useState("");
+  const [date, setDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [rate, setRate] = useState("");
+  const [extraInfo, setExtraInfo] = useState("");
+
+  function updateJobs() {
+    const data = getValues()
+    setName(data.name)
+    setDate(data.date)
+    setStartTime(data.startTime)
+    setEndTime(data.endTime)
+    setRate(data.hourlyRate)
+    setExtraInfo(data.extraInfo)
+  }
+
+  function clearValues() {
+    setName("")
+    setDate("")
+    setStartTime("")
+    setEndTime("")
+    setRate("")
+    setExtraInfo("")
+  }
+
   return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text> User Screen </Text>
-      <Button
-        title="Go back to home"
-        onPress={() => navigation.navigate("Home")}
-      />
+    <View style={{ flex: 1 }}>
+      <Button title="Check for jobs" onPress={() => updateJobs()} />
+      <Paragraph></Paragraph>
+      <Card>
+        <Card.Content>
+          <Title>{name}</Title>
+          <Paragraph>{date}</Paragraph>
+          <Paragraph>{startTime} {endTime}</Paragraph>
+          <Paragraph>{rate}</Paragraph>
+          <Paragraph>{extraInfo}</Paragraph>
+          <Button title="Accept" onPress={() => clearValues()} />
+        </Card.Content>
+      </Card>
     </View>
   );
+
+  function getValues() {
+    return axios.get('http://178.62.102.69:8080/api/v1/jobs').then(function (response) {
+      const jobs = response.data.jobsList;
+      const job = jobs[jobs.length - 1]
+      const dataObj = {
+        name: "Test Restaurant",
+        date: "Date: " + job.date,
+        startTime: "Start Time:" + job.startTime,
+        endTime: "End Time:" + job.endTime,
+        hourlyRate: "Hourly rate: " +job.hourlyRate,
+        extraInfo: "Extra Info: " + job.extraInfo
+      }
+      console.log(JSON.stringify(dataObj))
+      notifyMessage('A job was found');
+      return dataObj
+    }).catch(function (error) {
+      console.log(JSON.stringify(error))
+      notifyMessage('Sorry no jobs found');
+      return {
+        name: "",
+        date: "",
+        startTime: "",
+        endTime: "",
+        hourlyRate: "",
+        extraInfo: ""
+      }
+    });
+
+  }
+
+  function notifyMessage(msg: string) {
+    console.log(`Displaying: ${msg}`);
+    if (Platform.OS === 'android') {
+      ToastAndroid.show(msg, ToastAndroid.SHORT);
+    } else {
+      AlertIOS.alert(msg);
+    }
+  }
 }
+

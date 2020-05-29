@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {View, StyleSheet, ScrollView, Text} from 'react-native';
+import {View, StyleSheet, ScrollView, Text, ToastAndroid, Platform, AlertIOS} from 'react-native';
 
 import FormBuilder from 'react-native-paper-form-builder';
 
@@ -14,11 +14,11 @@ function BasicExample() {
     defaultValues: {
       hourlyRate: '',
 
-      date: new Date().toJSON().slice(0,10).split('-').reverse().join('/'),
+      date: new Date().toJSON().slice(0, 10).split('-').reverse().join('/'),
       startTime: '',
       endTime: '',
       sendStrategy: '',
-      extraInfo:''
+      extraInfo: '',
     },
 
     mode: 'onChange',
@@ -120,7 +120,10 @@ function BasicExample() {
               name: 'sendStrategy',
 
               label: 'Job Strategy',
-              options: [{value: 0, label:"Current Workers"}, {value: 1, label:"Previous Workers"}, {value: 2, label:"Open"}],
+              options: [{value: 0, label: 'Current Workers'}, {value: 1, label: 'Previous Workers'}, {
+                value: 2,
+                label: 'Open',
+              }],
 
               rules: {
                 required: {
@@ -150,7 +153,7 @@ function BasicExample() {
           <Button
             mode={'contained'}
             onPress={form.handleSubmit((data: any) => {
-              sendData(data)
+              sendData(data);
               console.log('form data', data);
             })}>
             Submit
@@ -161,9 +164,26 @@ function BasicExample() {
     </View>
   );
 }
+
 function sendData(data) {
-  axios.post('http://178.62.102.69:8080/api/v1/jobs', data);
+  axios.post('http://178.62.102.69:8080/api/v1/jobs', data).then(function (response) {
+    console.log(JSON.stringify(response))
+    notifyMessage('Request successfully Sent');
+  }).catch(function (error) {
+    console.log(JSON.stringify(error))
+    notifyMessage('Request unsuccessfully sent');
+    });
 }
+
+function notifyMessage(msg: string) {
+  console.log(`Displaying: ${msg}`);
+  if (Platform.OS === 'android') {
+    ToastAndroid.show(msg, ToastAndroid.SHORT);
+  } else {
+    AlertIOS.alert(msg);
+  }
+}
+
 const styles = StyleSheet.create({
   containerStyle: {
     flex: 1,
