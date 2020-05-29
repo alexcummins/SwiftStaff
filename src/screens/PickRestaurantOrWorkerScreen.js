@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
-import { Title, Button } from "react-native-paper";
+import { View, StyleSheet, SafeAreaView} from "react-native";
+import {Title, Button} from 'react-native-paper';
 
 
 export default function PickRestaurantOrWorkerScreen() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
   return (
-    <View style={styles.container}>
-      <Title style={styles.titleText}>Pick Restaurant or worker</Title>
+    <SafeAreaView>
+      <Title>Pick Restaurant or worker</Title>
       <Button
         icon="food"
         mode="contained"
@@ -17,7 +15,6 @@ export default function PickRestaurantOrWorkerScreen() {
       >
         Press me
       </Button>
-      />
       <Button
         icon="worker"
         mode="contained"
@@ -25,6 +22,13 @@ export default function PickRestaurantOrWorkerScreen() {
       >
         Press me
       </Button>
-    </View>
+    </SafeAreaView>
   );
 }
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+});
