@@ -7,3 +7,6 @@ node_modules
 android/local.properties
 android/app/build/
 android/build/
+android/.gradle
+
+ios/Pods
