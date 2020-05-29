@@ -11,7 +11,6 @@ export default function PickRestaurantOrWorkerScreen(props) {
     <SafeAreaView style={{
       flex: 1,
       justifyContent: 'center',
-      backgroundColor: props.theme.colors.primary
     }}>
       <Title>Pick Restaurant or worker</Title>
       <Button
