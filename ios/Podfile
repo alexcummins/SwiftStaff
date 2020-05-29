@@ -79,6 +79,8 @@ target 'SwiftStaff' do
 
 
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'SwiftStaffTests' do
     inherit! :complete
     # Pods for testing

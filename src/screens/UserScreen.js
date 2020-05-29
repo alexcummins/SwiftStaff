@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {View, Text, Button, Platform, ToastAndroid, AlertIOS} from 'react-native';
+import {View, Text, Button, Platform, ToastAndroid, Alert} from 'react-native';
 import { Card, Title, Paragraph } from "react-native-paper";
 import axios from 'axios';
 
@@ -41,7 +41,8 @@ export default function UserScreen({ navigation }) {
         <Card.Content>
           <Title>{name}</Title>
           <Paragraph>{date}</Paragraph>
-          <Paragraph>{startTime} {endTime}</Paragraph>
+          <Paragraph>{startTime}</Paragraph>
+          <Paragraph>{endTime}</Paragraph>
           <Paragraph>{rate}</Paragraph>
           <Paragraph>{extraInfo}</Paragraph>
           <Button title="Accept" onPress={() => clearValues()} />
@@ -53,7 +54,7 @@ export default function UserScreen({ navigation }) {
   async function getValues() {
     var dataObj = {
       name: "",
-        date: "",
+      date: "",
       startTime: "",
       endTime: "",
       hourlyRate: "",
@@ -65,9 +66,9 @@ export default function UserScreen({ navigation }) {
       dataObj = {
         name: "Test Restaurant",
         date: "Date: " + job.date,
-        startTime: "Start Time:" + job.startTime,
-        endTime: "End Time:" + job.endTime,
-        hourlyRate: "Hourly rate: " +job.hourlyRate,
+        startTime: "Start Time: " + job.startTime,
+        endTime: "End Time: " + job.endTime,
+        hourlyRate: "Hourly Rate: " +job.hourlyRate,
         extraInfo: "Extra Info: " + job.extraInfo
       }
       console.log(JSON.stringify(dataObj))
@@ -85,7 +86,7 @@ export default function UserScreen({ navigation }) {
     if (Platform.OS === 'android') {
       ToastAndroid.show(msg, ToastAndroid.SHORT);
     } else {
-      AlertIOS.alert(msg);
+      Alert.alert(msg);
     }
   }
 }

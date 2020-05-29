@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet, SafeAreaView} from "react-native";
-import {Title, Button} from 'react-native-paper';
+import {Title, Button, Paragraph} from 'react-native-paper';
 
 
 export default function PickRestaurantOrWorkerScreen({ navigation }) {
@@ -14,6 +14,7 @@ export default function PickRestaurantOrWorkerScreen({ navigation }) {
       >
         Restaurant
       </Button>
+      <Paragraph></Paragraph>
       <Button
         icon="worker"
         mode="contained"
