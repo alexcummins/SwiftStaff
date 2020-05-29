@@ -32,7 +32,7 @@ export default function UserScreen({navigation}) {
 
 
   function jobCardMaker(job) {
-    return (<UserCard data={job}/>)
+    return (<UserCard data={job} key={job.id}/>)
   }
 
   function clearValues() {
