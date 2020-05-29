@@ -1,18 +1,11 @@
-import React from 'react'
-import {View, Text, Button} from 'react-native'
+import React from 'react';
+import {View, Text, Button} from 'react-native';
+import FormBuilder from 'react-native-paper-form-builder';
+import BasicExample from '../components/restruantForm';
 
+export default function PickUserRestaurantScreen({navigation}) {
 
-export default function PickUserRestaurantScreen( { navigation }) {
-
-    return (
-      <View
-        style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-      >
-        <Text>Restaurant Screen</Text>
-        <Button
-          title="Go back to home"
-          onPress={() => navigation.navigate("Home")}
-        />
-      </View>
-    );
+  return (
+      <BasicExample></BasicExample>
+  );
 }
