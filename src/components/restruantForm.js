@@ -7,9 +7,9 @@ import FormBuilder from 'react-native-paper-form-builder';
 import {useForm} from 'react-hook-form';
 
 import {Button} from 'react-native-paper';
-import axios from 'axios';
+import {sendRequest} from '../api/APIUtils';
 
-function BasicExample() {
+function RequestForm() {
   const form = useForm({
     defaultValues: {
       hourlyRate: '',
@@ -153,7 +153,7 @@ function BasicExample() {
           <Button
             mode={'contained'}
             onPress={form.handleSubmit((data: any) => {
-              sendData(data);
+              sendRequest(data).then(r => console.log(r));
               console.log('form data', data);
             })}>
             Submit
@@ -165,15 +165,6 @@ function BasicExample() {
   );
 }
 
-function sendData(data) {
-  axios.post('http://178.62.102.69:8080/api/v1/jobs', data).then(function (response) {
-    console.log(JSON.stringify(response))
-    notifyMessage('Request successfully Sent');
-  }).catch(function (error) {
-    console.log(JSON.stringify(error))
-    notifyMessage('Request unsuccessfully sent');
-    });
-}
 
 function notifyMessage(msg: string) {
   console.log(`Displaying: ${msg}`);
@@ -206,4 +197,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BasicExample;
+export default RequestForm;

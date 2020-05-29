@@ -1,85 +1,58 @@
-import React, { useState } from "react";
-import {View, Text, Button, Platform, ToastAndroid, Alert} from 'react-native';
-import { Card, Title, Paragraph } from "react-native-paper";
-import axios from 'axios';
+import React, {useState, useEffect} from 'react';
+import {View, Text, Button, Platform, ToastAndroid, Alert, ScrollView} from 'react-native';
+import {Card, Title, Paragraph} from 'react-native-paper';
+import {List} from 'react-native-paper';
 
-export default function UserScreen({ navigation }) {
+import {getJobs} from '../api/APIUtils';
+import UserCard from '../components/userCard';
 
-  const [name, setName] = useState("");
-  const [date, setDate] = useState("");
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [rate, setRate] = useState("");
-  const [extraInfo, setExtraInfo] = useState("");
+export default function UserScreen({navigation}) {
+  const [name, setName] = useState('');
+  const [date, setDate] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
+  const [rate, setRate] = useState('');
+  const [extraInfo, setExtraInfo] = useState('');
+  const [jobsList, setJobsList] = useState([]);
 
   function updateJobs() {
-     getValues().then((data)=> {
-      setName(data.name)
-      setDate(data.date)
-      setStartTime(data.startTime)
-      setEndTime(data.endTime)
-      setRate(data.hourlyRate)
-      setExtraInfo(data.extraInfo)
-    })
+    getJobs().then((data) => {
+      setJobsList(data);
+    });
 
+  }
+
+  useEffect(() => {
+    (async () => {
+      const data = await getJobs();
+      setJobsList(data);
+    })();
+
+  });
+
+
+  function jobCardMaker(job) {
+    return (<UserCard data={job}/>)
   }
 
   function clearValues() {
-    setName("")
-    setDate("")
-    setStartTime("")
-    setEndTime("")
-    setRate("")
-    setExtraInfo("")
+    setName('');
+    setDate('');
+    setStartTime('');
+    setEndTime('');
+    setRate('');
+    setExtraInfo('');
   }
 
   return (
-    <View style={{ flex: 1 }}>
-      <Button title="Check for jobs" onPress={() => updateJobs()} />
+    <ScrollView >
       <Paragraph></Paragraph>
-      <Card>
-        <Card.Content>
-          <Title>{name}</Title>
-          <Paragraph>{date}</Paragraph>
-          <Paragraph>{startTime}</Paragraph>
-          <Paragraph>{endTime}</Paragraph>
-          <Paragraph>{rate}</Paragraph>
-          <Paragraph>{extraInfo}</Paragraph>
-          <Button title="Accept" onPress={() => clearValues()} />
-        </Card.Content>
-      </Card>
-    </View>
+      <List.Section>
+        {jobsList.map(jobCardMaker)}
+      </List.Section>
+    </ScrollView>
   );
 
-  async function getValues() {
-    var dataObj = {
-      name: "",
-      date: "",
-      startTime: "",
-      endTime: "",
-      hourlyRate: "",
-      extraInfo: ""
-    }
-     await axios.get('http://178.62.102.69:8080/api/v1/jobs').then(function (response) {
-      const jobs = response.data.jobsList;
-      const job = jobs[jobs.length - 1]
-      dataObj = {
-        name: "Test Restaurant",
-        date: "Date: " + job.date,
-        startTime: "Start Time: " + job.startTime,
-        endTime: "End Time: " + job.endTime,
-        hourlyRate: "Hourly Rate: " +job.hourlyRate,
-        extraInfo: "Extra Info: " + job.extraInfo
-      }
-      console.log(JSON.stringify(dataObj))
-      notifyMessage('A job was found');
-    }).catch(function (error) {
-      console.log(JSON.stringify(error))
-      notifyMessage('Sorry no jobs found');
-
-    });
-    return dataObj;
-  }
 
   function notifyMessage(msg: string) {
     console.log(`Displaying: ${msg}`);
