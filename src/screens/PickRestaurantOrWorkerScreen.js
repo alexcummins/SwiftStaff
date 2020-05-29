@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet, SafeAreaView} from "react-native";
 import {Title, Button} from 'react-native-paper';
-import {PickUserRestaurantScreen} from "./PickUserRestaurantScreen"
 
 
 export default function PickRestaurantOrWorkerScreen({ navigation }) {

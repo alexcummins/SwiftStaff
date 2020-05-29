@@ -7,13 +7,18 @@ import FormBuilder from 'react-native-paper-form-builder';
 import {useForm} from 'react-hook-form';
 
 import {Button} from 'react-native-paper';
+import axios from 'axios';
 
 function BasicExample() {
   const form = useForm({
     defaultValues: {
-      email: '',
+      hourlyRate: '',
 
-      password: '',
+      date: new Date().toJSON().slice(0,10).split('-').reverse().join('/'),
+      startTime: '',
+      endTime: '',
+      sendStrategy: '',
+      extraInfo:''
     },
 
     mode: 'onChange',
@@ -33,7 +38,7 @@ function BasicExample() {
             {
               type: 'input',
 
-              name: 'Hourly Rate',
+              name: 'hourlyRate',
 
               label: 'Hourly Rate',
 
@@ -41,7 +46,7 @@ function BasicExample() {
                 required: {
                   value: true,
 
-                  message: 'Hourly Rate is required',
+                  message: 'Hourly Rate is Required',
                 },
               },
 
@@ -54,7 +59,7 @@ function BasicExample() {
             {
               type: 'input',
 
-              name: 'Date',
+              name: 'date',
 
               label: 'Date',
 
@@ -74,7 +79,7 @@ function BasicExample() {
             {
               type: 'input',
 
-              name: 'Start Time',
+              name: 'startTime',
 
               label: 'Start Time',
 
@@ -93,7 +98,7 @@ function BasicExample() {
             {
               type: 'input',
 
-              name: 'End Time',
+              name: 'endTime',
 
               label: 'End Time',
 
@@ -112,7 +117,7 @@ function BasicExample() {
             {
               type: 'select',
 
-              name: 'Job Strategy',
+              name: 'sendStrategy',
 
               label: 'Job Strategy',
               options: [{value: 0, label:"Current Workers"}, {value: 1, label:"Previous Workers"}, {value: 2, label:"Open"}],
@@ -127,7 +132,7 @@ function BasicExample() {
             {
               type: 'input',
 
-              name: 'Extra Info',
+              name: 'extraInfo',
 
               label: 'Extra Info',
 
@@ -145,6 +150,7 @@ function BasicExample() {
           <Button
             mode={'contained'}
             onPress={form.handleSubmit((data: any) => {
+              sendData(data)
               console.log('form data', data);
             })}>
             Submit
@@ -155,7 +161,9 @@ function BasicExample() {
     </View>
   );
 }
-
+function sendData(data) {
+  axios.post('http://178.62.102.69:8080/api/v1/jobs', data);
+}
 const styles = StyleSheet.create({
   containerStyle: {
     flex: 1,
