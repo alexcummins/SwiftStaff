@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, SafeAreaView} from "react-native";
 import {Title, Button} from 'react-native-paper';
+import {PickUserRestaurantScreen} from "./PickUserRestaurantScreen"
 
 
 export default function PickRestaurantOrWorkerScreen(props) {
@@ -16,7 +17,7 @@ export default function PickRestaurantOrWorkerScreen(props) {
       <Button
         icon="food"
         mode="contained"
-        onPress={() => console.log("Pressed")}
+        onPress={() => PickUserRestaurantScreen}
       >
         Restaurant
       </Button>
