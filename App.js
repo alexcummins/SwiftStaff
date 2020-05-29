@@ -6,7 +6,7 @@ import PickRestaurantOrWorkerScreen from './src/screens/PickRestaurantOrWorkerSc
 const source = require("./resources/img/background.jpg");
 import set from "@babel/runtime/helpers/esm/set";
 
-export default class Login extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -14,7 +14,7 @@ export default class Login extends Component {
 
   render() {
     return (
-        <PickRestaurantOrWorkerScreen>
+        <PickRestaurantOrWorkerScreen theme={this.props.theme}>
       </PickRestaurantOrWorkerScreen>
     );
   }

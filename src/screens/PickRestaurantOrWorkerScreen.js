@@ -3,24 +3,29 @@ import { View, StyleSheet, SafeAreaView} from "react-native";
 import {Title, Button} from 'react-native-paper';
 
 
-export default function PickRestaurantOrWorkerScreen() {
+export default function PickRestaurantOrWorkerScreen(props) {
 
+  let appConsumer;
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{
+      flex: 1,
+      justifyContent: 'center',
+      backgroundColor: props.theme.colors.primary
+    }}>
       <Title>Pick Restaurant or worker</Title>
       <Button
         icon="food"
         mode="contained"
         onPress={() => console.log("Pressed")}
       >
-        Press me
+        Restaurant
       </Button>
       <Button
         icon="worker"
         mode="contained"
         onPress={() => console.log("Pressed")}
       >
-        Press me
+        Worker
       </Button>
     </SafeAreaView>
   );
