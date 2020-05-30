@@ -3,8 +3,23 @@ import {View, Text, Button, Platform, ToastAndroid, Alert, ScrollView} from 'rea
 import {Card, Title, Paragraph} from 'react-native-paper';
 import {List} from 'react-native-paper';
 
-import {getJobs} from '../api/APIUtils';
+import {convertDataToJobCardData, getJobs} from '../api/APIUtils';
 import UserCard from '../components/userCard';
+var ws = new WebSocket('ws://localhost:8080/api/v1/jobs');
+ws.onopen = (e) => {
+  console.log(e);
+}
+
+
+ws.onerror = (e) => {
+  // an error occurred
+  console.log(e.message);
+};
+
+ws.onclose = (e) => {
+  // connection closed
+  console.log(e.code, e.reason);
+};
 
 export default function UserScreen({navigation}) {
   const [name, setName] = useState('');
@@ -14,7 +29,7 @@ export default function UserScreen({navigation}) {
   const [rate, setRate] = useState('');
   const [extraInfo, setExtraInfo] = useState('');
   const [jobsList, setJobsList] = useState([]);
-
+  const [timer, setTimer] = useState(setInterval(retrieveNotifications, 10000))
   function updateJobs() {
     getJobs().then((data) => {
       setJobsList(data.reverse());
@@ -23,13 +38,20 @@ export default function UserScreen({navigation}) {
   }
 
   useEffect(() => {
-    (async () => {
-      const data = await getJobs();
-      setJobsList(data.reverse());
-    })();
-
+    // (async () => {
+    //   const data = await getJobs();
+    //   setJobsList(data.reverse());
+    // })();
+    ws.send("open")
   }, []);
 
+  ws.onmessage = (e) => {
+    // a message was received
+    const newList = convertDataToJobCardData(JSON.parse(e.data));
+    if(newList.length !== 0){
+      setJobsList(newList.reverse())
+    }
+  };
 
   function jobCardMaker(job) {
     return (<UserCard data={job} key={job.id}/>)
@@ -44,6 +66,9 @@ export default function UserScreen({navigation}) {
     setExtraInfo('');
   }
 
+   async function retrieveNotifications()  {
+    const res = ws.send("check")
+  }
   return (
     <ScrollView >
       <Paragraph></Paragraph>
@@ -52,6 +77,7 @@ export default function UserScreen({navigation}) {
       </List.Section>
     </ScrollView>
   );
+
 
 
   function notifyMessage(msg: string) {
@@ -63,4 +89,6 @@ export default function UserScreen({navigation}) {
     }
   }
 }
+
+
 

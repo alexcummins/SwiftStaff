@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "297920942212",
+    "firebase_url": "https://swiftstaff-db5e5.firebaseio.com",
+    "project_id": "swiftstaff-db5e5",
+    "storage_bucket": "swiftstaff-db5e5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297920942212:android:46d7c2af2df21b0dd772d1",
+        "android_client_info": {
+          "package_name": "com.swiftstaff"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "297920942212-elihsh81hksurtc7fgdqgtp9dh2e9g5b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBdOs_PqYDXGYezC8U0py2CxgBv-OQBLtA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "297920942212-elihsh81hksurtc7fgdqgtp9dh2e9g5b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
