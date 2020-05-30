@@ -10,7 +10,9 @@ import {DefaultTheme,  Provider as PaperProvider } from "react-native-paper";
 import { NavigationContainer } from "@react-navigation/native";
 import App from "./App";
 import { name as appName } from "./app.json";
+import {firebase} from '@react-native-firebase/messaging';
 import set from "@babel/runtime/helpers/esm/set";
+import { navigationRef } from './src/RootNavigation';
 
 const theme = {
   ...DefaultTheme,
@@ -22,9 +24,17 @@ const theme = {
     accent: '#f1c40f',
   }
 };
-export default function Main() {
+
+// Register background handler
+firebase.messaging().setBackgroundMessageHandler(async remoteMessage => {
+  console.log('Message handled in the background!', remoteMessage);
+});
+
+
+
+function Main() {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <PaperProvider theme={theme}>
         <App theme={theme} />
       </PaperProvider>
@@ -32,4 +42,13 @@ export default function Main() {
   );
 }
 
-AppRegistry.registerComponent(appName, () => Main);
+export default  function HeadlessCheck({ isHeadless }) {
+  if (isHeadless) {
+    // App has been launched in the background by iOS, ignore
+    return null;
+  }
+
+  return <Main />;
+}
+
+AppRegistry.registerComponent(appName, () => HeadlessCheck);

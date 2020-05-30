@@ -17,7 +17,7 @@ export default function UserScreen({navigation}) {
 
   function updateJobs() {
     getJobs().then((data) => {
-      setJobsList(data);
+      setJobsList(data.reverse());
     });
 
   }
@@ -25,10 +25,10 @@ export default function UserScreen({navigation}) {
   useEffect(() => {
     (async () => {
       const data = await getJobs();
-      setJobsList(data);
+      setJobsList(data.reverse());
     })();
 
-  });
+  }, []);
 
 
   function jobCardMaker(job) {
