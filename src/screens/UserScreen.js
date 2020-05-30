@@ -6,9 +6,8 @@ import { useFocusEffect } from '@react-navigation/native';
 
 import {API_JOB_URL, convertDataToJobCardData, getJobs, WEBSOCKET_PROTOCOL} from '../api/APIUtils';
 import UserCard from '../components/userCard';
-var ws = new WebSocket('ws://localhost:8080/api/v1/jobs');
 
-
+let retrieveNotifications = () => {}
 export default function UserScreen({navigation}) {
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
@@ -28,7 +27,7 @@ export default function UserScreen({navigation}) {
   useFocusEffect(
     React.useCallback(() => {
       console.log(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
-      ws = new WebSocket(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
+      let ws = new WebSocket(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
       ws.onopen = (e) => {
         ws.send("check")
       }
@@ -51,6 +50,9 @@ export default function UserScreen({navigation}) {
           setJobsList(newList.reverse())
         }
       };
+      retrieveNotifications= async () => {
+        const res = ws.send("check")
+      }
       return () => {
         clearInterval(timer);
         ws.close();
@@ -72,9 +74,7 @@ export default function UserScreen({navigation}) {
     setExtraInfo('');
   }
 
-   async function retrieveNotifications()  {
-    const res = ws.send("check")
-  }
+
   return (
     <ScrollView >
       <Paragraph></Paragraph>
