@@ -2,24 +2,12 @@ import React, {useState, useEffect} from 'react';
 import {View, Text, Button, Platform, ToastAndroid, Alert, ScrollView} from 'react-native';
 import {Card, Title, Paragraph} from 'react-native-paper';
 import {List} from 'react-native-paper';
+import { useFocusEffect } from '@react-navigation/native';
 
-import {convertDataToJobCardData, getJobs} from '../api/APIUtils';
+import {API_JOB_URL, convertDataToJobCardData, getJobs, WEBSOCKET_PROTOCOL} from '../api/APIUtils';
 import UserCard from '../components/userCard';
 var ws = new WebSocket('ws://localhost:8080/api/v1/jobs');
-ws.onopen = (e) => {
-  console.log(e);
-}
 
-
-ws.onerror = (e) => {
-  // an error occurred
-  console.log(e.message);
-};
-
-ws.onclose = (e) => {
-  // connection closed
-  console.log(e.code, e.reason);
-};
 
 export default function UserScreen({navigation}) {
   const [name, setName] = useState('');
@@ -37,21 +25,39 @@ export default function UserScreen({navigation}) {
 
   }
 
-  useEffect(() => {
-    // (async () => {
-    //   const data = await getJobs();
-    //   setJobsList(data.reverse());
-    // })();
-    ws.send("open")
-  }, []);
+  useFocusEffect(
+    React.useCallback(() => {
+      console.log(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
+      ws = new WebSocket(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
+      ws.onopen = (e) => {
+        ws.send("check")
+      }
 
-  ws.onmessage = (e) => {
-    // a message was received
-    const newList = convertDataToJobCardData(JSON.parse(e.data));
-    if(newList.length !== 0){
-      setJobsList(newList.reverse())
-    }
-  };
+
+      ws.onerror = (e) => {
+        // an error occurred
+        console.log(e.message);
+      };
+
+      ws.onclose = (e) => {
+        // connection closed
+        console.log(e.code, e.reason);
+      };
+
+      ws.onmessage = (e) => {
+        // a message was received
+        const newList = convertDataToJobCardData(JSON.parse(e.data));
+        if(newList.length !== 0){
+          setJobsList(newList.reverse())
+        }
+      };
+      return () => {
+        clearInterval(timer);
+        ws.close();
+      };
+
+    }, []))
+
 
   function jobCardMaker(job) {
     return (<UserCard data={job} key={job.id}/>)

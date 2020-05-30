@@ -1,7 +1,8 @@
 import axios from 'axios';
-const API_BASE_URL = 'http://178.62.102.69:8080/api/v1';
-const API_JOB_URL = `${API_BASE_URL}/jobs`;
-
+export const API_BASE_URL = '178.62.102.69:8080/api/v1';
+export const API_JOB_URL = `${API_BASE_URL}/jobs`;
+export const HTTP_PROTOCOL = 'http://'
+export const WEBSOCKET_PROTOCOL = 'ws://'
 export  async function getJobs() {
   let jobObj = {
     id: '',
@@ -23,7 +24,7 @@ export  async function getJobs() {
 }
 
 export  async function sendRequest(data) {
-  axios.post(API_JOB_URL, data).then(function (response) {
+  axios.post(`${HTTP_PROTOCOL}${API_JOB_URL}`, data).then(function (response) {
     console.log(JSON.stringify(response))
   }).catch(function (error) {
     console.log(JSON.stringify(error))
