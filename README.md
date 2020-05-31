@@ -48,9 +48,9 @@ This project is set up to deploy with Travis-CI.
 
 ## Built With
 
-* [React Native](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Gradle](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [React Native](https://reactnative.dev/) - The web framework used
+* [Gradle](https://gradle.org/) - Dependency Management
+
 
 ## Authors
 
