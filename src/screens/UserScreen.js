@@ -17,6 +17,7 @@ export default function UserScreen({navigation}) {
   const [extraInfo, setExtraInfo] = useState('');
   const [jobsList, setJobsList] = useState([]);
   const [timer, setTimer] = useState(setInterval(retrieveNotifications, 10000))
+
   function updateJobs() {
     getJobs().then((data) => {
       setJobsList(data.reverse());
@@ -31,7 +32,6 @@ export default function UserScreen({navigation}) {
       ws.onopen = (e) => {
         ws.send("check")
       }
-
 
       ws.onerror = (e) => {
         // an error occurred

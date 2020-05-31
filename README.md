@@ -8,10 +8,6 @@ Summer project for Designing for Real People course at Imperial College London.
 
 * [React Native CLI](https://reactnative.dev/docs/environment-setup) - React-native CLI environment.
 
-```
-Give examples
-```
-
 ### Installing
 
 Once repository is cloned run:
@@ -40,16 +36,22 @@ You can also run on an IOS emulator on Mac.
 
 ## Running the tests
 
-Use ./gradlew test. 
+Use ./gradlew test.
+Tests in __tests\_\_ directory. 
 
 ## Deployment
 
-This project is set up to deploy with Travis-CI.
+This project is set up to continuously deploy with Travis-CI.
+Currently deploys to dropbox. [Link](https://www.youtube.com/watch?v=dQw4w9WgXcQ)
 
 ## Built With
 
-* [React Native](https://reactnative.dev/) - The web framework used
+* [React Native](https://reactnative.dev/) - Web framework used
 * [Gradle](https://gradle.org/) - Dependency Management
+* [React Navigation](https://reactnavigation.org/) - Navigation management for React native app
+* [React Native Paper](https://callstack.github.io/react-native-paper/) - Open source React Native Components following Google [Material Design](https://material.io/design/)
+* [Firebase](https://firebase.google.com/) - Notification management
+* [Dropbox](https://www.dropbox.com) - To store deployed Android APKs
 
 
 ## Authors
