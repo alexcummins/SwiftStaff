@@ -8,7 +8,7 @@ import {API_JOB_URL, convertDataToJobCardData, getJobs, WEBSOCKET_PROTOCOL} from
 import UserCard from '../components/userCard';
 
 let retrieveNotifications = () => {}
-export default function UserScreen({navigation}) {
+export default function TempWorkerOffersScreen({navigation}) {
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
   const [startTime, setStartTime] = useState('');
@@ -16,7 +16,7 @@ export default function UserScreen({navigation}) {
   const [rate, setRate] = useState('');
   const [extraInfo, setExtraInfo] = useState('');
   const [jobsList, setJobsList] = useState([]);
-  const [timer, setTimer] = useState(setInterval(retrieveNotifications, 10000))
+  const [timer, setTimer] = useState(setInterval(retrieveNotifications, 600000))
 
   function updateJobs() {
     getJobs().then((data) => {

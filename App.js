@@ -1,20 +1,18 @@
-import React, {Component, useState, useEffect} from 'react';
-import LoginScreen from 'react-native-login-screen';
-import {StatusBar, Alert} from 'react-native';
-import {NavigationContainer, StackActions} from '@react-navigation/native';
+import React, {useState, useEffect} from 'react';
+import {Alert} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
-import PickRestaurantOrWorkerScreen from './src/screens/PickRestaurantOrWorkerScreen';
-import PickUserRestaurantScreen from './src/screens/PickUserRestaurantScreen';
-import UserScreen from './src/screens/UserScreen';
-import firebaseApp from '@react-native-firebase/app';
-import {firebase, FirebaseMessagingTypes} from '@react-native-firebase/messaging';
-import navigate from './src/RootNavigation'
-import set from '@babel/runtime/helpers/esm/set';
+import TempWorkerOffersScreen from './src/screens/TempWorkerOffersScreen';
+import {firebase} from '@react-native-firebase/messaging';
+import navigate, {navigationRef} from './src/RootNavigation';
 import RestaurantScreens from './src/screens/RestaurantScreens';
+import Login from './src/components/Login';
+import set from '@babel/runtime/helpers/esm/set';
+import {NavigationContainer} from '@react-navigation/native';
+import TempWorkerScreens from './src/screens/TempWorkerScreens';
 
 const Stack = createStackNavigator();
 
-export default function App(props) {
+export default function App({navigator}) {
   const [loading, setLoading] = useState(true);
   const [initialRoute, setInitialRoute] = useState('Home');
 
@@ -63,7 +61,7 @@ export default function App(props) {
 
 
   async function registerAppWithFCM() {
-    console.log("registering")
+    console.log('registering');
     await firebase.messaging().registerDeviceForRemoteMessages();
   }
 
@@ -88,20 +86,32 @@ export default function App(props) {
   if (loading) {
     return null;
   }
+  let isRestaurant = true;
+  let isTempWorker = true;
+  let isSignedIn = false;
   return (
-    <Stack.Navigator initialRouteName={initialRoute}>
-      <Stack.Screen
-        name="Home"
-        component={PickRestaurantOrWorkerScreen}
-      />
-      <Stack.Screen
-        name="Restaurant"
-        component={RestaurantScreens}
-      />
-      <Stack.Screen
-        name="User"
-        component={UserScreen}
-      />
-    </Stack.Navigator>
+
+    (isSignedIn && isRestaurant) ? (
+      <Stack.Navigator headerMode={false} >
+        <Stack.Screen name="HomeRestaurant" component={RestaurantScreens}/>
+      </Stack.Navigator>
+
+    ) : (isSignedIn && isTempWorker) ? (
+      <Stack.Navigator headerMode={false} >
+        <Stack.Screen name="HomeTempWorker" component={TempWorkerScreens}/>
+      </Stack.Navigator>
+
+    ) : (
+        <Stack.Navigator headerMode={false} >
+          <Stack.Screen name="Login" component={Login}/>
+          <Stack.Screen name="HomeRestaurant" component={RestaurantScreens}/>
+          <Stack.Screen name="HomeTempWorker" component={TempWorkerScreens}/>
+        </Stack.Navigator>
+
+    )
   );
+
 }
+
+
+

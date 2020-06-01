@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { View, StyleSheet, SafeAreaView} from "react-native";
-import {Title, Button, Paragraph} from 'react-native-paper';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import TempWorkerOffersScreen from './TempWorkerOffersScreen';
 import RequestWorkerScreen from './RequestWorkerScreen';
-import RestaurantHomeScreen from './RestaurantHomeScreen';
+import TempWorkerHomeScreen from './TempWorkerHomeScreen';
 
 
 export default function RestaurantScreens({ navigation }) {
@@ -12,9 +10,9 @@ export default function RestaurantScreens({ navigation }) {
 
   return (
     <Tab.Navigator tabBarPosition="bottom" initialRouteName="Home">
-      <Tab.Screen name="Bookings" component={TempWorkerOffersScreen} />
-      <Tab.Screen name="Home" component={RestaurantHomeScreen} />
-      <Tab.Screen name="Request" component={RequestWorkerScreen} />
+      <Tab.Screen name="Offers" component={TempWorkerOffersScreen} />
+      <Tab.Screen name="Home" component={TempWorkerHomeScreen} />
+      <Tab.Screen name="Confirmed" component={TempWorkerOffersScreen} />
     </Tab.Navigator>
   )
 }

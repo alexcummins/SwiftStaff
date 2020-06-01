@@ -1,65 +1,73 @@
-import React, { Component, useState } from "react";
-import LoginScreen from "react-native-login-screen";
-import { StatusBar } from "react-native";
+import React, {useState} from 'react';
+import LoginScreen from 'react-native-login-screen';
+import {StatusBar} from 'react-native';
 
-const source = require("./resources/img/background.jpg");
-import set from "@babel/runtime/helpers/esm/set";
+const background = require('../../resources/img/background.jpg');
+import set from '@babel/runtime/helpers/esm/set';
+import Logo from './Logo';
+import navigate from '../RootNavigation';
+import { useNavigation } from '@react-navigation/native';
 
-export default class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userName: "",
-      password: "",
-      switchValue: true,
-      spinnerEnable: true,
-    };
-  }
 
-  setSwitchValue(value) {
-    this.setState({ switchValue: value });
-  }
+export default function Login(props) {
+  const [userName, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [switchValue, setSwitchValue] = useState('');
+  const [spinnerEnable, setSpinnerEnable] = useState(true);
 
-  setUsername(uN) {
-    this.setState({ userName: uN }, () => {
-      this.setSpinner();
-    });
+  let logoComponent = Logo();
+
+  function setUsernameUpdateSpinner(uN) {
+    setUsername(uN);
+    setSpinner();
   }
 
-  setSpinner() {
-    this.setState({
-      spinnerEnable: this.getUsername() === "" || this.getPassword() === "",
-    });
+  function setSpinner() {
+    setSpinnerEnable(getUsername() === '' || getPassword() === '');
   }
-  setPassword(pass) {
-    this.setState({ password: pass }, () => {
-      this.setSpinner();
-    });
+
+  function setPasswordUpdateSpinner(pass) {
+    setPassword(pass);
+    setSpinner();
+
   }
-  getUsername() {
-    return this.state.userName;
+
+  function getUsername() {
+    return userName;
   }
-  getPassword() {
-    return this.state.password;
+
+  function getPassword() {
+    return password;
   }
-  render() {
-    return (
-      <>
-        <StatusBar barStyle="dark-content" />
-        <LoginScreen
-          spinnerEnable={this.state.spinnerEnable}
-          spinnerVisibility
-          logoText="Swift Staff"
-          source={source}
-          switchValue={this.state.switchValue}
-          onPressLogin={() => alert("Login Button is pressed")}
-          onPressSettings={() => alert("Settings Button is pressed")}
-          onSwitchValueChange={(sV) => this.setSwitchValue(sV)}
-          usernameOnChangeText={(username) => this.setUsername(username)}
-          passwordOnChangeText={(password) => this.setPassword(password)}
-          loginButtonBackgroundColor="#a2a5a9"
-        />
-      </>
-    );
+
+
+  function goToTempUser() {
+    navigate('HomeTempWorker', {});
   }
+
+  function goToRestaurant() {
+    navigate('HomeRestaurant', {});
+  }
+
+
+  return (
+    <>
+      <StatusBar barStyle="dark-content"/>
+      <LoginScreen
+        spinnerEnable={spinnerEnable}
+        spinnerVisibility={true}
+        logoText="Swift Staff"
+        source={background}
+        logoComponent={logoComponent}
+        switchValue={switchValue}
+        onPressLogin={() => goToRestaurant()}
+        onPressSettings={() => goToTempUser()}
+        onSwitchValueChange={(sV) => setSwitchValue(sV)}
+        usernameOnChangeText={(uname) => setUsernameUpdateSpinner(uname)}
+        passwordOnChangeText={(paswd) => setPasswordUpdateSpinner(paswd)}
+        loginButtonBackgroundColor="#a2a5a9"
+      />
+    </>
+  );
+
 }
