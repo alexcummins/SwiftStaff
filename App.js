@@ -20,8 +20,8 @@ export default function App(props) {
 
   useEffect(() => {
     (async () => {
-      await requestPermission();
       await registerAppWithFCM();
+      await requestPermission();
     })();
 
 
@@ -63,6 +63,7 @@ export default function App(props) {
 
 
   async function registerAppWithFCM() {
+    console.log("registering")
     await firebase.messaging().registerDeviceForRemoteMessages();
   }
 
