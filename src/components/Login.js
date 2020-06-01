@@ -6,7 +6,7 @@ const background = require('../../resources/img/background.jpg');
 import set from '@babel/runtime/helpers/esm/set';
 import Logo from './Logo';
 import navigate from '../RootNavigation';
-import { useNavigation } from '@react-navigation/native';
+import { CommonActions, useNavigation } from '@react-navigation/native';
 
 
 export default function Login(props) {
@@ -14,6 +14,7 @@ export default function Login(props) {
   const [password, setPassword] = useState('');
   const [switchValue, setSwitchValue] = useState('');
   const [spinnerEnable, setSpinnerEnable] = useState(true);
+  const navigation = useNavigation();
 
   let logoComponent = Logo();
 
@@ -42,17 +43,29 @@ export default function Login(props) {
 
 
   function goToTempUser() {
-    navigate('HomeTempWorker', {});
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [
+          { name: 'HomeTempWorker' }
+        ],
+      }));
   }
 
   function goToRestaurant() {
-    navigate('HomeRestaurant', {});
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [
+          { name: 'HomeRestaurant' }
+        ],
+      }));
   }
+
 
 
   return (
     <>
-      <StatusBar barStyle="dark-content"/>
       <LoginScreen
         spinnerEnable={spinnerEnable}
         spinnerVisibility={true}
