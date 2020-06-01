@@ -5,13 +5,13 @@ import {NavigationContainer, StackActions} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import PickRestaurantOrWorkerScreen from './src/screens/PickRestaurantOrWorkerScreen';
 import PickUserRestaurantScreen from './src/screens/PickUserRestaurantScreen';
-
-const source = require('./resources/img/background.jpg');
-import set from '@babel/runtime/helpers/esm/set';
 import UserScreen from './src/screens/UserScreen';
 import firebaseApp from '@react-native-firebase/app';
 import {firebase, FirebaseMessagingTypes} from '@react-native-firebase/messaging';
 import navigate from './src/RootNavigation'
+import set from '@babel/runtime/helpers/esm/set';
+import RestaurantScreens from './src/screens/RestaurantScreens';
+
 const Stack = createStackNavigator();
 
 export default function App(props) {
@@ -95,7 +95,7 @@ export default function App(props) {
       />
       <Stack.Screen
         name="Restaurant"
-        component={PickUserRestaurantScreen}
+        component={RestaurantScreens}
       />
       <Stack.Screen
         name="User"
