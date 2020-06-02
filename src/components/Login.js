@@ -10,7 +10,6 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 import {Button, Paragraph} from "react-native-paper";
 
 import createStackNavigator from "@react-navigation/stack/src/navigators/createStackNavigator";
-import RestaurantOrWorkerSignup from "../screens/Signup/SignupNavigation";
 
 Stack = createStackNavigator();
 
