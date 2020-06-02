@@ -9,6 +9,7 @@ import Login from './src/components/Login';
 import set from '@babel/runtime/helpers/esm/set';
 import {NavigationContainer} from '@react-navigation/native';
 import TempWorkerScreens from './src/screens/Worker/TempWorkerScreens';
+import SignupNavigation from "./src/screens/Signup/SignupNavigation";
 import RestaurantOrWorkerSignup from "./src/screens/Signup/RestaurantOrWorkerSignup";
 
 const Stack = createStackNavigator();
@@ -87,32 +88,15 @@ export default function App({navigator}) {
   if (loading) {
     return null;
   }
-  let isRestaurant = true;
-  let isTempWorker = true;
-  let isSignedIn = false;
+
   return (
-
-    (isSignedIn && isRestaurant) ? (
-      <Stack.Navigator headerMode={false} >
-        <Stack.Screen name="HomeRestaurant" component={RestaurantScreens}/>
-      </Stack.Navigator>
-
-    ) : (isSignedIn && isTempWorker) ? (
-      <Stack.Navigator headerMode={false} >
-        <Stack.Screen name="HomeTempWorker" component={TempWorkerScreens}/>
-      </Stack.Navigator>
-
-    ) : (
-        <Stack.Navigator headerMode={false} >
-          <Stack.Screen name="Login" component={Login}/>
-          <Stack.Screen name="HomeRestaurant" component={RestaurantScreens}/>
-          <Stack.Screen name="HomeTempWorker" component={TempWorkerScreens}/>
-          <Stack.Screen name="WorkerOrRestaurantSignup" component={RestaurantOrWorkerSignup}/>
+        <Stack.Navigator>
+          <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
+          <Stack.Screen name="HomeRestaurant" component={RestaurantScreens} options={{headerShown: false}}/>
+          <Stack.Screen name="HomeTempWorker" component={TempWorkerScreens} options={{headerShown: false}}/>
+          <Stack.Screen name="RestaurantOrWorkerSignup" component={RestaurantOrWorkerSignup}/>
         </Stack.Navigator>
-
-    )
-  );
-
+  )
 }
 
 

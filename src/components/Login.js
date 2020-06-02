@@ -9,6 +9,10 @@ import navigate from '../RootNavigation';
 import { CommonActions, useNavigation } from '@react-navigation/native';
 import {Button, Paragraph} from "react-native-paper";
 
+import createStackNavigator from "@react-navigation/stack/src/navigators/createStackNavigator";
+import RestaurantOrWorkerSignup from "../screens/Signup/SignupNavigation";
+
+Stack = createStackNavigator();
 
 export default function Login(props) {
   const [userName, setUsername] = useState('');
@@ -64,13 +68,7 @@ export default function Login(props) {
   }
 
     function goToSignup() {
-        navigation.dispatch(
-            CommonActions.reset({
-                index: 0,
-                routes: [
-                    { name: 'WorkerOrRestaurantSignup' }
-                ],
-            }));
+        navigation.navigate("RestaurantOrWorkerSignup")
     }
 
   return (
