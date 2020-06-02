@@ -29,7 +29,7 @@
     "react-native-dynamic-vector-icons": ">= 0.2.1",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-improved-text-input": ">= 0.0.1",
-    "react-native-login-screen": "^0.3.7",
+    "react-native-login-screen": "git+https://github.com/alexcummins/react-native-login-screen.git",
     "react-native-paper": "^3.10.1",
     "react-native-paper-form-builder": "^1.0.6",
     "react-native-reanimated": "^1.9.0",
