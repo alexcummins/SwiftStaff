@@ -9,7 +9,6 @@ import Login from './src/components/Login';
 import set from '@babel/runtime/helpers/esm/set';
 import {NavigationContainer} from '@react-navigation/native';
 import TempWorkerScreens from './src/screens/Worker/TempWorkerScreens';
-import SignupNavigation from "./src/screens/Signup/SignupNavigation";
 import RestaurantOrWorkerSignup from "./src/screens/Signup/RestaurantOrWorkerSignup";
 
 const Stack = createStackNavigator();
