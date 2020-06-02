@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, SafeAreaView} from "react-native";
 import {Title, Button, Paragraph} from 'react-native-paper';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import TempWorkerOffersScreen from './TempWorkerOffersScreen';
+import TempWorkerOffersScreen from '../Worker/TempWorkerOffersScreen';
 import RequestWorkerScreen from './RequestWorkerScreen';
 import RestaurantHomeScreen from './RestaurantHomeScreen';
 

@@ -1,14 +1,14 @@
 import React, {useState, useEffect} from 'react';
 import {Alert} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
-import TempWorkerOffersScreen from './src/screens/TempWorkerOffersScreen';
+import TempWorkerOffersScreen from './src/screens/Worker/TempWorkerOffersScreen';
 import {firebase} from '@react-native-firebase/messaging';
 import navigate, {navigationRef} from './src/RootNavigation';
-import RestaurantScreens from './src/screens/RestaurantScreens';
+import RestaurantScreens from './src/screens/Restaurant/RestaurantScreens';
 import Login from './src/components/Login';
 import set from '@babel/runtime/helpers/esm/set';
 import {NavigationContainer} from '@react-navigation/native';
-import TempWorkerScreens from './src/screens/TempWorkerScreens';
+import TempWorkerScreens from './src/screens/Worker/TempWorkerScreens';
 
 const Stack = createStackNavigator();
 
