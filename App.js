@@ -9,6 +9,7 @@ import Login from './src/components/Login';
 import set from '@babel/runtime/helpers/esm/set';
 import {NavigationContainer} from '@react-navigation/native';
 import TempWorkerScreens from './src/screens/Worker/TempWorkerScreens';
+import RestaurantOrWorkerSignup from "./src/screens/Signup/RestaurantOrWorkerSignup";
 
 const Stack = createStackNavigator();
 
@@ -106,6 +107,7 @@ export default function App({navigator}) {
           <Stack.Screen name="Login" component={Login}/>
           <Stack.Screen name="HomeRestaurant" component={RestaurantScreens}/>
           <Stack.Screen name="HomeTempWorker" component={TempWorkerScreens}/>
+          <Stack.Screen name="WorkerOrRestaurantSignup" component={RestaurantOrWorkerSignup}/>
         </Stack.Navigator>
 
     )

@@ -1,12 +1,13 @@
 import React, {useState} from 'react';
 import LoginScreen from 'react-native-login-screen';
-import {StatusBar} from 'react-native';
+import {StatusBar, View} from 'react-native';
 
 const background = require('../../resources/img/background.jpg');
 import set from '@babel/runtime/helpers/esm/set';
 import Logo from './Logo';
 import navigate from '../RootNavigation';
 import { CommonActions, useNavigation } from '@react-navigation/native';
+import {Button, Paragraph} from "react-native-paper";
 
 
 export default function Login(props) {
@@ -62,10 +63,32 @@ export default function Login(props) {
       }));
   }
 
-
+    function goToSignup() {
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [
+                    { name: 'WorkerOrRestaurantSignup' }
+                ],
+            }));
+    }
 
   return (
     <>
+      <Button
+          icon="food"
+          mode="contained"
+          onPress={() => goToRestaurant()}
+      >
+        Restaurant
+      </Button>
+      <Button
+          icon="worker"
+          mode="contained"
+          onPress={() => goToTempUser()}
+      >
+        Worker
+      </Button>
       <LoginScreen
         spinnerEnable={spinnerEnable}
         spinnerVisibility={true}
@@ -74,7 +97,11 @@ export default function Login(props) {
         logoComponent={logoComponent}
         switchValue={switchValue}
         onPressLogin={() => goToRestaurant()}
-        onPressSettings={() => goToTempUser()}
+        onPressSettings={() => skip}
+        onPressSignup={() => goToSignup()}
+        disableSettings={true}
+        disableSwitch={true}
+        disableSignup={true}
         onSwitchValueChange={(sV) => setSwitchValue(sV)}
         usernameOnChangeText={(uname) => setUsernameUpdateSpinner(uname)}
         passwordOnChangeText={(paswd) => setPasswordUpdateSpinner(paswd)}
