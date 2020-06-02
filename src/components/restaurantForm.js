@@ -26,10 +26,6 @@ function RequestForm() {
 
   return (
     <View style={styles.containerStyle}>
-      <Button
-        title="Go back to home"
-        onPress={() => navigation.navigate('Home')}
-      />
       <ScrollView contentContainerStyle={styles.scrollViewStyle}>
         <Text style={styles.headingStyle}>Request a Worker</Text>
         <FormBuilder
