@@ -10,6 +10,7 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 import {Button, Paragraph} from "react-native-paper";
 
 import createStackNavigator from "@react-navigation/stack/src/navigators/createStackNavigator";
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 Stack = createStackNavigator();
 
@@ -71,7 +72,7 @@ export default function Login(props) {
     }
 
   return (
-    <>
+    <SafeAreaView>
       <Button
           icon="food"
           mode="contained"
@@ -104,7 +105,7 @@ export default function Login(props) {
         passwordOnChangeText={(paswd) => setPasswordUpdateSpinner(paswd)}
         loginButtonBackgroundColor="#a2a5a9"
       />
-    </>
+    </SafeAreaView>
   );
 
 }
