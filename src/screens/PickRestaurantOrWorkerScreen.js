@@ -10,7 +10,7 @@ export default function PickRestaurantOrWorkerScreen({ navigation }) {
       <Button
         icon="food"
         mode="contained"
-        onPress={() => navigation.navigate("restaurant")}
+        onPress={() => navigation.navigate("Restaurant")}
       >
         Restaurant
       </Button>

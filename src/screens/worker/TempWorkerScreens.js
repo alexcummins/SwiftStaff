@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import TempWorkerOffersScreen from './TempWorkerOffersScreen';
-import RequestWorkerScreen from '../restaurant/RequestWorkerScreen';
+import RequestWorkerScreen from '../Restaurant/RequestWorkerScreen';
 import TempWorkerHomeScreen from './TempWorkerHomeScreen';
 
 
