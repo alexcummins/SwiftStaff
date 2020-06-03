@@ -3,7 +3,7 @@ import {View, Text, Button, Platform, ToastAndroid, Alert, ScrollView} from 'rea
 import {Card, Title, Paragraph} from 'react-native-paper';
 import {List} from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
-import {API_JOB_URL, convertDataToJobCardData, getJobs, WEBSOCKET_PROTOCOL} from '../../api/APIUtils';
+import {API_JOB_URL, convertDataToJobCardData, getJobRequest, WEBSOCKET_PROTOCOL} from '../../api/APIUtils';
 import UserCard from '../../components/UserCard';
 
 let retrieveNotifications = () => {}
@@ -18,7 +18,7 @@ export default function TempWorkerOffersScreen({navigation}) {
   const [timer, setTimer] = useState(setInterval(retrieveNotifications, 600000))
 
   function updateJobs() {
-    getJobs().then((data) => {
+    getJobRequest().then((data) => {
       setJobsList(data.reverse());
     });
 

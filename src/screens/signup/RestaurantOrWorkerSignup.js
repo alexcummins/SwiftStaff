@@ -3,7 +3,7 @@ import {StyleSheet, View} from "react-native";
 import {Avatar, Button, HelperText, RadioButton, Surface, Text, TextInput, Title} from 'react-native-paper';
 import {sendSignup} from "../../api/APIUtils";
 import {CommonActions} from "@react-navigation/native";
-import {notifyMessage} from "../../api/utils";
+import {notifyMessage, userTypeEnum} from '../../api/utils';
 
 export default function RestaurantOrWorkerSignup({navigation}) {
 
@@ -14,8 +14,6 @@ export default function RestaurantOrWorkerSignup({navigation}) {
     const [isEmailError, setIsEmailError] = useState(false);
     const [userType, setUserType] = useState("");
     const [loading, setloading] = useState(false);
-
-    const userTypeEnum = {restaurant: 1, worker: 2}
 
     function checkPasswordError() {
         if (confirmPassword !== "") {

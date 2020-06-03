@@ -8,3 +8,5 @@ export function notifyMessage(msg: string) {
         Alert.alert(msg);
     }
 }
+
+export const userTypeEnum = {restaurant: 1, worker: 2}

@@ -1,29 +1,30 @@
 import axios from 'axios';
 
-export const API_BASE_URL = '178.62.102.69:8080/api/v1'
-export const API_JOB_URL = `${API_BASE_URL}/jobs`
-export const API_NEW_SIGNUP_URL = `${API_BASE_URL}/signup`
-export const HTTP_PROTOCOL = 'http://'
-export const WEBSOCKET_PROTOCOL = 'ws://'
+export const API_BASE_URL = '178.62.102.69:8080/api/v1';
+export const API_JOB_URL = `${API_BASE_URL}/jobs`;
+export const API_NEW_SIGNUP_URL = `${API_BASE_URL}/signup`;
+export const HTTP_PROTOCOL = 'http://';
+export const WEBSOCKET_PROTOCOL = 'ws://';
+export const API_LOGIN_URL = `${API_BASE_URL}/login`;
 
-export async function getJobs() {
-    let jobObj = {
-        id: '',
-        name: '',
-        date: '',
-        startTime: '',
-        endTime: '',
-        hourlyRate: '',
-        extraInfo: '',
-    };
+export async function getJobRequest() {
     const jobsObjList = []
-    await axios.get(API_JOB_URL).then(function (response) {
-        return convertDataToJobCardData(response.data.jobsList)
-    }).catch(function (error) {
-        console.log(JSON.stringify(error))
-    });
+    let response = await sendHttpGetRequest(API_JOB_URL);
+    if(response.status === 200){
+        return convertDataToJobCardData(response.data.jobsList);
+    } else {
+        return jobsObjList;
+    }
+}
 
-    return jobsObjList;
+
+export async function getLoginRequest(params) {
+    let response = await sendHttpGetRequest(API_LOGIN_URL, {params: params});
+    if(response.status === 200){
+        return {data: response.data, isSuccessful: true};
+    } else {
+        return {isSuccessful: false};
+    }
 }
 
 export async function sendJobRequest(data) {
@@ -42,12 +43,25 @@ export async function sendSignup(data) {
 
 async function sendHttpPostRequest(data, url) {
     let responseObject = {}
-    await axios.post(`${HTTP_PROTOCOL}${url}`, data).then(function (response) {
+    await axios.post(`${HTTP_PROTOCOL}${url}`, data).then( (response) => {
         console.log(JSON.stringify(response))
         responseObject = response
-    }).catch(function (error) {
+    }).catch( (error) => {
         console.log(JSON.stringify(error))
         responseObject = error.response
+    });
+    return responseObject
+}
+
+
+async function sendHttpGetRequest(url, params) {
+    let responseObject = {}
+    await axios.get(`${HTTP_PROTOCOL}${url}`, params).then( (response) => {
+        console.log(JSON.stringify(response))
+        responseObject = response;
+    }).catch( (error) => {
+        console.log(JSON.stringify(error))
+        responseObject = error.response;
     });
     return responseObject
 }

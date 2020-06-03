@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Alert} from 'react-native';
+import {Alert, AsyncStorage} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import TempWorkerOffersScreen from './src/screens/worker/TempWorkerOffersScreen';
 import {firebase} from '@react-native-firebase/messaging';
@@ -12,6 +12,7 @@ import TempWorkerScreens from './src/screens/worker/TempWorkerScreens';
 import RestaurantOrWorkerSignup from "./src/screens/signup/RestaurantOrWorkerSignup";
 import RestaurantProfileScreen from "./src/screens/restaurant/RestaurantProfileScreen";
 import TempWorkerProfileScreen from "./src/screens/worker/TempWorkerProfileScreen";
+import {userTypeEnum} from './src/api/utils';
 
 const Stack = createStackNavigator();
 
@@ -79,6 +80,7 @@ export default function App({navigator}) {
         });
         if (authStatus === 1 || authStatus === 2) {
             const fcmToken = await firebase.messaging().getToken();
+            await AsyncStorage.setItem('fcmToken', fcmToken);
             console.log(fcmToken);
             console.log('Authorization status:', authStatus);
         } else {
@@ -90,8 +92,20 @@ export default function App({navigator}) {
         return null;
     }
 
-    return (
-        <Stack.Navigator>
+  AsyncStorage.getItem('userType').then((userType) => {
+      if (userType !== null) {
+        if (parseInt(userType) === userTypeEnum.worker){
+            setInitialRoute("HomeTempWorker")
+        } else if(parseInt(userType) ===userTypeEnum.restaurant){
+            setInitialRoute("HomeRestaurant")
+        }
+      }
+    }
+  ).catch(console.log("Not logged In"));
+
+
+   return (
+        <Stack.Navigator initialRouteName={initialRoute}>
             <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
             <Stack.Screen name="HomeRestaurant" component={RestaurantScreens} options={{headerShown: false, title:'Back'}} />
             <Stack.Screen name="HomeTempWorker" component={TempWorkerScreens} options={{headerShown: false, title:'Back'}}/>
