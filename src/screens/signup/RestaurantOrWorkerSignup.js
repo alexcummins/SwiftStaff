@@ -10,7 +10,7 @@ export default function RestaurantOrWorkerSignup({ navigation }) {
             <Button
                 icon="food"
                 mode="contained"
-                onPress={() => navigation.navigate("Restaurant")}
+                onPress={() => navigation.navigate("restaurant")}
             >
                 Restaurant
             </Button>
