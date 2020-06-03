@@ -29,7 +29,7 @@ export default function App({navigator}) {
                 'Notification caused app to open from background state:',
                 remoteMessage.notification,
             );
-            if (remoteMessage.data.type === 'User' || remoteMessage.data.type === 'Restaurant') {
+            if (remoteMessage.data.type === 'User' || remoteMessage.data.type === 'restaurant') {
                 navigate(remoteMessage.data.type);
             }
             Alert.alert(
@@ -47,7 +47,7 @@ export default function App({navigator}) {
                         'Notification caused app to open from quit state:',
                         remoteMessage.notification,
                     );
-                    if (remoteMessage.data.type === 'User' || remoteMessage.data.type === 'Restaurant') {
+                    if (remoteMessage.data.type === 'User' || remoteMessage.data.type === 'restaurant') {
                         setInitialRoute(remoteMessage.data.type);
                     }
                 }
