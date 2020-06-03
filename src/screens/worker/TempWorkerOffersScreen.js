@@ -5,7 +5,7 @@ import {List} from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 
 import {API_JOB_URL, convertDataToJobCardData, getJobs, WEBSOCKET_PROTOCOL} from '../../api/APIUtils';
-import UserCard from '../../components/UserCard';
+import UserCard from '../../components/userCard';
 
 let retrieveNotifications = () => {}
 export default function TempWorkerOffersScreen({navigation}) {
@@ -77,8 +77,7 @@ export default function TempWorkerOffersScreen({navigation}) {
 
   return (
     <ScrollView >
-      <Paragraph></Paragraph>
-      <List.Section>
+      <List.Section style={{marginTop:30}}>
         {jobsList.map(jobCardMaker)}
       </List.Section>
     </ScrollView>
