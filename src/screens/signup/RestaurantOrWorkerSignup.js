@@ -1,6 +1,9 @@
 import React, {useState} from "react";
 import {StyleSheet, View} from "react-native";
 import {Avatar, Button, HelperText, RadioButton, Surface, Text, TextInput, Title} from 'react-native-paper';
+import {sendSignup} from "../../api/APIUtils";
+import {CommonActions} from "@react-navigation/native";
+import {notifyMessage} from "../../api/utils";
 
 export default function RestaurantOrWorkerSignup({navigation}) {
 
@@ -10,6 +13,9 @@ export default function RestaurantOrWorkerSignup({navigation}) {
     const [isPasswordError, setIsPasswordError] = useState(false);
     const [isEmailError, setIsEmailError] = useState(false);
     const [userType, setUserType] = useState("");
+    const [loading, setloading] = useState(false);
+
+    const userTypeEnum = {restaurant: 1, worker: 2}
 
     function checkPasswordError() {
         if (confirmPassword !== "") {
@@ -23,8 +29,34 @@ export default function RestaurantOrWorkerSignup({navigation}) {
         }
     }
 
-    function createAccount() {
-        return undefined;
+    async function createAccount() {
+        setloading(true)
+        const response = await sendSignup({email: email, password: password, userType: userType})
+        if (response.isSuccessful) {
+            if (userType === userTypeEnum.restaurant) {
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [
+                            { name: 'HomeRestaurant' }
+                        ],
+                    }));
+            }
+            else if (userType === userTypeEnum.worker) {
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [
+                            { name: 'HomeTempWorker' }
+                        ],
+                    }));
+            }
+        }
+        else {
+            setloading(false)
+            notifyMessage("Signup failed. Please check your internet connection and try again.")
+            console.log("Signup failed. Please check your internet connection and try again.")
+        }
     }
 
     return (
@@ -84,13 +116,15 @@ export default function RestaurantOrWorkerSignup({navigation}) {
                         onValueChange={value => setUserType(value)}
                         value={userType}
                     >
-                        <RadioButton.Item icon="food" label="Restaurant Manager" value="Restaurant"/>
-                        <RadioButton.Item icon="worker" label="Worker" value="Worker"/>
+                        <RadioButton.Item icon="food" label="Restaurant Manager" value={userTypeEnum.restaurant}/>
+                        <RadioButton.Item icon="worker" label="Worker" value={userTypeEnum.worker}/>
                     </RadioButton.Group>
                 </Surface>
             </View>
             <Button icon="account" mode={"contained"} onPress={() => createAccount()}
-                    disabled={isEmailError || isPasswordError || email === "" || password === "" || confirmPassword === "" || userType === ""}
+                    disabled={isEmailError || isPasswordError || email === "" || password === ""
+                              || confirmPassword === "" || userType === "" || loading}
+                    loading={loading}
                     style={{marginTop: 30, marginLeft: 5, marginRight: 5, flexDirection: "column-reverse"}}>
                 Sign up
             </Button>
