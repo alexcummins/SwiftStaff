@@ -12,7 +12,6 @@ export default function UserCardInfo({data}) {
 
     return (
         <List.Section>
-            <List.Subheader>Some title</List.Subheader>
             <List.Item
                 title="Salary"
                 description={data.hourlyRate + 'ph'}
