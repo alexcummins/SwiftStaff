@@ -7,7 +7,7 @@ import FormBuilder from 'react-native-paper-form-builder';
 import {useForm} from 'react-hook-form';
 
 import {Button} from 'react-native-paper';
-import {sendRequest} from '../api/APIUtils';
+import {sendJobRequest} from '../api/APIUtils';
 
 function RequestForm() {
   const form = useForm({
@@ -149,7 +149,7 @@ function RequestForm() {
           <Button
             mode={'contained'}
             onPress={form.handleSubmit((data: any) => {
-              sendRequest(data).then(r => console.log(r));
+              sendJobRequest(data).then(r => console.log(r));
               console.log('form data', data);
             })}>
             Submit
@@ -159,16 +159,6 @@ function RequestForm() {
       </ScrollView>
     </View>
   );
-}
-
-
-function notifyMessage(msg: string) {
-  console.log(`Displaying: ${msg}`);
-  if (Platform.OS === 'android') {
-    ToastAndroid.show(msg, ToastAndroid.SHORT);
-  } else {
-    Alert.alert(msg);
-  }
 }
 
 const styles = StyleSheet.create({
