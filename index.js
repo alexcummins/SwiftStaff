@@ -16,11 +16,11 @@ import { navigationRef } from './src/RootNavigation';
 
 const theme = {
   ...DefaultTheme,
-  dark: true,
-  roundness: 20,
+  dark: false,
+  roundness: 10,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#157EFB',
+    primary: '#157efb',
     accent: '#f1c40f',
   }
 };
