@@ -11,17 +11,17 @@ import { NavigationContainer } from "@react-navigation/native";
 import App from "./App";
 import { name as appName } from "./app.json";
 import {firebase} from '@react-native-firebase/messaging';
-import set from "@babel/runtime/helpers/esm/set";
 import { navigationRef } from './src/RootNavigation';
+import set from "@babel/runtime/helpers/esm/set";
 
 const theme = {
   ...DefaultTheme,
-  dark: true,
-  roundness: 20,
+  dark: false,
+  roundness: 10,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#157EFB',
-    accent: '#f1c40f',
+    primary: '#15fb34',
+    accent: '#0ff1a2',
   }
 };
 

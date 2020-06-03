@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
-import {View, Text, Button, Platform, ToastAndroid, Alert} from 'react-native';
-import {Card, Title, Paragraph} from 'react-native-paper';
+import {View, Text, Platform, ToastAndroid, Alert, StyleSheet, Dimensions} from 'react-native';
+import {Card, Title, Paragraph, Button} from 'react-native-paper';
+import MapView from 'react-native-maps';
+import MapMarker from 'react-native-maps/lib/components/MapMarker';
 
 export default function UserCard({data}) {
 
@@ -10,6 +12,8 @@ export default function UserCard({data}) {
   const [endTime, setEndTime] = useState(data.endTime);
   const [rate, setRate] = useState(data.hourlyRate);
   const [extraInfo, setExtraInfo] = useState(data.extraInfo);
+  const [restaurantLong, setRestaurantLong ] = useState(-0.172002);
+  const [restaurantLat, setRestaurantLat ] = useState(51.499014);
 
   function updateCard(data) {
     setName(data.name);
@@ -31,16 +35,62 @@ export default function UserCard({data}) {
 
   return (
     <View>
-      <Card style={{ marginVertical: 10, marginHorizontal: 10}}>
+      <Card style={{marginVertical: 10, marginHorizontal: 10}} elevation={10}>
         <Card.Title title={name} subtitle={date}/>
         <Card.Content>
-          <Paragraph>{startTime}</Paragraph>
-          <Paragraph>{endTime}</Paragraph>
-          <Paragraph>{rate}</Paragraph>
-          <Paragraph>{extraInfo}</Paragraph>
-          <Button title="Accept" onPress={() => clearValues()}/>
+          <View style={{flexDirection: 'column'}}>
+            <View style={styles.container}>
+              <MapView style={styles.mapStyle} showsUserLocation={true}
+                       initialRegion={{
+                         latitude: restaurantLat,
+                         longitude: restaurantLong,
+                         latitudeDelta: 0.1,
+                         longitudeDelta: 0.1,
+                       }}>
+                       <MapMarker coordinate={{latitude: restaurantLat, longitude: restaurantLong}}/>
+              </MapView>
+              <View style={{flexDirection: 'column', flex: 10}}>
+                <Paragraph style={styles.para}>{startTime}</Paragraph>
+                <Paragraph style={styles.para}>{endTime}</Paragraph>
+                <Paragraph style={styles.para}>{rate}</Paragraph>
+                <Paragraph style={styles.para}>{extraInfo}</Paragraph>
+              </View>
+            </View>
+            <View style={{flexDirection: 'row', alignContent: 'center', marginTop: 10}}>
+              <Button style={{flex: 1, alignContent: 'center', marginRight: 5}} labelStyle={{color: 'white'}}
+                      mode="contained"
+                      color='red' uppercase={true} onPress={() => clearValues()}>
+                Decline
+              </Button>
+              <Button style={{flex: 1, alignContent: 'center', marginLeft: 5}} labelStyle={{color: 'white'}}
+                      mode="contained" color='green' uppercase={true} onPress={() => clearValues()}>
+                Accept
+              </Button>
+            </View>
+          </View>
         </Card.Content>
       </Card>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    minHeight: 200,
+    flex: 2,
+    flexDirection: 'row',
+  },
+  content: {
+    flex: 1,
+    flexDirection: 'column',
+  },
+  para: {
+    flex: 1,
+  },
+  mapStyle: {
+    flexGrow: 10,
+    flex: 10,
+    marginRight: 20,
+
+  },
+});
