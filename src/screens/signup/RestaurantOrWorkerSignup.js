@@ -9,7 +9,7 @@ export default function RestaurantOrWorkerSignup({navigation}) {
     const [confirmPassword, setConfirmPassword] = useState();
 
     return (
-        <View style={{ margin: 5, justifyContent: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center', margin:5}}>
             <TextInput
                 mode='outlined'
                 label={"Email"}
