@@ -35,7 +35,7 @@ export default function UserCard({data}) {
 
   return (
     <View>
-      <Card style={{marginVertical: 10, marginHorizontal: 10}}>
+      <Card style={{marginVertical: 10, marginHorizontal: 10}} elevation={10}>
         <Card.Title title={name} subtitle={date}/>
         <Card.Content>
           <View style={{flexDirection: 'column'}}>

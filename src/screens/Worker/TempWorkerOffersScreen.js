@@ -77,8 +77,7 @@ export default function TempWorkerOffersScreen({navigation}) {
 
   return (
     <ScrollView >
-      <Paragraph></Paragraph>
-      <List.Section>
+      <List.Section style={{marginTop:30}}>
         {jobsList.map(jobCardMaker)}
       </List.Section>
     </ScrollView>
