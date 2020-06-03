@@ -3,7 +3,6 @@ import {View, Text, Button, Platform, ToastAndroid, Alert, ScrollView} from 'rea
 import {Card, Title, Paragraph} from 'react-native-paper';
 import {List} from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
-
 import {API_JOB_URL, convertDataToJobCardData, getJobs, WEBSOCKET_PROTOCOL} from '../../api/APIUtils';
 import UserCard from '../../components/userCard';
 

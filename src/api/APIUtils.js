@@ -48,7 +48,7 @@ export function convertDataToJobCardData(data){
     const job = jobs[i]
     jobObj = {
       id: job._id,
-      name: "Test Restaurant",
+      name: "Test restaurant",
       date: "Date: " + job.date,
       startTime: "Start Time: " + job.startTime,
       endTime: "End Time: " + job.endTime,
