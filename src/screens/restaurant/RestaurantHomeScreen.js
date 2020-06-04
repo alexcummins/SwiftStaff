@@ -18,7 +18,7 @@ export default function RestaurantHomeScreen({data}) {
   }
 
   function profile() {
-    navigation.navigate("RestaurantProfileScreen")
+    navigation.navigate("RestaurantProfile")
   }
   return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} >
