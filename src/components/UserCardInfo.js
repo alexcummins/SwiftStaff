@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {List} from 'react-native-paper';
+import {List, Text} from 'react-native-paper';
 
 export default function UserCardInfo({data}) {
 
@@ -15,17 +15,17 @@ export default function UserCardInfo({data}) {
             <List.Item
                 title="Salary"
                 description={data.hourlyRate + 'ph'}
-                left={() => <List.Icon color="#157EFB" icon="checkbox-blank-circle" />}
+                left={() => <Text style={{fontSize: 50, color: "#157EFB"}}>•</Text>}
             />
             <List.Item
                 title="Shift Time"
                 description={data.startTime + ' - ' + data.endTime}
-                left={() => <List.Icon color="#157EFB" icon="checkbox-blank-circle" />}
+                left={() =><Text style={{fontSize: 50, color: "#157EFB"}}>•</Text>}
             />
             <List.Item
                 title="Extra Info"
                 description={data.extraInfo}
-                left={() => <List.Icon color="#157EFB" icon="checkbox-blank-circle" />}
+                left={() =><Text style={{fontSize: 50, color: "#157EFB"}}>•</Text>}
             />
         </List.Section>
     );
