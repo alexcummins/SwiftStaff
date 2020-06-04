@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {Alert, AsyncStorage} from 'react-native';
+import {Alert} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage'
 import {createStackNavigator} from '@react-navigation/stack';
 import TempWorkerOffersScreen from './src/screens/worker/TempWorkerOffersScreen';
 import {firebase} from '@react-native-firebase/messaging';

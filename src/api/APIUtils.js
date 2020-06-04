@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_BASE_URL = '178.62.102.69:8080/api/v1';
+export const API_BASE_URL = 'localhost:8080/api/v1';
 export const API_JOB_URL = `${API_BASE_URL}/jobs`;
 export const API_NEW_SIGNUP_URL = `${API_BASE_URL}/signup`;
 export const HTTP_PROTOCOL = 'http://';
@@ -19,7 +19,7 @@ export async function getJobRequest() {
 
 
 export async function getLoginRequest(params) {
-    let response = await sendHttpGetRequest(API_LOGIN_URL, {params: params});
+    let response = await sendHttpPostRequest(params, API_LOGIN_URL );
     if(response.status === 200){
         return {data: response.data, isSuccessful: true};
     } else {
@@ -56,7 +56,7 @@ async function sendHttpPostRequest(data, url) {
 
 async function sendHttpGetRequest(url, params) {
     let responseObject = {}
-    await axios.get(`${HTTP_PROTOCOL}${url}`, params).then( (response) => {
+    await axios.get(`${HTTP_PROTOCOL}${url}`).then( (response) => {
         console.log(JSON.stringify(response))
         responseObject = response;
     }).catch( (error) => {

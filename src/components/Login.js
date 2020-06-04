@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import LoginScreen from 'react-native-login-screen';
-import {AsyncStorage} from 'react-native';
+import {ScrollView} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage'
 
 const background = require('../../resources/img/background.jpg');
 import set from '@babel/runtime/helpers/esm/set';
@@ -67,22 +68,30 @@ export default function Login(props) {
         let responseObj = await getLoginRequest({email: userName, password: password, fcmToken: fcmToken});
         if (responseObj.isSuccessful) {
           let data = responseObj.data;
-          if (userTypeEnum.worker === parseInt(data.userType)) {
+          console.log(JSON.stringify(userTypeEnum))
+          if (userTypeEnum.worker === data.userType) {
+
+            var aray = [['userId', data.userId],
+              ['userType', data.userType.toString()],
+              ['email', data.email],
+              ['fname', data.fname],
+              ['lname', data.lname],
+              ['phone', data.phone.toString()]]
             await AsyncStorage.multiSet(
               [
                 ['userId', data.userId],
-                ['userType', parseInt(data.userType)],
+                ['userType', data.userType.toString()],
                 ['email', data.email],
-                ['fname', data.fname],
-                ['lname', data.lname],
-                ['phone', data.phone],
+                ['fname', ""],
+                ['lname', ""],
+                ['phone', data.phone.toString()],
               ]);
             goToWorker();
-          } else if (data.userType === parseInt(userTypeEnum.restaurant)) {
+          } else if (data.userType.toString() === parseInt(userTypeEnum.restaurant)) {
             await AsyncStorage.multiSet(
               [
                 ['userId', data.userId],
-                ['userType', parseInt(data.userType)],
+                ['userType', data.userType],
                 ['email', data.email],
                 ['restaurantEmail', data.restaurantEmail],
                 ['restaurantName', data.restaurantName],
@@ -120,7 +129,10 @@ export default function Login(props) {
   }
 
   return (
-    <SafeAreaView>
+    <ScrollView>
+      <Paragraph/>
+      <Paragraph/>
+
       <Button
         icon="food"
         mode="contained"
@@ -154,7 +166,7 @@ export default function Login(props) {
         passwordOnChangeText={(paswd) => setPasswordUpdateSpinner(paswd)}
         loginButtonBackgroundColor="#a2a5a9"
       />
-    </SafeAreaView>
+    </ScrollView>
   );
 
 }
