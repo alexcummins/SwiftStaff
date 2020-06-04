@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {View, Text, Platform, ToastAndroid, Alert, StyleSheet, Dimensions, ScrollView} from 'react-native';
-import {Card, Title, Paragraph, Button, IconButton, List} from 'react-native-paper';
+import {Card, Title, Paragraph, Button, IconButton, List, Divider} from 'react-native-paper';
 import MapView from 'react-native-maps';
 import MapMarker from 'react-native-maps/lib/components/MapMarker';
 import UserCardInfo from "./UserCardInfo";
@@ -10,8 +10,6 @@ export default function OfferCard({data}) {
   const navigation = useNavigation();
 
   return (
-    <View>
-      <List.Section style={{marginTop:30}}>
         <Card style={{marginVertical: 10, marginHorizontal: 10}} elevation={10}>
           <Card.Title
             title='Eastside Cafe'
@@ -20,9 +18,7 @@ export default function OfferCard({data}) {
               <IconButton {...props}
                           icon="chevron-right"
                           color="black"
-                          onPress={() => navigation.navigate("RestaurantProfile")}
-              />
-            }
+                          onPress={() => navigation.navigate("RestaurantProfile")}/>}
           />
           <Card.Content>
             <View style={{flexDirection: 'column'}}>
@@ -70,8 +66,6 @@ export default function OfferCard({data}) {
             </View>
           </Card.Content>
         </Card>
-      </List.Section>
-    </View>
   );
 }
 
