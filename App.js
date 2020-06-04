@@ -10,7 +10,6 @@ import set from '@babel/runtime/helpers/esm/set';
 import {NavigationContainer} from '@react-navigation/native';
 import TempWorkerScreens from './src/screens/worker/TempWorkerScreens';
 import RestaurantOrWorkerSignup from "./src/screens/signup/RestaurantOrWorkerSignup";
-import TempWorkerProfileScreen from "./src/screens/worker/TempWorkerProfileScreen";
 import RestaurantProfileScreen from "./src/screens/restaurant/RestaurantProfileScreen";
 import TempWorkerProfileScreen from "./src/screens/worker/TempWorkerProfileScreen";
 
