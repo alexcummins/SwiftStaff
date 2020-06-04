@@ -9,4 +9,12 @@ export function notifyMessage(msg: string) {
     }
 }
 
-export const userTypeEnum = {restaurant: 1, worker: 2}
+
+export class userTypeEnumClass {
+    constructor(type) {
+        this.RESTAURANT = 1;
+        this.WORKER = 2;
+    }
+}
+
+

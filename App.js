@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Alert} from 'react-native';
+import {Alert, View, Text} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
 import {createStackNavigator} from '@react-navigation/stack';
 import TempWorkerOffersScreen from './src/screens/worker/TempWorkerOffersScreen';
@@ -13,18 +13,37 @@ import TempWorkerScreens from './src/screens/worker/TempWorkerScreens';
 import RestaurantOrWorkerSignup from "./src/screens/signup/RestaurantOrWorkerSignup";
 import RestaurantProfileScreen from "./src/screens/restaurant/RestaurantProfileScreen";
 import TempWorkerProfileScreen from "./src/screens/worker/TempWorkerProfileScreen";
-import {userTypeEnum} from './src/api/utils';
+import {userTypeEnumClass} from './src/api/utils';
 
 const Stack = createStackNavigator();
 
 export default function App({navigator}) {
     const [loading, setLoading] = useState(true);
-    const [initialRoute, setInitialRoute] = useState('Home');
+    const [storageChecked, setStorageChecked] = useState(false);
+    const [initialRoute, setInitialRoute] = useState("Login");
+    const userTypeEnum = new userTypeEnumClass()
+
+    async function checkLogin() {
+      let userType = await AsyncStorage.getItem('userType');
+      if (userType !== null) {
+        if (userType.toString() === userTypeEnum.WORKER.toString()) {
+          setInitialRoute('HomeTempWorker');
+        } else if (userType.toString() === userTypeEnum.RESTAURANT.toString()) {
+          setInitialRoute('HomeRestaurant');
+        }
+
+        console.log(initialRoute);
+      } else {
+        console.log('Not logged In');
+      }
+      setStorageChecked(true);
+    }
 
     useEffect(() => {
         (async () => {
             await registerAppWithFCM();
             await requestPermission();
+            await checkLogin();
         })();
 
 
@@ -52,7 +71,7 @@ export default function App({navigator}) {
                         remoteMessage.notification,
                     );
                     if (remoteMessage.data.type === 'User' || remoteMessage.data.type === 'restaurant') {
-                        setInitialRoute(remoteMessage.data.type);
+                        // setInitialRoute(remoteMessage.data.type);
                     }
                 }
                 setLoading(false);
@@ -89,21 +108,10 @@ export default function App({navigator}) {
         }
     }
 
-    if (loading) {
-        return null;
+    if (loading || !storageChecked) {
+      console.log("loading")
+      return <View><Text>Loading...</Text></View>;
     }
-
-  AsyncStorage.getItem('userType').then((userType) => {
-      if (userType !== null) {
-        if (parseInt(userType) === userTypeEnum.worker){
-            setInitialRoute("HomeTempWorker")
-        } else if(parseInt(userType) ===userTypeEnum.restaurant){
-            setInitialRoute("HomeRestaurant")
-        }
-      }
-    }
-  ).catch(console.log("Not logged In"));
-
 
    return (
         <Stack.Navigator initialRouteName={initialRoute}>

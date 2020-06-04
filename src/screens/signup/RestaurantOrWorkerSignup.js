@@ -3,7 +3,7 @@ import {StyleSheet, View} from "react-native";
 import {Avatar, Button, HelperText, RadioButton, Surface, Text, TextInput, Title} from 'react-native-paper';
 import {sendSignup} from "../../api/APIUtils";
 import {CommonActions} from "@react-navigation/native";
-import {notifyMessage, userTypeEnum} from '../../api/utils';
+import {notifyMessage, userTypeEnumClass} from '../../api/utils';
 
 export default function RestaurantOrWorkerSignup({navigation}) {
 
@@ -14,7 +14,7 @@ export default function RestaurantOrWorkerSignup({navigation}) {
     const [isEmailError, setIsEmailError] = useState(false);
     const [userType, setUserType] = useState("");
     const [loading, setloading] = useState(false);
-
+    const userTypeEnum = new userTypeEnumClass()
     function checkPasswordError() {
         if (confirmPassword !== "") {
             setIsPasswordError(password !== confirmPassword)
@@ -31,7 +31,7 @@ export default function RestaurantOrWorkerSignup({navigation}) {
         setloading(true)
         const response = await sendSignup({email: email, password: password, userType: userType})
         if (response.isSuccessful) {
-            if (userType === userTypeEnum.restaurant) {
+            if (userType === userTypeEnum.RESTAURANT) {
                 navigation.dispatch(
                     CommonActions.reset({
                         index: 0,
@@ -40,7 +40,7 @@ export default function RestaurantOrWorkerSignup({navigation}) {
                         ],
                     }));
             }
-            else if (userType === userTypeEnum.worker) {
+            else if (userType === userTypeEnum.WORKER) {
                 navigation.dispatch(
                     CommonActions.reset({
                         index: 0,

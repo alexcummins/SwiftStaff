@@ -13,7 +13,7 @@ import {Button, Paragraph} from 'react-native-paper';
 import createStackNavigator from '@react-navigation/stack/src/navigators/createStackNavigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {getLoginRequest} from '../api/APIUtils';
-import {notifyMessage, userTypeEnum} from '../api/utils';
+import {notifyMessage, userTypeEnumClass} from '../api/utils';
 
 Stack = createStackNavigator();
 
@@ -23,7 +23,7 @@ export default function Login(props) {
   const [switchValue, setSwitchValue] = useState('');
   const [spinnerEnable, setSpinnerEnable] = useState(true);
   const navigation = useNavigation();
-
+  const userTypeEnum = new userTypeEnumClass()
   let logoComponent = Logo();
 
   function setUsernameUpdateSpinner(uN) {
@@ -69,7 +69,7 @@ export default function Login(props) {
         if (responseObj.isSuccessful) {
           let data = responseObj.data;
           console.log(JSON.stringify(userTypeEnum))
-          if (userTypeEnum.worker === data.userType) {
+          if (userTypeEnum.WORKER.toString() === data.userType.toString()) {
 
             var aray = [['userId', data.userId],
               ['userType', data.userType.toString()],
@@ -87,7 +87,7 @@ export default function Login(props) {
                 ['phone', data.phone.toString()],
               ]);
             goToWorker();
-          } else if (data.userType.toString() === parseInt(userTypeEnum.restaurant)) {
+          } else if (data.userType.toString() === userTypeEnum.RESTAURANT.toString()) {
             await AsyncStorage.multiSet(
               [
                 ['userId', data.userId],
