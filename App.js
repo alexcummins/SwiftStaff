@@ -92,7 +92,7 @@ export default function App({navigator}) {
     return (
         <Stack.Navigator>
             <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
-            <Stack.Screen name="HomeRestaurant" component={RestaurantScreens} options={{headerShown: false}}/>
+            <Stack.Screen name="HomeRestaurant" component={RestaurantScreens} options={{headerShown: false, title: 'Back'}}/>
             <Stack.Screen name="HomeTempWorker" component={TempWorkerScreens} options={{headerShown: false}}/>
             <Stack.Screen name="RestaurantOrWorkerSignup" component={RestaurantOrWorkerSignup}
                           options={{title: 'Sign up'}}/>
