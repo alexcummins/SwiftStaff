@@ -98,6 +98,7 @@ export default function App({navigator}) {
             <Stack.Screen name="RestaurantOrWorkerSignup" component={RestaurantOrWorkerSignup}
                           options={{title: 'Sign up'}}/>
             <Stack.Screen name="RestaurantProfileScreen" component={RestaurantProfileScreen} options={{headerShown: false}}/>
+            <Stack.Screen name="RestaurantProfile" component={RestaurantProfileScreen} options={{headerShown: false}}/>
         </Stack.Navigator>
     )
 }
