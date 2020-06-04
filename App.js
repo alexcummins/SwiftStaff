@@ -1,15 +1,16 @@
 import React, {useState, useEffect} from 'react';
 import {Alert} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
-import TempWorkerOffersScreen from './src/Screens/worker/TempWorkerOffersScreen';
+import TempWorkerOffersScreen from './src/screens/worker/TempWorkerOffersScreen';
 import {firebase} from '@react-native-firebase/messaging';
 import navigate, {navigationRef} from './src/RootNavigation';
-import RestaurantScreens from './src/Screens/restaurant/RestaurantScreens';
+import RestaurantScreens from './src/screens/restaurant/RestaurantScreens';
 import Login from './src/components/Login';
 import set from '@babel/runtime/helpers/esm/set';
 import {NavigationContainer} from '@react-navigation/native';
-import TempWorkerScreens from './src/Screens/worker/TempWorkerScreens';
-import RestaurantOrWorkerSignup from "./src/Screens/signup/RestaurantOrWorkerSignup";
+import TempWorkerScreens from './src/screens/worker/TempWorkerScreens';
+import RestaurantOrWorkerSignup from "./src/screens/signup/RestaurantOrWorkerSignup";
+import TempWorkerProfileScreen from "./src/screens/worker/TempWorkerProfileScreen";
 
 const Stack = createStackNavigator();
 
@@ -91,9 +92,10 @@ export default function App({navigator}) {
   return (
         <Stack.Navigator>
           <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
-          <Stack.Screen name="HomeRestaurant" component={RestaurantScreens} options={{headerShown: false}}/>
+          <Stack.Screen name="HomeRestaurant" component={RestaurantScreens} options={{headerShown: false, title: 'Back'}}/>
           <Stack.Screen name="HomeTempWorker" component={TempWorkerScreens} options={{headerShown: false}}/>
           <Stack.Screen name="RestaurantOrWorkerSignup" component={RestaurantOrWorkerSignup}/>
+          <Stack.Screen name="JobProfile" component={TempWorkerProfileScreen} options={{headerShown: true, title: 'Profile'}} />
         </Stack.Navigator>
   )
 }
