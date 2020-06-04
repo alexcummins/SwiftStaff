@@ -4,30 +4,34 @@ import {
   StyleSheet,
   ScrollView,
   Text,
-  Platform,
-  ToastAndroid,
-  Alert,
-  Image,
   Dimensions,
   ImageBackground
 } from 'react-native';
 import {
-  Card,
-  Title,
-  Paragraph,
   Button,
-  IconButton, Divider,
+  IconButton,
+  Divider,
 } from 'react-native-paper';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import MapView from 'react-native-maps';
 import MapMarker from 'react-native-maps/lib/components/MapMarker';
 import UserCardInfo from "../../components/UserCardInfo";
 
-export default function RestaurantProfileScreen({restaurant}) {
+export default function RestaurantProfileScreen({data}) {
+
+  // const [name, setName] = useState(data.name);
+  // const [address, setAddress] = useState(data.address);
+  // const [phone, setPhone] = useState(data.phone);
+  // const [longitude, setLongitude] = useState(data.longitude);
+  // const [latitude, setLatitude] = useState(data.latitude);
+  // const [facebookLink, setFacebookLink] = useState(data.facebookLink);
+  // const [twitterLink, setTwitterLink] = useState(data.twitterLink);
+  // const [instagramLink, setInstagramLink] = useState(data.instagramLink);
   const navigation = useNavigation();
 
   return (
     <ScrollView>
+
       <ImageBackground
         source={require('../../../resources/img/restaurantfront.jpg')}
         style={styles.imageContainer}
@@ -36,24 +40,23 @@ export default function RestaurantProfileScreen({restaurant}) {
           icon='chevron-left-circle'
           size={30}
           color='rgb(237, 237, 237)'
-
           style={styles.buttonAlign}
+          onPress = {() => navigation.goBack()}
         />
       </ImageBackground>
 
-
       <View style={styles.userNameRow}>
-        <Text style={styles.userNameText}>Restaurant Name</Text>
+        <Text style={styles.userNameText}>Eastside Cafe</Text>
       <View style={styles.userContactInfoContainer}>
 
       </View>
         <View style={styles.userContactInfoRow}>
-          <Button icon='cellphone' onPress={() => console.log('number')}/>
-          <Text style={styles.userContactInfoRow}>Number</Text>
+          <Button icon='cellphone' onPress={() => console.log('number')}> 025699-84529
+          </Button>
         </View>
         <View style={styles.userContactInfoRow}>
-          <Button icon='email' onPress={() => console.log('email address')}/>
-          <Text style={styles.userContactInfoRow}>Email Address</Text>
+          <Button icon='email' onPress={() => console.log('email')}> eastsidecafe.com
+          </Button>
         </View>
       </View>
 
@@ -61,7 +64,7 @@ export default function RestaurantProfileScreen({restaurant}) {
 
 
       <View style={styles.userBioRow}>
-        <Text style={styles.userBioText}>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</Text>
+        <Text style={styles.userBioText}>Our mission is to serve the downtown business community by providing the highest-quality coffees, sandwiches, snacks, baked goods, noodles, rice and specialty laksa and Laksam in an atmosphere that meets the needs of customers who are in a hurry as well as those who want a place to relax and enjoy their beverages and food.</Text>
       </View>
 
       <View style={styles.socialRow}>
@@ -87,7 +90,7 @@ export default function RestaurantProfileScreen({restaurant}) {
 
       <Divider />
 
-      <View style={[styles.userContactInfoRow, {paddingTop: 5, paddingBottom: 5}]}>
+      <View style={[styles.userContactInfoRow, {paddingTop: 5, paddingBottom: 10}]}>
         <Button icon='map-marker' />
         <Text style={styles.userContactInfoRow}>Location</Text>
       </View>
@@ -120,7 +123,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   titleContainer: {
-    // color: 'rgba(237, 237, 237, 0.8)',
+    color: 'rgba(237, 237, 237, 0.8)',
     fontSize: 28,
     fontWeight: '600',
     paddingLeft: 15,
