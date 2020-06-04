@@ -64,7 +64,7 @@ export default function Login(props) {
       let fcmToken = await AsyncStorage.getItem('fcmToken');
       if (fcmToken !== null) {
         console.log(fcmToken);
-        let responseObj = await getLoginRequest({username: userName, password: password, fcmToken: fcmToken});
+        let responseObj = await getLoginRequest({email: userName, password: password, fcmToken: fcmToken});
         if (responseObj.isSuccessful) {
           let data = responseObj.data;
           if (userTypeEnum.worker === parseInt(data.userType)) {
