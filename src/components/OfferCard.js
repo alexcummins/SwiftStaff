@@ -10,6 +10,8 @@ export default function OfferCard({data}) {
   const navigation = useNavigation();
 
   return (
+    <View>
+      <List.Section style={{marginTop:30}}>
         <Card style={{marginVertical: 10, marginHorizontal: 10}} elevation={10}>
           <Card.Title
             title='Eastside Cafe'
@@ -18,7 +20,9 @@ export default function OfferCard({data}) {
               <IconButton {...props}
                           icon="chevron-right"
                           color="black"
-                          onPress={() => navigation.navigate("RestaurantProfile")}/>}
+                          onPress={() => navigation.navigate("RestaurantProfile")}
+              />
+            }
           />
           <Card.Content>
             <View style={{flexDirection: 'column'}}>
@@ -66,6 +70,8 @@ export default function OfferCard({data}) {
             </View>
           </Card.Content>
         </Card>
+      </List.Section>
+    </View>
   );
 }
 
