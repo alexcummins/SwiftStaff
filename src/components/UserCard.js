@@ -47,7 +47,7 @@ export default function UserCard({data}) {
                     <IconButton {...props}
                       icon="chevron-right"
                       color="black"
-                      onPress={() => navigation.navigate("RestaurantProfileScreen")}
+                      onPress={() => navigation.navigate("RestaurantProfile")}
                     />
                   }
                 />

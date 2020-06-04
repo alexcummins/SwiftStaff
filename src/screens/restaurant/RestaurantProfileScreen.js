@@ -17,7 +17,7 @@ import MapView from 'react-native-maps';
 import MapMarker from 'react-native-maps/lib/components/MapMarker';
 import UserCardInfo from "../../components/UserCardInfo";
 
-export default function RestaurantProfileScreen({data}) {
+export default function RestaurantProfile({data}) {
 
   // const [name, setName] = useState(data.name);
   // const [address, setAddress] = useState(data.address);
@@ -92,7 +92,11 @@ export default function RestaurantProfileScreen({data}) {
 
       <View style={[styles.userContactInfoRow, {paddingTop: 5, paddingBottom: 10}]}>
         <Button icon='map-marker' />
-        <Text style={styles.userContactInfoRow}>Location</Text>
+        <Text style={styles.userContactInfoRow}>
+          Princes Gardens,
+          London,
+          SW72AZ
+        </Text>
       </View>
 
       <View style={styles.container}>
