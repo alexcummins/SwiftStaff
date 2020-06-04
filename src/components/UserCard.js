@@ -1,9 +1,11 @@
 import React, {useState} from 'react';
 import {View, Text, Platform, ToastAndroid, Alert, StyleSheet, Dimensions} from 'react-native';
-import {Card, Title, Paragraph, Button} from 'react-native-paper';
+import {Card, Title, Paragraph, Button, IconButton} from 'react-native-paper';
 import MapView from 'react-native-maps';
 import MapMarker from 'react-native-maps/lib/components/MapMarker';
 import UserCardInfo from "./UserCardInfo";
+import {CommonActions, useNavigation} from '@react-navigation/native';
+
 
 export default function UserCard({data}) {
 
@@ -15,6 +17,7 @@ export default function UserCard({data}) {
     const [extraInfo, setExtraInfo] = useState(data.extraInfo);
     const [restaurantLong, setRestaurantLong ] = useState(-0.172002);
     const [restaurantLat, setRestaurantLat ] = useState(51.499014);
+    const navigation = useNavigation();
 
     function updateCard(data) {
         setName(data.name);
@@ -37,7 +40,17 @@ export default function UserCard({data}) {
     return (
         <View>
             <Card style={{marginVertical: 10, marginHorizontal: 10}} elevation={10}>
-                <Card.Title title={data.name} subtitle={data.date}/>
+                <Card.Title
+                  title={data.name}
+                  subtitle={data.date}
+                  right={(props) =>
+                    <IconButton {...props}
+                      icon="chevron-right"
+                      color="black"
+                      onPress={() => navigation.navigate("RestaurantProfile")}
+                    />
+                  }
+                />
                 <Card.Content>
                     <View style={{flexDirection: 'column'}}>
                         <View style={styles.container}>

@@ -1,9 +1,10 @@
 import {Text, View} from 'react-native';
 import {Avatar, Button} from 'react-native-paper';
-import React from 'react';
+import React, {useState} from 'react';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 
-export default function RestaurantHomeScreen() {
+export default function RestaurantHomeScreen({data}) {
+
   const navigation = useNavigation();
 
   function logout(){
@@ -15,6 +16,10 @@ export default function RestaurantHomeScreen() {
         ],
       }));
   }
+
+  function profile() {
+    navigation.navigate("RestaurantProfile")
+  }
   return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} >
         <Text>SwiftStaff</Text>
@@ -23,6 +28,11 @@ export default function RestaurantHomeScreen() {
           mode="contained"
           onPress={() => logout()}
         >Logout</Button>
+        <Button
+          icon="restaurant"
+          mode="contained"
+          onPress={() => profile()}
+        >Profile</Button>
       </View>
   )
 }
