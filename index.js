@@ -17,11 +17,11 @@ import set from "@babel/runtime/helpers/esm/set";
 const theme = {
   ...DefaultTheme,
   dark: false,
-  roundness: 10,
+  roundness:10,
   colors: {
     ...DefaultTheme.colors,
-    primary: '#15fb34',
-    accent: '#0ff1a2',
+    primary: '#157EFB',
+    accent: '#f1c40f',
   }
 };
 
