@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import LoginScreen from 'react-native-login-screen';
 import {ScrollView} from 'react-native';
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-community/async-storage';
 
 const background = require('../../resources/img/background.jpg');
 import set from '@babel/runtime/helpers/esm/set';
@@ -14,6 +14,7 @@ import createStackNavigator from '@react-navigation/stack/src/navigators/createS
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {getLoginRequest} from '../api/APIUtils';
 import {notifyMessage, userTypeEnumClass} from '../api/utils';
+import {firebase} from '@react-native-firebase/messaging';
 
 Stack = createStackNavigator();
 
@@ -23,7 +24,7 @@ export default function Login(props) {
   const [switchValue, setSwitchValue] = useState('');
   const [spinnerEnable, setSpinnerEnable] = useState(true);
   const navigation = useNavigation();
-  const userTypeEnum = new userTypeEnumClass()
+  const userTypeEnum = new userTypeEnumClass();
   let logoComponent = Logo();
 
   function setUsernameUpdateSpinner(uN) {
@@ -65,44 +66,49 @@ export default function Login(props) {
       let fcmToken = await AsyncStorage.getItem('fcmToken');
       if (fcmToken !== null) {
         console.log(fcmToken);
-        let responseObj = await getLoginRequest({email: userName, password: password, fcmToken: fcmToken});
-        if (responseObj.isSuccessful) {
-          let data = responseObj.data;
-          console.log(JSON.stringify(userTypeEnum))
-          if (userTypeEnum.WORKER.toString() === data.userType.toString()) {
+      } else {
+        fcmToken = await firebase.messaging().getToken();
+        console.log(fcmToken);
+      }
+      let responseObj = await getLoginRequest({email: userName, password: password, fcmToken: fcmToken});
+      if (responseObj.isSuccessful) {
+        let data = responseObj.data;
+        console.log(JSON.stringify(userTypeEnum));
+        if (userTypeEnum.WORKER.toString() === data.userType.toString()) {
 
-            var aray = [['userId', data.userId],
+          var aray = [['userId', data.userId],
+            ['userType', data.userType.toString()],
+            ['email', data.email],
+            ['fname', data.fname],
+            ['lname', data.lname],
+            ['phone', data.phone.toString()]];
+          await AsyncStorage.multiSet(
+            [
+              ['userId', data.userId],
               ['userType', data.userType.toString()],
               ['email', data.email],
-              ['fname', data.fname],
-              ['lname', data.lname],
-              ['phone', data.phone.toString()]]
-            await AsyncStorage.multiSet(
-              [
-                ['userId', data.userId],
-                ['userType', data.userType.toString()],
-                ['email', data.email],
-                ['fname', ""],
-                ['lname', ""],
-                ['phone', data.phone.toString()],
-              ]);
-            goToWorker();
-          } else if (data.userType.toString() === userTypeEnum.RESTAURANT.toString()) {
-            await AsyncStorage.multiSet(
-              [
-                ['userId', data.userId],
-                ['userType', data.userType],
-                ['email', data.email],
-                ['restaurantEmail', data.restaurantEmail],
-                ['restaurantName', data.restaurantName],
-                ['restaurantPhone', data.phone],
-                ['fname', data.fname],
-                ['lname', data.lname],
-              ]);
-            goToRestaurant();
-          } else {
-            notifyMessage('Login Unsuccessful.  Please try again.');
-          }
+              ['fName', ''],
+              ['lName', ''],
+              ['phone', data.phone.toString()],
+            ]);
+          goToWorker();
+        } else if (data.userType.toString() === userTypeEnum.RESTAURANT.toString()) {
+          await AsyncStorage.multiSet(
+            [
+              ['userId', data.userId],
+              ['userType', data.userType.toString()],
+              ['email', data.email],
+              ['restaurantEmail', data.restaurantEmail],
+              ['restaurantName', data.restaurantName],
+              ['restaurantPhone', data.restaurantPhone.toString()],
+              ['fName', data.fName],
+              ['lName', data.lName],
+              ['restaurantId', data.restaurantId]
+            ]);
+          console.log('about to navigate');
+
+          goToRestaurant();
+          console.log('navigated');
         } else {
           notifyMessage('Login Unsuccessful.  Please try again.');
         }
@@ -110,11 +116,13 @@ export default function Login(props) {
         notifyMessage('Login Unsuccessful.  Please try again.');
       }
     } catch (error) {
-      // Error retrieving data
+      console.log(error);
     }
   }
 
   function goToRestaurant() {
+    console.log('navigating');
+
     navigation.dispatch(
       CommonActions.reset({
         index: 0,

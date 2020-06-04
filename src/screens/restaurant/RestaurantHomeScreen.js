@@ -1,13 +1,29 @@
 import {Text, View} from 'react-native';
 import {Avatar, Button} from 'react-native-paper';
 import React, {useState} from 'react';
-import {CommonActions, useNavigation} from '@react-navigation/native';
+import {CommonActions, useFocusEffect, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 export default function RestaurantHomeScreen({data}) {
 
   const navigation = useNavigation();
 
+  useFocusEffect(
+    React.useCallback(() => {
+      (async () => {
+        let keys = [];
+        let vals = []
+        try {
+          keys = await AsyncStorage.getAllKeys();
+          vals = await AsyncStorage.multiGet(keys)
+        } catch (e) {
+          // read key error
+        }
+
+        console.log(vals)
+      })();
+
+    }), []);
   async function logout(){
     try {
       const keys = await AsyncStorage.getAllKeys();
