@@ -1,7 +1,7 @@
 import {Button, Text, TextInput} from "react-native-paper";
 import React, {useState} from "react";
 import {View, StyleSheet, ScrollView, TouchableWithoutFeedback, Keyboard} from "react-native";
-import {sendSignup} from "../../api/APIUtils";
+import {sendSignup, sendWorkerSignup} from "../../api/APIUtils";
 import {CommonActions} from "@react-navigation/native";
 import {notifyMessage} from "../../api/utils";
 import FormBuilder from "react-native-paper-form-builder";
@@ -19,15 +19,8 @@ export default function WorkerSignup({route, navigation}) {
         data.email = JSON.stringify(email)
         data.password = JSON.stringify(password)
         setloading(true)
-        const response = await sendSignup(data)
+        let response = await sendWorkerSignup(data)
         if (response.isSuccessful) {
-            // navigation.dispatch(
-            //     CommonActions.reset({
-            //         index: 0,
-            //         routes: [
-            //             {name: 'HomeRestaurant'}
-            //         ],
-            //     }));
             navigation.dispatch(
                 CommonActions.reset({
                     index: 0,

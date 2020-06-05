@@ -2,7 +2,8 @@ import axios from 'axios';
 
 export const API_BASE_URL = '178.62.102.69:8080/api/v1';
 export const API_JOB_URL = `${API_BASE_URL}/jobs`;
-export const API_NEW_SIGNUP_URL = `${API_BASE_URL}/signup`;
+export const API_WORKER_SIGNUP_URL = `${API_BASE_URL}/signup/worker`;
+export const API_RESTAURANT_SIGNUP_URL = `${API_BASE_URL}/signup/restaurant`;
 export const HTTP_PROTOCOL = 'http://';
 export const WEBSOCKET_PROTOCOL = 'ws://';
 export const API_LOGIN_URL = `${API_BASE_URL}/login`;
@@ -28,17 +29,27 @@ export async function getLoginRequest(params) {
 }
 
 export async function sendJobRequest(data) {
-    let response = await sendHttpPostRequest(data, API_JOB_URL)
-    return response
+    return await sendHttpPostRequest(data, API_JOB_URL)
 }
 
-export async function sendSignup(data) {
-    let response = await sendHttpPostRequest(data, API_NEW_SIGNUP_URL)
+async function sendSignup(data, url) {
+    let response = await sendHttpPostRequest(data, url)
     console.log(JSON.stringify(response))
+    if (response === undefined) {
+        return {isSuccesful: false}
+    }
     if (response.status === 201) {
         return {data: response.data, isSuccessful: true}
     }
     return {isSuccessful: false}
+}
+
+export async function sendWorkerSignup(data) {
+    return await sendSignup(data, API_WORKER_SIGNUP_URL)
+}
+
+export async function sendRestaurantSignup(data) {
+    return await sendSignup(data, API_RESTAURANT_SIGNUP_URL)
 }
 
 async function sendHttpPostRequest(data, url) {
