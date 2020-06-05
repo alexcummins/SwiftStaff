@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     StyleSheet,
     Text,
@@ -7,51 +7,90 @@ import {
     Dimensions
 } from 'react-native';
 import {ScrollView} from "react-native";
+import AsyncStorage from '@react-native-community/async-storage';
 import ProfileCardBasicInfo from "../../components/ProfileCardBasicInfo";
 import ProfileCardList from "../../components/ProfileCardList";
 import ProfileCardText from "../../components/ProfileCardText";
+import navigate from "../../RootNavigation";
+
 export default function Profile() {
+
+    const [firstName, setFirstName] = useState('Mike')
+    const [lastName, setLastName] = useState('Adams')
+    const [profileImage, setprofileImage] = useState(require('../../../resources/img/selfie.jpg'));
+    const [address, setAddress] = useState('15 Alexander Road, London, SW59 0JC');
+    const [phoneNumber, setphoneNumber] = useState('07654321234');
+    const [skillsAndQualities, setSkillsAndQualities] = useState([
+        {name: 'Collaborative'},
+        {name: 'Hardworking'},
+        {name: 'Til-trained'},
+        {name: 'Interpersonal'},
+        {name: 'Teamwork'},
+    ])
+    const [qualifications, setQualifications] = useState([
+        {name: 'Driver\'s License'},
+        {name: 'Food Hygiene Certificate'},
+        {name: 'Clean-Driving Certificate'},
+    ])
+    const [experience, setExperience] = useState([
+        {name: '2 years, Corporate Concierge, The SSE Arena'},
+        {name: '1 year, Waiter, Romulo Cafe'},
+    ])
+
+    const [personalStatement, setPersonalStatement] = useState('My name is Mike, ' +
+        'I am very hardworking and ameable. Ever since I was 15, I have been' +
+        'in customer service through volunteering in Marie Curie. I like working with customers ' +
+        'directly and I enjoy the fast-paced customer service orientated nature of Cafe work')
+
+    useEffect(() => updateProfile)
+    async function updateProfile() {
+        AsyncStorage.getItem('fName', (notFound, found) => {
+            if (!notFound) {
+                setFirstName(found)
+            }
+            else {
+                // console.log('First name of user not found on Login')
+            }
+        })
+        AsyncStorage.getItem('lName', (notFound, found) => {
+            if (!notFound) {
+                setLastName(found)
+            }
+            else {
+                // console.log('Last name of user not found on Login')
+            }
+        })
+        AsyncStorage.getItem('phone', (notFound, found) => {
+            if (!notFound) {
+                setphoneNumber(found)
+            }
+            else {
+                // console.log('Phone name of user not found on Login')
+            }
+        })
+    }
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.header}></View>
-            <Image style={styles.avatar} source={require('../../../resources/img/selfie.jpg')}/>
+            <Image style={styles.avatar} source={profileImage}/>
             <View style={styles.body}>
-                <Text style={styles.name}> Max Adams</Text>
+                <Text style={styles.name}>{firstName}{' '}{lastName}</Text>
                 <ProfileCardBasicInfo data={{ listItemsAndIcons:
                         [
-                            {name:'15 Alexander Road, London, SW59 0JC', icon: 'map-marker'},
-                            {name:'07654321234', icon: 'phone-outline'},
+                            {name: address, icon: 'map-marker'},
+                            {name: phoneNumber, icon: 'phone-outline'},
                         ]
                 }}/>
-                <ProfileCardList data={{ title:'Skills and Qualities', listItems:
-                        [
-                            {name: 'Collaborative'},
-                            {name: 'Hardworking'},
-                            {name: 'Til-trained'},
-                            {name: 'Interpersonal'},
-                            {name: 'Teamwork'},
-                        ]
+                <ProfileCardList data={{ title:'Skills and Qualities', listItems: skillsAndQualities
                 }}/>
-                <ProfileCardList data={{ title:'Qualifications', listItems:
-                        [
-                            {name: 'Collaborative'},
-                            {name: 'Hardworking'},
-                            {name: 'Til-trained'},
-                            {name: 'Interpersonal'},
-                            {name: 'Teamwork'},
-                        ]
+                <ProfileCardList data={{ title:'Qualifications', listItems: qualifications
                 }}/>
-                <ProfileCardList data={{ title:'Experience', listItems:
-                        [
-                            {name: '2 years, Corporate Concierge, The SSE Arena'},
-                            {name: '1 year, Waiter, Romulo Cafe'},
-                        ]
+                <ProfileCardList data={{ title:'Experience', listItems: experience
                 }}/>
                 <ProfileCardText data = {{
-                    title: 'Experience',
-                    body:'My name is Mike, I am very hardworking and ameable. Ever since I was 15, I have been' +
-                        'in customer service through volunteering in Marie Curie. I like working with customers ' +
-                        'directly and I enjoy the fast-paced customer service orientated nature of Cafe work'
+                    title: 'Personal Statement',
+                    body: personalStatement
                 }} />
             </View>
         </ScrollView>
