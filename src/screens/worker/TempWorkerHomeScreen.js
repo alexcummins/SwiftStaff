@@ -43,6 +43,11 @@ export default function TempWorkerHomeScreen() {
         ],
       }));
   }
+
+  function profile() {
+      navigation.navigate("JobProfile")
+  }
+
   return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} >
         <Text>SwiftStaff</Text>
@@ -51,6 +56,11 @@ export default function TempWorkerHomeScreen() {
           mode="contained"
           onPress={() => logout()}
         >Logout</Button>
+        <Button
+            icon="account-circle"
+            mode="contained"
+            onPress={() => profile()}
+        >Profile</Button>
       </View>
   )
 }

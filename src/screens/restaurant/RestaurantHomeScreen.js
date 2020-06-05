@@ -44,6 +44,7 @@ export default function RestaurantHomeScreen({data}) {
   function profile() {
     navigation.navigate("RestaurantProfile")
   }
+
   return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} >
         <Text>SwiftStaff</Text>
@@ -53,7 +54,7 @@ export default function RestaurantHomeScreen({data}) {
           onPress={() => logout()}
         >Logout</Button>
         <Button
-          icon="restaurant"
+          icon="account-circle"
           mode="contained"
           onPress={() => profile()}
         >Profile</Button>
