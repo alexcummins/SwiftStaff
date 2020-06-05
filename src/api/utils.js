@@ -8,3 +8,13 @@ export function notifyMessage(msg: string) {
         Alert.alert(msg);
     }
 }
+
+
+export class userTypeEnumClass {
+    constructor(type) {
+        this.RESTAURANT = 1;
+        this.WORKER = 2;
+    }
+}
+
+

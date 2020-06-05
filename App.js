@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {Alert} from 'react-native';
+import {Alert, View, Text} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage'
 import {createStackNavigator} from '@react-navigation/stack';
 import TempWorkerOffersScreen from './src/screens/worker/TempWorkerOffersScreen';
 import {firebase} from '@react-native-firebase/messaging';
@@ -12,17 +13,37 @@ import TempWorkerScreens from './src/screens/worker/TempWorkerScreens';
 import RestaurantOrWorkerSignup from "./src/screens/signup/RestaurantOrWorkerSignup";
 import RestaurantProfileScreen from "./src/screens/restaurant/RestaurantProfileScreen";
 import TempWorkerProfileScreen from "./src/screens/worker/TempWorkerProfileScreen";
+import {userTypeEnumClass} from './src/api/utils';
 
 const Stack = createStackNavigator();
 
 export default function App({navigator}) {
     const [loading, setLoading] = useState(true);
-    const [initialRoute, setInitialRoute] = useState('Home');
+    const [storageChecked, setStorageChecked] = useState(false);
+    const [initialRoute, setInitialRoute] = useState("Login");
+    const userTypeEnum = new userTypeEnumClass()
+
+    async function checkLogin() {
+      let userType = await AsyncStorage.getItem('userType');
+      if (userType !== null) {
+        if (userType.toString() === userTypeEnum.WORKER.toString()) {
+          setInitialRoute('HomeTempWorker');
+        } else if (userType.toString() === userTypeEnum.RESTAURANT.toString()) {
+          setInitialRoute('HomeRestaurant');
+        }
+
+        console.log(initialRoute);
+      } else {
+        console.log('Not logged In');
+      }
+      setStorageChecked(true);
+    }
 
     useEffect(() => {
         (async () => {
             await registerAppWithFCM();
             await requestPermission();
+            await checkLogin();
         })();
 
 
@@ -50,7 +71,7 @@ export default function App({navigator}) {
                         remoteMessage.notification,
                     );
                     if (remoteMessage.data.type === 'User' || remoteMessage.data.type === 'restaurant') {
-                        setInitialRoute(remoteMessage.data.type);
+                        // setInitialRoute(remoteMessage.data.type);
                     }
                 }
                 setLoading(false);
@@ -79,6 +100,7 @@ export default function App({navigator}) {
         });
         if (authStatus === 1 || authStatus === 2) {
             const fcmToken = await firebase.messaging().getToken();
+            await AsyncStorage.setItem('fcmToken', fcmToken);
             console.log(fcmToken);
             console.log('Authorization status:', authStatus);
         } else {
@@ -86,12 +108,13 @@ export default function App({navigator}) {
         }
     }
 
-    if (loading) {
-        return null;
+    if (loading || !storageChecked) {
+      console.log("loading")
+      return <View><Text>Loading...</Text></View>;
     }
 
-    return (
-        <Stack.Navigator>
+   return (
+        <Stack.Navigator initialRouteName={initialRoute}>
             <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
             <Stack.Screen name="HomeRestaurant" component={RestaurantScreens} options={{headerShown: false, title:'Back'}} />
             <Stack.Screen name="HomeTempWorker" component={TempWorkerScreens} options={{headerShown: false, title:'Back'}}/>
