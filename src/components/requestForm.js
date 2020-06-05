@@ -1,4 +1,4 @@
-import React from 'react';
+import React,  {useState} from 'react';
 
 import {View, StyleSheet, ScrollView, Text, ToastAndroid, Platform, Alert} from 'react-native';
 
@@ -10,14 +10,17 @@ import {Button} from 'react-native-paper';
 import {sendJobRequest} from '../api/APIUtils';
 
 function RequestForm() {
+  const [restaurantId, setRestaurantId] = useState("5ed97666d9f7426d776ae195");
+  const [expertiseId, setExpertiseId] = useState(1);
   const form = useForm({
     defaultValues: {
-      hourlyRate: '',
-
-      date: new Date().toJSON().slice(0, 10).split('-').reverse().join('/'),
+      restaurantId: '5ed97666d9f7426d776ae195',
+      sendStrategyId: 1,
+      hourlyRate: '10.75',
+      expertiseId: 1,
+      date: new Date().toJSON().slice(0, 10).split('-').reverse().join('/').toString(),
       startTime: '',
       endTime: '',
-      sendStrategy: '',
       extraInfo: '',
     },
 
@@ -149,7 +152,7 @@ function RequestForm() {
           <Button
             mode={'contained'}
             onPress={form.handleSubmit((data: any) => {
-              sendJobRequest(data).then(r => console.log(r));
+              sendJobRequest(data, restaurantId, expertiseId ).then(r => console.log(r));
               console.log('form data', data);
             })}>
             Submit
