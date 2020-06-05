@@ -3,10 +3,11 @@ import React, {useState} from "react";
 import {View, StyleSheet, ScrollView, TouchableWithoutFeedback, Keyboard} from "react-native";
 import {sendSignup, sendWorkerSignup} from "../../api/APIUtils";
 import {CommonActions} from "@react-navigation/native";
-import {notifyMessage} from "../../api/utils";
+import {notifyMessage, userTypeEnumClass} from "../../api/utils";
 import FormBuilder from "react-native-paper-form-builder";
 import {useForm} from "react-hook-form";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import AsyncStorage from "@react-native-community/async-storage";
 
 export default function WorkerSignup({route, navigation}) {
     const {email} = route.params
@@ -18,9 +19,21 @@ export default function WorkerSignup({route, navigation}) {
     async function createAccount(data) {
         data.email = JSON.stringify(email)
         data.password = JSON.stringify(password)
+        data.dob = getDOBString()
         setloading(true)
         let response = await sendWorkerSignup(data)
+        console.log(JSON.stringify(response))
         if (response.isSuccessful) {
+            await AsyncStorage.multiSet(
+                [
+                    ['userId', response.data.id],
+                    ['userType', "1"],
+                    ['email', data.email],
+                    ['fName', data.fName],
+                    ['lName', data.lName],
+                    ['phone', data.phone.toString()],
+                    ['dob', data.dob],
+                ])
             navigation.dispatch(
                 CommonActions.reset({
                     index: 0,
@@ -40,6 +53,8 @@ export default function WorkerSignup({route, navigation}) {
             fName: '',
 
             lName: '',
+
+            phone: ''
         },
         mode: 'onChange',
     });

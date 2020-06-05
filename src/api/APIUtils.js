@@ -54,7 +54,7 @@ export async function sendRestaurantSignup(data) {
 
 async function sendHttpPostRequest(data, url) {
     let responseObject = {}
-    await axios.post(`${HTTP_PROTOCOL}${url}`, data).then( (response) => {
+    await axios.post(`${HTTP_PROTOCOL}${url}`, data, dontStoreCache).then( (response) => {
         console.log(JSON.stringify(response))
         responseObject = response
     }).catch( (error) => {
@@ -64,10 +64,16 @@ async function sendHttpPostRequest(data, url) {
     return responseObject
 }
 
+let dontStoreCache = {
+    headers: {
+        'Cache-Control': 'no-store'
+    }
+}
+
 
 async function sendHttpGetRequest(url, params) {
     let responseObject = {}
-    await axios.get(`${HTTP_PROTOCOL}${url}`).then( (response) => {
+    await axios.get(`${HTTP_PROTOCOL}${url}`, dontStoreCache).then( (response) => {
         console.log(JSON.stringify(response))
         responseObject = response;
     }).catch( (error) => {

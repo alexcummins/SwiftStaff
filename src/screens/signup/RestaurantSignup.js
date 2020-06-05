@@ -7,6 +7,7 @@ import {notifyMessage} from "../../api/utils";
 import FormBuilder from "react-native-paper-form-builder";
 import {useForm} from "react-hook-form";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import AsyncStorage from "@react-native-community/async-storage";
 
 export default function RestaurantSignup({route, navigation}) {
     const {email} = route.params
@@ -18,7 +19,18 @@ export default function RestaurantSignup({route, navigation}) {
         data.password = JSON.stringify(password)
         setloading(true)
         let response = await sendRestaurantSignup(data)
+        console.log(JSON.stringify(response))
         if (response.isSuccessful) {
+            await AsyncStorage.multiSet(
+                [
+                    ['userId', response.data.id],
+                    ['userType', "1"],
+                    ['email', data.email],
+                    ['restaurantEmail', data.restaurantEmailAddress],
+                    ['restaurantName', data.name],
+                    ['restaurantAddress', data.address],
+                    ['restaurantPhone', data.phone.toString()]
+                ])
             navigation.dispatch(
                 CommonActions.reset({
                     index: 0,
