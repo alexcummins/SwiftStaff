@@ -138,23 +138,23 @@ export default function Login(props) {
 
   return (
     <ScrollView>
-      <Paragraph/>
-      <Paragraph/>
+      {/*<Paragraph/>*/}
+      {/*<Paragraph/>*/}
 
-      <Button
-        icon="food"
-        mode="contained"
-        onPress={() => goToRestaurant()}
-      >
-        Restaurant
-      </Button>
-      <Button
-        icon="worker"
-        mode="contained"
-        onPress={() => goToWorker()}
-      >
-        Worker
-      </Button>
+      {/*<Button*/}
+      {/*  icon="food"*/}
+      {/*  mode="contained"*/}
+      {/*  onPress={() => goToRestaurant()}*/}
+      {/*>*/}
+      {/*  Restaurant*/}
+      {/*</Button>*/}
+      {/*<Button*/}
+      {/*  icon="worker"*/}
+      {/*  mode="contained"*/}
+      {/*  onPress={() => goToWorker()}*/}
+      {/*>*/}
+      {/*  Worker*/}
+      {/*</Button>*/}
       <LoginScreen
         spinnerEnable={spinnerEnable}
         spinnerVisibility={true}

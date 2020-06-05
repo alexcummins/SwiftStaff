@@ -57,10 +57,10 @@ export default function App({navigator}) {
             if (remoteMessage.data.type === 'User' || remoteMessage.data.type === 'restaurant') {
                 navigate(remoteMessage.data.type);
             }
-            Alert.alert(
-                'Notification caused app to open from background state:',
-                JSON.stringify(remoteMessage),
-            );
+            // Alert.alert(
+            //     'Notification caused app to open from background state:',
+            //     JSON.stringify(remoteMessage),
+            // );
         });
 
         // Check whether an initial notification is available
@@ -79,7 +79,7 @@ export default function App({navigator}) {
                 setLoading(false);
             });
         const unsubscribe = firebase.messaging().onMessage(async remoteMessage => {
-            Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+            // Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
         });
 
         return unsubscribe;

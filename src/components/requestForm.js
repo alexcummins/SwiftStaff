@@ -8,6 +8,7 @@ import {useForm} from 'react-hook-form';
 
 import {Button} from 'react-native-paper';
 import {sendJobRequest} from '../api/APIUtils';
+import {notifyMessage} from '../api/utils';
 
 function RequestForm() {
   const [restaurantId, setRestaurantId] = useState("5ed97666d9f7426d776ae195");
@@ -152,7 +153,10 @@ function RequestForm() {
           <Button
             mode={'contained'}
             onPress={form.handleSubmit((data: any) => {
-              sendJobRequest(data, restaurantId, expertiseId ).then(r => console.log(r));
+              sendJobRequest(data, restaurantId, expertiseId ).then(r => {
+                console.log(r);
+                notifyMessage("Job Request successfully submitted");
+              });
               console.log('form data', data);
             })}>
             Submit
