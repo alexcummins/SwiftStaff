@@ -7,22 +7,15 @@ import {API_JOB_URL, convertDataToJobCardData, getJobRequest, WEBSOCKET_PROTOCOL
 import UserCard from '../../components/UserCard';
 
 let retrieveNotifications = () => {}
-export default function TempWorkerOffersScreen({navigation}) {
+export default function TempWorkerOffersScreen( props) {
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [rate, setRate] = useState('');
   const [extraInfo, setExtraInfo] = useState('');
-  const [jobsList, setJobsList] = useState([]);
-  const [timer, setTimer] = useState(setInterval(retrieveNotifications, 600000))
-
-  function updateJobs() {
-    getJobRequest().then((data) => {
-      setJobsList(data.reverse());
-    });
-
-  }
+  const [jobsList, setJobsList] = useState(props.preFetchDataJobList);
+  const [timer, setTimer] = useState(setInterval(retrieveNotifications, 100000))
 
   useFocusEffect(
     React.useCallback(() => {

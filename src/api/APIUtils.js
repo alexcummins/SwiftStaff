@@ -80,10 +80,10 @@ export function convertDataToJobCardData(data) {
         extraInfo: '',
     };
     for (i = 0; i < jobs.length; i++) {
-        const job = jobs[i]
+        const job = jobs[i].job
         jobObj = {
             id: job._id,
-            name: "Test Restaurant",
+            name: jobs[i].restaurant.name,
             date: "Date: " + job.date,
             startTime: "Start Time: " + job.startTime,
             endTime: "End Time: " + job.endTime,
