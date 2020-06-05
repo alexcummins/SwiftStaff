@@ -34,6 +34,7 @@ export default function AcceptedWorkerCard({data}) {
                             rating={rating}
                             starSize={width*0.08}
                             fullStarColor={'#0d72c4'}
+                            containerStyle={style.rating}
                         />
                         {/*<Rating type='custom'*/}
                         {/*        imageSize={width*0.08}*/}
@@ -45,7 +46,7 @@ export default function AcceptedWorkerCard({data}) {
                         <TouchableOpacity style={style.profile} onPress={() => navigation.navigate("JobProfile")}>
                             <Text>Profile</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={style.phone}>
+                        <TouchableOpacity style={style.phone} hitSlop={{top: 20, bottom: 20, left: 1, right: 1}}>
                             <Image style={style.phoneImage}
                                 source={require('../../resources/img/phone.png')}/>
                         </TouchableOpacity>
@@ -113,14 +114,12 @@ const style = StyleSheet.create( {
         // justifyContent: 'space-around',
         marginTop:'2%',
     },
-    job:{
+    rating:{
         flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius:width*0.1,
-        backgroundColor: "#00BFFF",
-        width: width*0.2,
-        marginRight: width*0.15
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // width: width*0.2,
+        // marginRight: width*0.15
     },
     profile:{
         flexDirection: 'row',
@@ -132,11 +131,12 @@ const style = StyleSheet.create( {
         marginLeft: width*0.05
     },
     phone:{
+        flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        width: width*0.2,
-        marginLeft: width*0.05
+        // width: width*0.2,
+        // marginLeft: width*0.05
     },
     phoneImage:{
         height: height*0.05,
