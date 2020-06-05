@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {StyleSheet, View} from "react-native";
-import {Avatar, Button, HelperText, RadioButton, Surface, Text, TextInput, Title} from 'react-native-paper';
+import {Avatar, Button, HelperText, RadioButton, Subheading, Surface, Text, TextInput, Title} from 'react-native-paper';
 import {sendSignup} from "../../api/APIUtils";
 import {CommonActions} from "@react-navigation/native";
-import {notifyMessage, userTypeEnumClass} from '../../api/utils';
+import {notifyMessage} from "../../api/utils";
 
 export default function RestaurantOrWorkerSignup({navigation}) {
 
@@ -13,8 +13,9 @@ export default function RestaurantOrWorkerSignup({navigation}) {
     const [isPasswordError, setIsPasswordError] = useState(false);
     const [isEmailError, setIsEmailError] = useState(false);
     const [userType, setUserType] = useState("");
-    const [loading, setloading] = useState(false);
-    const userTypeEnum = new userTypeEnumClass()
+
+    const userTypeEnum = {restaurant: 1, worker: 2}
+
     function checkPasswordError() {
         if (confirmPassword !== "") {
             setIsPasswordError(password !== confirmPassword)
@@ -27,33 +28,13 @@ export default function RestaurantOrWorkerSignup({navigation}) {
         }
     }
 
-    async function createAccount() {
-        setloading(true)
-        const response = await sendSignup({email: email, password: password, userType: userType})
-        if (response.isSuccessful) {
-            if (userType === userTypeEnum.RESTAURANT) {
-                navigation.dispatch(
-                    CommonActions.reset({
-                        index: 0,
-                        routes: [
-                            { name: 'HomeRestaurant' }
-                        ],
-                    }));
-            }
-            else if (userType === userTypeEnum.WORKER) {
-                navigation.dispatch(
-                    CommonActions.reset({
-                        index: 0,
-                        routes: [
-                            { name: 'HomeTempWorker' }
-                        ],
-                    }));
-            }
+    function nextPageSignup() {
+        let credentials = {email: email, password: password}
+        if (userType === userTypeEnum.worker) {
+            navigation.navigate("WorkerSignup", credentials)
         }
-        else {
-            setloading(false)
-            notifyMessage("Signup failed. Please check your internet connection and try again.")
-            console.log("Signup failed. Please check your internet connection and try again.")
+        if (userType === userTypeEnum.restaurant) {
+            navigation.navigate("RestaurantSignup", credentials)
         }
     }
 
@@ -110,21 +91,20 @@ export default function RestaurantOrWorkerSignup({navigation}) {
             <View>
                 <Surface style={{elevation: 5}}>
                     <RadioButton.Group
-                        label={"Are you a:"}
                         onValueChange={value => setUserType(value)}
                         value={userType}
                     >
-                        <RadioButton.Item icon="food" label="Restaurant Manager" value={userTypeEnum.restaurant}/>
+                        <RadioButton.Item icon="account-tie" label="Restaurant Manager" value={userTypeEnum.restaurant}
+                                          style={{color: 'red'}}/>
                         <RadioButton.Item icon="worker" label="Worker" value={userTypeEnum.worker}/>
                     </RadioButton.Group>
                 </Surface>
             </View>
-            <Button icon="account" mode={"contained"} onPress={() => createAccount()}
+            <Button icon="account-arrow-right" mode={"contained"} onPress={() => nextPageSignup()}
                     disabled={isEmailError || isPasswordError || email === "" || password === ""
-                              || confirmPassword === "" || userType === "" || loading}
-                    loading={loading}
+                    || confirmPassword === "" || userType === ""}
                     style={{marginTop: 30, marginLeft: 5, marginRight: 5, flexDirection: "column-reverse"}}>
-                Sign up
+                Next
             </Button>
         </>
     )
