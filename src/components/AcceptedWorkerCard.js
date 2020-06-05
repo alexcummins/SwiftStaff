@@ -1,12 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Card, List, Title, Divider, Subheading, Button} from 'react-native-paper';
 import {StyleSheet, Dimensions, View, Text, TouchableOpacity, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import StarRating from "react-native-star-rating";
+import {Rating} from 'react-native-ratings'
 
 export default function AcceptedWorkerCard({data}) {
 
     const navigation = useNavigation();
 
+    const [rating, setRating] = useState(4.5)
 
     return (
         <Card>
@@ -25,6 +28,20 @@ export default function AcceptedWorkerCard({data}) {
                         <Text style={style.phoneNumber}>07654321234</Text>
                     </View>
                     <View style={style.buttonsContainer}>
+                        <StarRating
+                            disabled={false}
+                            maxStars={5}
+                            rating={rating}
+                            starSize={width*0.08}
+                            fullStarColor={'#0d72c4'}
+                        />
+                        {/*<Rating type='custom'*/}
+                        {/*        imageSize={width*0.08}*/}
+                        {/*        readonly={true}*/}
+                        {/*        startingValue={rating}*/}
+                        {/*        ratingColor='#3498db'*/}
+                        {/*        ratingBackgroundColor='white'/>*/}
+
                         <TouchableOpacity style={style.profile} onPress={() => navigation.navigate("JobProfile")}>
                             <Text>Profile</Text>
                         </TouchableOpacity>
@@ -112,13 +129,14 @@ const style = StyleSheet.create( {
         borderRadius:width*0.1,
         backgroundColor: "#00BFFF",
         width: width*0.2,
-        marginRight: width*0.15
+        marginLeft: width*0.05
     },
     phone:{
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        width: width*0.2
+        width: width*0.2,
+        marginLeft: width*0.05
     },
     phoneImage:{
         height: height*0.05,
