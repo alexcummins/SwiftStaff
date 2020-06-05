@@ -25,11 +25,11 @@ export default function RestaurantScreens({ navigation }) {
   }
   return (
     <Tab.Navigator tabBarPosition="bottom" initialRouteName="Home">
-      <Tab.Screen name="Offers" component={OffersScreen} />
-      <Tab.Screen name="Home" component={TempWorkerHomeScreen} />
-      <Tab.Screen name="Confirmed">
+      <Tab.Screen name="Offers">
         {tempOffersScreen}
       </Tab.Screen>
+      <Tab.Screen name="Home" component={TempWorkerHomeScreen} />
+      <Tab.Screen name="Confirmed" component={OffersScreen} />
     </Tab.Navigator>
   )
 }

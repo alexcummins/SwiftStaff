@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
   },
   buttonAlign: {
     alignItems: 'flex-start',
+    marginTop: 30
   },
   titleContainer: {
     color: 'rgba(237, 237, 237, 0.8)',

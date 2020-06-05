@@ -103,11 +103,11 @@ export function convertDataToJobCardData(data) {
         jobObj = {
             id: job._id,
             name: jobs[i].restaurant.name,
-            date: "Date: " + job.date,
-            startTime: "Start Time: " + job.startTime,
-            endTime: "End Time: " + job.endTime,
-            hourlyRate: "Hourly Rate: " + job.hourlyRate,
-            extraInfo: "Extra Info: " + job.extraInfo
+            date:  job.date,
+            startTime:  job.startTime,
+            endTime: job.endTime,
+            hourlyRate: job.hourlyRate,
+            extraInfo: job.extraInfo
         }
         jobsObjList.push(jobObj)
     }
