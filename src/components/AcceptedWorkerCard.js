@@ -25,9 +25,6 @@ export default function AcceptedWorkerCard({data}) {
                         <Text style={style.phoneNumber}>07654321234</Text>
                     </View>
                     <View style={style.buttonsContainer}>
-                        <TouchableOpacity style={style.job}>
-                            <Text>Job Info</Text>
-                        </TouchableOpacity>
                         <TouchableOpacity style={style.profile} onPress={() => navigation.navigate("JobProfile")}>
                             <Text>Profile</Text>
                         </TouchableOpacity>
