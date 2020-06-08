@@ -1,13 +1,13 @@
 import React from "react";
-import { View, StyleSheet, SafeAreaView} from "react-native";
+import { ScrollView} from "react-native";
 import OfferCard from "../../components/OfferCard";
 
 export default function OffersScreen() {
 
   return (
-    <View>
+    <ScrollView style={{marginTop: 30}}>
       <OfferCard/>
-    </View>
+    </ScrollView>
   )
 
 }

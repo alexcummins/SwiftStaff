@@ -3,26 +3,19 @@ import {View, Text, Button, Platform, ToastAndroid, Alert, ScrollView} from 'rea
 import {Card, Title, Paragraph} from 'react-native-paper';
 import {List} from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
-import {API_JOB_URL, convertDataToJobCardData, getJobs, WEBSOCKET_PROTOCOL} from '../../api/APIUtils';
+import {API_JOB_URL, convertDataToJobCardData, getJobRequest, WEBSOCKET_PROTOCOL} from '../../api/APIUtils';
 import UserCard from '../../components/UserCard';
 
 let retrieveNotifications = () => {}
-export default function TempWorkerOffersScreen({navigation}) {
+export default function TempWorkerOffersScreen( props) {
   const [name, setName] = useState('');
   const [date, setDate] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [rate, setRate] = useState('');
   const [extraInfo, setExtraInfo] = useState('');
-  const [jobsList, setJobsList] = useState([]);
-  const [timer, setTimer] = useState(setInterval(retrieveNotifications, 600000))
-
-  function updateJobs() {
-    getJobs().then((data) => {
-      setJobsList(data.reverse());
-    });
-
-  }
+  const [jobsList, setJobsList] = useState(props.preFetchDataJobList);
+  const [timer, setTimer] = useState(setInterval(retrieveNotifications, 100000))
 
   useFocusEffect(
     React.useCallback(() => {

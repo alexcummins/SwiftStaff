@@ -1,4 +1,4 @@
-import React from 'react';
+import React,  {useState} from 'react';
 
 import {View, StyleSheet, ScrollView, Text, ToastAndroid, Platform, Alert} from 'react-native';
 
@@ -8,16 +8,20 @@ import {useForm} from 'react-hook-form';
 
 import {Button} from 'react-native-paper';
 import {sendJobRequest} from '../api/APIUtils';
+import {notifyMessage} from '../api/Utils';
 
 function RequestForm() {
+  const [restaurantId, setRestaurantId] = useState("5ed97666d9f7426d776ae195");
+  const [expertiseId, setExpertiseId] = useState(1);
   const form = useForm({
     defaultValues: {
-      hourlyRate: '',
-
-      date: new Date().toJSON().slice(0, 10).split('-').reverse().join('/'),
+      restaurantId: '5ed97666d9f7426d776ae195',
+      sendStrategyId: 1,
+      hourlyRate: '10.75',
+      expertiseId: 1,
+      date: new Date().toJSON().slice(0, 10).split('-').reverse().join('/').toString(),
       startTime: '',
       endTime: '',
-      sendStrategy: '',
       extraInfo: '',
     },
 
@@ -115,9 +119,15 @@ function RequestForm() {
 
               name: 'sendStrategy',
 
-              label: 'Job Strategy',
-              options: [{value: 0, label: 'Current Workers'}, {value: 1, label: 'Previous Workers'}, {
+              label: 'Job Category',
+              options: [{value: 0, label: 'Cocktail Bar Staff'}, {value: 1, label: 'General Bar Staff'}, {
                 value: 2,
+                label: 'Wait Person',
+              }, {
+                value: 3,
+                label: 'Front of House',
+              }, {
+                value: 4,
                 label: 'Open',
               }],
 
@@ -149,7 +159,10 @@ function RequestForm() {
           <Button
             mode={'contained'}
             onPress={form.handleSubmit((data: any) => {
-              sendJobRequest(data).then(r => console.log(r));
+              sendJobRequest(data, restaurantId, expertiseId ).then(r => {
+                console.log(r);
+                notifyMessage("Job Request successfully submitted");
+              });
               console.log('form data', data);
             })}>
             Submit

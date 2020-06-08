@@ -13,8 +13,8 @@ export default function UserCardInfo({data}) {
     return (
         <List.Section>
             <List.Item
-                title="Salary"
-                description={data.hourlyRate + 'ph'}
+                title="Hourly pay"
+                description={`£${data.hourlyRate}ph`}
                 left={() => <Text style={{fontSize: 50, color: "#157EFB"}}>•</Text>}
             />
             <List.Item
