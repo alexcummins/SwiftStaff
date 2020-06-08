@@ -13,7 +13,7 @@ import {Button, Paragraph} from 'react-native-paper';
 import createStackNavigator from '@react-navigation/stack/src/navigators/createStackNavigator';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {getLoginRequest} from '../api/APIUtils';
-import {notifyMessage, userTypeEnumClass} from '../api/utils';
+import {notifyMessage, userTypeEnumClass} from '../api/Utils';
 import {firebase} from '@react-native-firebase/messaging';
 
 Stack = createStackNavigator();

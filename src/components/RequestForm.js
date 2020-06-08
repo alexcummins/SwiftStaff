@@ -8,7 +8,7 @@ import {useForm} from 'react-hook-form';
 
 import {Button} from 'react-native-paper';
 import {sendJobRequest} from '../api/APIUtils';
-import {notifyMessage} from '../api/utils';
+import {notifyMessage} from '../api/Utils';
 
 function RequestForm() {
   const [restaurantId, setRestaurantId] = useState("5ed97666d9f7426d776ae195");
@@ -119,9 +119,15 @@ function RequestForm() {
 
               name: 'sendStrategy',
 
-              label: 'Job Strategy',
-              options: [{value: 0, label: 'Current Workers'}, {value: 1, label: 'Previous Workers'}, {
+              label: 'Job Category',
+              options: [{value: 0, label: 'Cocktail Bar Staff'}, {value: 1, label: 'General Bar Staff'}, {
                 value: 2,
+                label: 'Wait Person',
+              }, {
+                value: 3,
+                label: 'Front of House',
+              }, {
+                value: 4,
                 label: 'Open',
               }],
 

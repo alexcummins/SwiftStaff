@@ -3,7 +3,7 @@ import {StyleSheet, View} from "react-native";
 import {Avatar, Button, HelperText, RadioButton, Subheading, Surface, Text, TextInput, Title} from 'react-native-paper';
 import {sendSignup} from "../../api/APIUtils";
 import {CommonActions} from "@react-navigation/native";
-import {notifyMessage} from "../../api/utils";
+import {notifyMessage} from "../../api/Utils";
 
 export default function RestaurantOrWorkerSignup({navigation}) {
 

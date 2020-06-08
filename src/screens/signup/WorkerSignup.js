@@ -3,7 +3,7 @@ import React, {useState} from "react";
 import {View, StyleSheet, ScrollView, TouchableWithoutFeedback, Keyboard} from "react-native";
 import {sendSignup, sendWorkerSignup} from "../../api/APIUtils";
 import {CommonActions} from "@react-navigation/native";
-import {notifyMessage, userTypeEnumClass} from "../../api/utils";
+import {notifyMessage, userTypeEnumClass} from "../../api/Utils";
 import FormBuilder from "react-native-paper-form-builder";
 import {useForm} from "react-hook-form";
 import DateTimePicker from '@react-native-community/datetimepicker';
