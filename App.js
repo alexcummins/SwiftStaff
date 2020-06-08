@@ -1,36 +1,3 @@
-Skip to content
-Search or jump to…
-
-Pull requests
-Issues
-Marketplace
-Explore
-
-@suchismitapaul
-Learn Git and GitHub without any code!
-  Using the Hello World guide, you’ll start a branch, write comments, and open a pull request.
-
-
-  alexcummins
-/
-SwiftStaff
-Private
-1
-1
-0
-Code
-Issues 0
-Pull requests 0 Actions
-Projects 0
-Wiki
-Security 0
-Insights
-SwiftStaff/App.js /
-@raghavkhanna18 raghavkhanna18 Refactor filenames
-8bc210b 21 minutes ago
-@raghavkhanna18@alexcummins
-134 lines (117 sloc)  5.54 KB
-
 import React, {useState, useEffect} from 'react';
 import {Alert, View, Text} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage'
