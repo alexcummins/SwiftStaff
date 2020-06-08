@@ -13,13 +13,14 @@ export default function WorkerSignup({route, navigation}) {
     const {email} = route.params
     const {password} = route.params
     const [dob, setDob] = useState(new Date(2000, 0, 1));
+    const [dobString, setDobString] = useState("");
     const [show, setShow] = useState(false)
     const [loading, setloading] = useState(false);
 
     async function createAccount(data) {
         data.email = JSON.stringify(email)
         data.password = JSON.stringify(password)
-        data.dob = getDOBString()
+        data.dob = dobString
         setloading(true)
         let response = await sendWorkerSignup(data)
         console.log(JSON.stringify(response))
@@ -56,22 +57,22 @@ export default function WorkerSignup({route, navigation}) {
 
             phone: ''
         },
-        mode: 'onChange',
+        mode: 'onSubmit',
     });
 
-    const onChange = (event, selectedDate) => {
+    function onChange(event, selectedDate) {
         const currentDate = selectedDate || dob;
         setShow(Platform.OS === 'ios')
-        setDob(currentDate);
-    };
+        setDob(currentDate)
+        setDobString(`${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`)
+    }
 
     function showDatePicker() {
-        console.log("focused on dob text field")
         setShow(true);
     }
 
     function getDOBString() {
-        return `${dob.getDay()}/${dob.getMonth() + 1}/${dob.getFullYear()}`;
+        return `${dob.getDate()}/${dob.getMonth() + 1}/${dob.getFullYear()}`;
     }
 
     return (
@@ -134,7 +135,7 @@ export default function WorkerSignup({route, navigation}) {
                                 required: {
                                     value: true,
 
-                                    message: 'Last name is required',
+                                    message: 'Phone number is required',
                                 },
                             },
 
@@ -148,7 +149,7 @@ export default function WorkerSignup({route, navigation}) {
                 <TouchableWithoutFeedback>
                     <TextInput
                         label='Date of birth'
-                        value={getDOBString()}
+                        value={dobString}
                         caretHidden={true}
                         onFocus={showDatePicker}
                         onKeyPress={Keyboard.dismiss()}
