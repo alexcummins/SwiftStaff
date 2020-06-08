@@ -48,6 +48,7 @@ export default function RestaurantOrWorkerSignup({navigation}) {
                     value={email}
                     onChangeText={email => setEmail(email)}
                     autoCorrect={false}
+                    autoCapitalize="none"
                     onEndEditing={checkEmailError}
                     error={isEmailError}
                     textContentType="username"
