@@ -18,8 +18,8 @@ export default function WorkerSignup({route, navigation}) {
     const [loading, setloading] = useState(false);
 
     async function createAccount(data) {
-        data.email = JSON.stringify(email)
-        data.password = JSON.stringify(password)
+        data.email = email
+        data.password = password
         data.dob = dobString
         setloading(true)
         let response = await sendWorkerSignup(data)
