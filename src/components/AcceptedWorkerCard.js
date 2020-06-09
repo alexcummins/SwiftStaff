@@ -10,6 +10,8 @@ export default function AcceptedWorkerCard({data}) {
     const navigation = useNavigation();
 
     const [rating, setRating] = useState(4.5)
+    const [userId, setUserId] = useState('2')
+    const [userType, setUserType] = useState(2)
 
     return (
         <Card>
@@ -43,7 +45,9 @@ export default function AcceptedWorkerCard({data}) {
                         {/*        ratingColor='#3498db'*/}
                         {/*        ratingBackgroundColor='white'/>*/}
 
-                        <TouchableOpacity style={style.profile} onPress={() => navigation.navigate("JobProfile")}>
+                        <TouchableOpacity style={style.profile}
+                                          onPress={() =>
+                                              navigation.navigate("JobProfile", {userId:userId, userType:userType})}>
                             <Text>Profile</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={style.phone} hitSlop={{top: 20, bottom: 20, left: 1, right: 1}}>
