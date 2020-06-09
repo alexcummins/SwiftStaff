@@ -9,13 +9,16 @@ import {useForm} from 'react-hook-form';
 import {Button} from 'react-native-paper';
 import {sendJobRequest} from '../api/APIUtils';
 import {notifyMessage} from '../api/Utils';
+import {useFocusEffect} from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
+import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
 
 function RequestForm() {
-  const [restaurantId, setRestaurantId] = useState("5ed97666d9f7426d776ae195");
+  const [restaurantId, setRestaurantId] = useState("");
   const [expertiseId, setExpertiseId] = useState(1);
   const form = useForm({
     defaultValues: {
-      restaurantId: '5ed97666d9f7426d776ae195',
+      restaurantId: ' ',
       sendStrategyId: 1,
       hourlyRate: '10.75',
       expertiseId: 1,
@@ -28,6 +31,24 @@ function RequestForm() {
     mode: 'onChange',
   });
 
+
+  useFocusEffect(
+    React.useCallback(() => {
+      (async () => {
+
+        try {
+          let keys = await AsyncStorage.getAllKeys();
+          console.log(JSON.stringify(keys))
+          let restId = await AsyncStorage.getItem("restaurantId");
+          console.log(restId)
+          setRestaurantId(restId);
+        } catch (e) {
+          console.log("no restaurantId found setting defualt");
+        }
+
+      })();
+
+    }), []);
   return (
     <View style={styles.containerStyle}>
       <ScrollView contentContainerStyle={styles.scrollViewStyle}>

@@ -15,8 +15,8 @@ export default function RestaurantSignup({route, navigation}) {
     const [loading, setloading] = useState(false);
 
     async function createAccount(data) {
-        data.email = JSON.stringify(email)
-        data.password = JSON.stringify(password)
+        data.email = email
+        data.password = password
         setloading(true)
         let response = await sendRestaurantSignup(data)
         console.log(JSON.stringify(response))
@@ -24,12 +24,15 @@ export default function RestaurantSignup({route, navigation}) {
             await AsyncStorage.multiSet(
                 [
                     ['userId', response.data.id],
+                    ['restaurantId', response.data.restaurantId],
                     ['userType', "1"],
                     ['email', data.email],
                     ['restaurantEmail', data.restaurantEmailAddress],
                     ['restaurantName', data.name],
                     ['restaurantAddress', data.address],
-                    ['restaurantPhone', data.phone.toString()]
+                    ['restaurantPhone', data.phone.toString()],
+                    ['fName', ""],
+                    ['lName', ""]
                 ])
             navigation.dispatch(
                 CommonActions.reset({

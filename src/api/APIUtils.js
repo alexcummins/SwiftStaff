@@ -97,6 +97,10 @@ export function convertDataToJobCardData(data) {
         endTime: '',
         hourlyRate: '',
         extraInfo: '',
+        latitude: 0.0,
+        longitude: 0.0,
+        restaurantRating: 5,
+        restaurantId: ''
     };
     for (i = 0; i < jobs.length; i++) {
         const job = jobs[i].job
@@ -107,7 +111,11 @@ export function convertDataToJobCardData(data) {
             startTime:  job.startTime,
             endTime: job.endTime,
             hourlyRate: job.hourlyRate,
-            extraInfo: job.extraInfo
+            extraInfo: job.extraInfo,
+            latitude: jobs[i].restaurant.latitude,
+            longitude: jobs[i].restaurant.longitude,
+            restaurantRating: jobs[i].restaurant.rating,
+            restaurantId: jobs[i].restaurant._id
         }
         jobsObjList.push(jobObj)
     }
