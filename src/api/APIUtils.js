@@ -1,12 +1,14 @@
 import axios from 'axios';
 
-export const API_BASE_URL = '178.62.102.69:8080/api/v1';
+export const API_BASE_URL = 'localhost:8080/api/v1';
+// export const API_BASE_URL = '139.59.200.194:8080/api/v1';
 export const API_JOB_URL = `${API_BASE_URL}/jobs`;
 export const API_WORKER_SIGNUP_URL = `${API_BASE_URL}/signup/worker`;
 export const API_RESTAURANT_SIGNUP_URL = `${API_BASE_URL}/signup/restaurant`;
 export const HTTP_PROTOCOL = 'http://';
 export const WEBSOCKET_PROTOCOL = 'ws://';
 export const API_LOGIN_URL = `${API_BASE_URL}/login`;
+export const API_PROFILE_WORKER = `${API_BASE_URL}/profile/worker`
 
 export async function getJobRequest() {
     const jobsObjList = []
@@ -25,6 +27,13 @@ export async function getLoginRequest(params) {
         return {data: response.data, isSuccessful: true};
     } else {
         return {isSuccessful: false};
+    }
+}
+
+export async function getWorkerProfile(params) {
+    let response = await sendHttpPostRequest(params, API_PROFILE_WORKER)
+    if (response.status === 200) {
+        return response.data
     }
 }
 
