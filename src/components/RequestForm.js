@@ -1,21 +1,42 @@
 import React,  {useState} from 'react';
 
-import {View, StyleSheet, ScrollView, Text, ToastAndroid, Platform, Alert} from 'react-native';
+import {View, StyleSheet, ScrollView, Text, ToastAndroid, Platform, Alert, Keyboard} from 'react-native';
 
 import FormBuilder from 'react-native-paper-form-builder';
 
 import {useForm} from 'react-hook-form';
 
-import {Button} from 'react-native-paper';
+import {Button, TextInput} from 'react-native-paper';
 import {sendJobRequest} from '../api/APIUtils';
 import {notifyMessage} from '../api/Utils';
 import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 function RequestForm() {
-  const [restaurantId, setRestaurantId] = useState("");
-  const [expertiseId, setExpertiseId] = useState(1);
+  const [restaurantId, setRestaurantId] = useState("")
+  const [expertiseId, setExpertiseId] = useState(1)
+  const [date, setDate] = useState(Date.now())
+  const [dateString, setDateString] = useState(Date.now())
+  const [show, setShow] = useState(false)
+
+  function onChange(event, selectedDate) {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios')
+    setDate(currentDate)
+    setDateString(`${currentDate.getDate()}/${currentDate.getMonth() + 1}/${currentDate.getFullYear()}`)
+  }
+
+  function showDatePicker() {
+    setShow(true);
+  }
+
+  function checkDateString() {
+    setDateString(dateString)
+    setDateString("Hello")
+  }
+
   const form = useForm({
     defaultValues: {
       restaurantId: ' ',
@@ -72,7 +93,6 @@ function RequestForm() {
               },
 
               textInputProps: {
-
                 autoCapitalize: 'none',
               },
             },
@@ -93,6 +113,12 @@ function RequestForm() {
               },
 
               textInputProps: {
+                label: 'Date of birth',
+                value: dateString,
+                caretHidden: true,
+                onFocus: showDatePicker,
+                onKeyPress: Keyboard.dismiss,
+                onChange: checkDateString,
                 secureTextEntry: false,
               },
             },
@@ -190,6 +216,17 @@ function RequestForm() {
           </Button>
 
         </FormBuilder>
+
+        {(show && <DateTimePicker
+                testID="dateTimePicker"
+                show={show}
+                value={date}
+                mode='date'
+                display="default"
+                onChange={onChange}
+            />
+        )}
+
       </ScrollView>
     </View>
   );
