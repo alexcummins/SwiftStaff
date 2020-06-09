@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_BASE_URL = '178.62.102.69:8080/api/v1';
+export const API_BASE_URL = '139.59.200.194:8080/api/v1';
 export const API_JOB_URL = `${API_BASE_URL}/jobs`;
 export const API_WORKER_SIGNUP_URL = `${API_BASE_URL}/signup/worker`;
 export const API_RESTAURANT_SIGNUP_URL = `${API_BASE_URL}/signup/restaurant`;
