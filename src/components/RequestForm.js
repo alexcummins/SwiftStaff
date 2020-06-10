@@ -194,10 +194,8 @@ function RequestForm() {
                     />
                 )}
 
-                <SelectCredentials selectedCredentials={setCredentials}>
+                <SelectCredentials selectedCredentials={setCredentials} title={"What kind of worker would you like to request?"}>
                 </SelectCredentials>
-
-                <Text>{credentials.toString()}</Text>
 
                 <TextInput
                     mode='flat'
@@ -223,7 +221,6 @@ function RequestForm() {
                             extraInfo: extraInfo
                         }).then(r => {
                             console.log(r);
-                            notifyMessage(JSON.stringify(r));
                             notifyMessage("Job Request successfully submitted");
                         });
                     }}>

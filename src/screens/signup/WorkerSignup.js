@@ -8,6 +8,7 @@ import FormBuilder from "react-native-paper-form-builder";
 import {useForm} from "react-hook-form";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from "@react-native-community/async-storage";
+import SelectCredentials from "../../components/SelectCredentials";
 
 export default function WorkerSignup({route, navigation}) {
     const {email} = route.params
@@ -15,13 +16,15 @@ export default function WorkerSignup({route, navigation}) {
     const [dob, setDob] = useState(new Date(2000, 0, 1));
     const [dobString, setDobString] = useState("");
     const [show, setShow] = useState(false)
-    const [loading, setloading] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [credentials, setCredentials] = useState([]);
 
     async function createAccount(data) {
         data.email = email
         data.password = password
         data.dob = dobString
-        setloading(true)
+        data.credentials = credentials
+        setLoading(true)
         let response = await sendWorkerSignup(data)
         console.log(JSON.stringify(response))
         if (response.isSuccessful) {
@@ -43,7 +46,7 @@ export default function WorkerSignup({route, navigation}) {
                     ],
                 }));
         } else {
-            setloading(false)
+            setLoading(false)
             notifyMessage("Signup failed. Please check your internet connection and try again.")
             console.log("Signup failed. Please check your internet connection and try again.")
         }
@@ -69,10 +72,6 @@ export default function WorkerSignup({route, navigation}) {
 
     function showDatePicker() {
         setShow(true);
-    }
-
-    function getDOBString() {
-        return `${dob.getDate()}/${dob.getMonth() + 1}/${dob.getFullYear()}`;
     }
 
     return (
@@ -167,8 +166,15 @@ export default function WorkerSignup({route, navigation}) {
                     />
                 )}
 
+                <SelectCredentials selectedCredentials={setCredentials} title={"What experience do you have?"}>
+                </SelectCredentials>
+
                 <Button icon="account" mode={"contained"}
-                        onPress={form.handleSubmit((data: any) => createAccount(data))}
+                        onPress={form.handleSubmit((data: any) => {
+                            createAccount(data).then(r => {
+                                console.log(r)
+                            });
+                        })}
                         disabled={loading}
                         loading={loading}
                         style={{marginTop: 30, marginLeft: 5, marginRight: 5, flexDirection: "column-reverse"}}>
@@ -181,12 +187,14 @@ export default function WorkerSignup({route, navigation}) {
 }
 
 const styles = StyleSheet.create({
+
+    flexGrow: 1,
+
     containerStyle: {
         flex: 1,
     },
 
     scrollViewStyle: {
-        flex: 1,
 
         padding: 15,
 
@@ -198,6 +206,7 @@ const styles = StyleSheet.create({
 
         textAlign: 'center',
 
+        marginTop: 20,
         marginBottom: 40,
     },
 });

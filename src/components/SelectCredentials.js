@@ -5,6 +5,7 @@ import {List, Checkbox, Chip} from 'react-native-paper';
 export default function SelectCredentials(props) {
 
     const { selectedCredentials } = props
+    const { title } = props
     // Pass in your setState function as this prop.
 
     const [credentials, setCredentials] = useState([])
@@ -27,6 +28,7 @@ export default function SelectCredentials(props) {
     function createCredentialCheckbox(c) {
         return <Checkbox.Item
             label={c}
+            key={c}
             color={"orange"}
             status={credentials.includes(c) ? 'checked' : 'unchecked'}
             onPress={() => updateCredentials(c)}
@@ -37,6 +39,7 @@ export default function SelectCredentials(props) {
         return (
             <Chip
                 icon={icon}
+                key={c}
                 onClose={() => updateCredentials(c)}
                 onPress={() => updateCredentials(c)}
                 style={{color: "red"}}
@@ -47,7 +50,7 @@ export default function SelectCredentials(props) {
     }
 
     return (
-        <List.Section title="What type of worker do you need?">
+        <List.Section title={title}>
             <List.AccordionGroup>
                 <View style={{flexDirection: "row", flexWrap: "wrap"}}>
                     {credentials.map(c => createCredentialChips(c))}
