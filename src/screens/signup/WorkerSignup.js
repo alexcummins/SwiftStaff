@@ -163,6 +163,7 @@ export default function WorkerSignup({route, navigation}) {
                         mode='date'
                         display="default"
                         onChange={onChange}
+                        maximumDate={Date.now()}
                     />
                 )}
 
