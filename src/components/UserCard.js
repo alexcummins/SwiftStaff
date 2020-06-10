@@ -4,7 +4,8 @@ import {Card, Title, Paragraph, Button, IconButton} from 'react-native-paper';
 import MapView from 'react-native-maps';
 import MapMarker from 'react-native-maps/lib/components/MapMarker';
 import UserCardInfo from "./UserCardInfo";
-import {CommonActions, useNavigation} from '@react-navigation/native';
+import {CommonActions, useFocusEffect, useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-community/async-storage';
 
 
 export default function UserCard({data}) {
@@ -15,8 +16,9 @@ export default function UserCard({data}) {
     const [endTime, setEndTime] = useState(data.endTime);
     const [rate, setRate] = useState(data.hourlyRate);
     const [extraInfo, setExtraInfo] = useState(data.extraInfo);
-    const [restaurantLong, setRestaurantLong ] = useState(-0.172002);
-    const [restaurantLat, setRestaurantLat ] = useState(51.499014);
+    const [restaurantLong, setRestaurantLong ] = useState(data.longitude);
+    const [restaurantLat, setRestaurantLat ] = useState(data.latitude);
+    const [restaurantId, setRestaurantId] = useState(data.restaurantId);
     const navigation = useNavigation();
 
     function updateCard(data) {
@@ -26,6 +28,9 @@ export default function UserCard({data}) {
         setEndTime(data.endTime);
         setRate(data.hourlyRate);
         setExtraInfo(data.extraInfo);
+        setRestaurantLong(data.longitude);
+        setRestaurantLat(data.latitude);
+        setRestaurantId(data.restaurantId)
     }
 
     function clearValues() {
@@ -36,6 +41,10 @@ export default function UserCard({data}) {
         setRate('');
         setExtraInfo('');
     }
+
+    useFocusEffect(
+      React.useCallback(() => {
+      }), []);
 
     return (
         <View>

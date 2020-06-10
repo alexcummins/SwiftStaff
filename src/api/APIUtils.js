@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const API_BASE_URL = '178.62.102.69:8080/api/v1';
+export const API_BASE_URL = '139.59.200.194:8080/api/v1';
 export const API_JOB_URL = `${API_BASE_URL}/jobs`;
 export const API_WORKER_SIGNUP_URL = `${API_BASE_URL}/signup/worker`;
 export const API_RESTAURANT_SIGNUP_URL = `${API_BASE_URL}/signup/restaurant`;
@@ -28,9 +28,7 @@ export async function getLoginRequest(params) {
     }
 }
 
-export async function sendJobRequest(data, restaurantId, expertiseId) {
-    data.restaurantId = restaurantId;
-    data.expertiseId = expertiseId;
+export async function sendJobRequest(data) {
     return await sendHttpPostRequest(data, API_JOB_URL)
 }
 
@@ -97,6 +95,10 @@ export function convertDataToJobCardData(data) {
         endTime: '',
         hourlyRate: '',
         extraInfo: '',
+        latitude: 0.0,
+        longitude: 0.0,
+        restaurantRating: 5,
+        restaurantId: ''
     };
     for (i = 0; i < jobs.length; i++) {
         const job = jobs[i].job
@@ -107,7 +109,11 @@ export function convertDataToJobCardData(data) {
             startTime:  job.startTime,
             endTime: job.endTime,
             hourlyRate: job.hourlyRate,
-            extraInfo: job.extraInfo
+            extraInfo: job.extraInfo,
+            latitude: jobs[i].restaurant.latitude,
+            longitude: jobs[i].restaurant.longitude,
+            restaurantRating: jobs[i].restaurant.rating,
+            restaurantId: jobs[i].restaurant._id
         }
         jobsObjList.push(jobObj)
     }
