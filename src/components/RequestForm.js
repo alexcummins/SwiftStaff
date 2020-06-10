@@ -1,36 +1,31 @@
-import React,  {useState} from 'react';
+import React, {useState} from 'react';
 
-import {View, StyleSheet, ScrollView, Text, ToastAndroid, Platform, Alert} from 'react-native';
-
-import FormBuilder from 'react-native-paper-form-builder';
+import {
+    View,
+    StyleSheet,
+    ScrollView,
+    Text,
+    ToastAndroid,
+    Platform,
+    Alert,
+    Keyboard,
+    TouchableWithoutFeedback,
+    Dimensions
+} from 'react-native';
 
 import {useForm} from 'react-hook-form';
 
-import {Button} from 'react-native-paper';
+import {Button, HelperText, TextInput} from 'react-native-paper';
 import {sendJobRequest} from '../api/APIUtils';
 import {notifyMessage} from '../api/Utils';
 import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {get} from 'react-native/Libraries/TurboModule/TurboModuleRegistry';
+import DateTimePicker from "@react-native-community/datetimepicker";
+import {max} from "react-native-reanimated";
+import SelectCredentials from "./SelectCredentials";
 
 function RequestForm() {
-  const [restaurantId, setRestaurantId] = useState("");
-  const [expertiseId, setExpertiseId] = useState(1);
-  const form = useForm({
-    defaultValues: {
-      restaurantId: ' ',
-      sendStrategyId: 1,
-      hourlyRate: '10.75',
-      expertiseId: 1,
-      date: new Date().toJSON().slice(0, 10).split('-').reverse().join('/').toString(),
-      startTime: '',
-      endTime: '',
-      extraInfo: '',
-    },
-
-    mode: 'onChange',
-  });
-
 
   useFocusEffect(
     React.useCallback(() => {
@@ -47,174 +42,220 @@ function RequestForm() {
         }
 
       })();
-
     }), []);
-  return (
-    <View style={styles.containerStyle}>
-      <ScrollView contentContainerStyle={styles.scrollViewStyle}>
-        <Text style={styles.headingStyle}>Request a Worker</Text>
-        <FormBuilder
-          form={form}
-          formConfigArray={[
-            {
-              type: 'input',
 
-              name: 'hourlyRate',
+    const [restaurantId, setRestaurantId] = useState("")
 
-              label: 'Hourly Rate',
+    const [hourlyRate, setHourlyRate] = useState("")
+    const [isHourlyRateError, setIsHourlyRateError] = useState("")
+    const [date, setDate] = useState(new Date(Date.now()))
+    const [dateString, setDateString] = useState(generateDateString(date))
 
-              rules: {
-                required: {
-                  value: true,
+    const [startOrEnd, setStartOrEnd] = useState("start")
+    const [startTime, setStartTime] = useState(new Date(Date.now()))
+    const [startString, setStartString] = useState("")
+    const [endString, setEndString] = useState("")
+    const [endTime, setEndTime] = useState("")
 
-                  message: 'Hourly Rate is Required',
-                },
-              },
+    const [showDate, setShowDate] = useState(false)
+    const [showTime, setShowTime] = useState(false)
 
-              textInputProps: {
+    const [credentials, setCredentials] = useState([])
 
-                autoCapitalize: 'none',
-              },
-            },
+    const [extraInfo, setExtraInfo] = useState("")
 
-            {
-              type: 'input',
+    function generateDateString(d) {
+        return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
+    }
 
-              name: 'date',
+    function generateTimeString(time) {
+        return `${time.getHours()}:${time.getMinutes()}`
+    }
 
-              label: 'Date',
+    function onChangeDate(event, selectedDate) {
+        const currentDate = selectedDate || date;
+        setShowDate(Platform.OS === 'ios')
+        setDate(currentDate)
+        setDateString(generateDateString(currentDate))
+    }
 
-              rules: {
-                required: {
-                  value: true,
+    function showDatePicker() {
+        setShowDate(true);
+    }
 
-                  message: 'Date is required',
-                },
-              },
+    function onChangeTime(event, selectedTime) {
+        let currentTime;
+        if (startOrEnd === "start") {
+            currentTime = selectedTime || startTime;
+            setShowTime(Platform.OS === 'ios')
+            setStartTime(currentTime)
+            setStartString(generateTimeString(currentTime))
+        } else if (startOrEnd === "end") {
+            currentTime = selectedTime || endTime;
+            setShowTime(Platform.OS === 'ios')
+            setEndTime(currentTime)
+            setEndString(generateTimeString(currentTime))
+        } else {
+            throw (new Error("Time picker should be for start or end, no string supplied"))
+        }
+    }
 
-              textInputProps: {
-                secureTextEntry: false,
-              },
-            },
+    function showTimePicker(which) {
+        setStartOrEnd(which)
+        setShowTime(true);
+    }
 
-            {
-              type: 'input',
+    function checkIsHourlyRateError() {
+        if (isNaN(hourlyRate)) {
+            setIsHourlyRateError(true)
+        }
+    }
 
-              name: 'startTime',
+    return (
+        <View style={styles.containerStyle}>
+            <ScrollView contentContainerStyle={styles.scrollViewStyle}>
+                <Text style={styles.headingStyle}>Request a Worker</Text>
 
-              label: 'Start Time',
+                <View>
+                    <TextInput
+                        mode='flat'
+                        label={"Hourly rate (£)"}
+                        value={hourlyRate}
+                        onChangeText={rate => setHourlyRate(rate)}
+                        autoCorrect={false}
+                        autoCapitalize="none"
+                        onEndEditing={checkIsHourlyRateError}
+                        error={isHourlyRateError}
+                        keyboardType="numeric"
+                    >
+                    </TextInput>
+                    <HelperText
+                        type="error"
+                        visible={isHourlyRateError}
+                    >
+                        Hourly rate input is not a number.
+                    </HelperText>
+                </View>
 
-              rules: {
-                required: {
-                  value: true,
+                <TouchableWithoutFeedback>
+                    <TextInput
+                        label='Date of shift'
+                        value={dateString}
+                        caretHidden={true}
+                        onFocus={showDatePicker}
+                        onKeyPress={() => Keyboard.dismiss()}
+                        style={{marginBottom: 15}}
+                    />
+                </TouchableWithoutFeedback>
 
-                  message: 'Start time is required',
-                },
-              },
+                {(showDate && <DateTimePicker
+                        testID="dateTimePicker"
+                        show={showDate}
+                        value={date}
+                        mode='date'
+                        display="default"
+                        onChange={onChangeDate}
+                        minimumDate={Date.now()}
+                    />
+                )}
 
-              textInputProps: {
-                secureTextEntry: false,
-              },
-            },
-            {
-              type: 'input',
+                <View style={{flexDirection: "row", marginBottom: 15}}>
+                    <TouchableWithoutFeedback>
+                        <TextInput
+                            label='Start Time'
+                            value={startString}
+                            caretHidden={true}
+                            onFocus={() => showTimePicker("start")}
+                            onKeyPress={() => Keyboard.dismiss()}
+                            style={{flex: 1, marginRight: 5}}
+                        />
+                    </TouchableWithoutFeedback>
 
-              name: 'endTime',
+                    <TouchableWithoutFeedback>
+                        <TextInput
+                            label='End time'
+                            value={endString}
+                            caretHidden={true}
+                            onFocus={() => showTimePicker("end")}
+                            onKeyPress={() => Keyboard.dismiss()}
+                            style={{flex: 1, marginLeft: 5}}
+                        />
+                    </TouchableWithoutFeedback>
+                </View>
 
-              label: 'End Time',
+                {(showTime && <DateTimePicker
+                        testID="timePicker"
+                        show={showTime}
+                        value={startTime}
+                        mode='time'
+                        display="default"
+                        onChange={onChangeTime}
+                        is24Hour={true}
+                    />
+                )}
 
-              rules: {
-                required: {
-                  value: true,
+                <SelectCredentials selectedCredentials={setCredentials}>
+                </SelectCredentials>
 
-                  message: 'End time is required',
-                },
-              },
+                <Text>{credentials.toString()}</Text>
 
-              textInputProps: {
-                secureTextEntry: false,
-              },
-            },
-            {
-              type: 'select',
+                <TextInput
+                    mode='flat'
+                    label={"Extra Info:"}
+                    value={extraInfo}
+                    onChangeText={info => setExtraInfo(info)}
+                    multiline={true}
+                    numberOfLines={5}
+                />
 
-              name: 'sendStrategy',
-
-              label: 'Job Category',
-              options: [{value: 0, label: 'Cocktail Bar Staff'}, {value: 1, label: 'General Bar Staff'}, {
-                value: 2,
-                label: 'Wait Person',
-              }, {
-                value: 3,
-                label: 'Front of House',
-              }, {
-                value: 4,
-                label: 'Open',
-              }],
-
-              rules: {
-                required: {
-                  value: false,
-                },
-              },
-
-            },
-            {
-              type: 'input',
-
-              name: 'extraInfo',
-
-              label: 'Extra Info',
-
-              rules: {
-                required: {
-                  value: false,
-                },
-              },
-
-              textInputProps: {
-                secureTextEntry: false,
-              },
-            },
-          ]}>
-          <Button
-            mode={'contained'}
-            onPress={form.handleSubmit((data: any) => {
-              sendJobRequest(data, restaurantId, expertiseId ).then(r => {
-                console.log(r);
-                notifyMessage("Job Request successfully submitted");
-              });
-              console.log('form data', data);
-            })}>
-            Submit
-          </Button>
-
-        </FormBuilder>
-      </ScrollView>
-    </View>
-  );
+            </ScrollView>
+            <View style={{margin: 15}}>
+                <Button
+                    mode={'contained'}
+                    onPress={() => {
+                        sendJobRequest({
+                            restaurantId: restaurantId,
+                            hourlyRate: hourlyRate,
+                            date: dateString,
+                            startTime: startString,
+                            endTime: endString,
+                            credentials: credentials,
+                            extraInfo: extraInfo
+                        }).then(r => {
+                            console.log(r);
+                            notifyMessage(JSON.stringify(r));
+                            notifyMessage("Job Request successfully submitted");
+                        });
+                    }}>
+                    Submit
+                </Button>
+            </View>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
-  containerStyle: {
-    flex: 1,
-  },
 
-  scrollViewStyle: {
-    flex: 1,
+    flexGrow: 1,
 
-    padding: 15,
+    containerStyle: {
+        flex: 1,
+        flexGrow: 1,
+    },
 
-    justifyContent: 'center',
-  },
+    scrollViewStyle: {
+        padding: 15,
+        justifyContent: 'center',
+    },
 
-  headingStyle: {
-    fontSize: 30,
+    headingStyle: {
+        fontSize: 30,
 
-    textAlign: 'center',
+        textAlign: 'center',
 
-    marginBottom: 40,
-  },
+        marginTop: 20,
+        marginBottom: 40,
+    },
 });
 
 export default RequestForm;

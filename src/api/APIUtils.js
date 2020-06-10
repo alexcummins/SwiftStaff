@@ -28,9 +28,7 @@ export async function getLoginRequest(params) {
     }
 }
 
-export async function sendJobRequest(data, restaurantId, expertiseId) {
-    data.restaurantId = restaurantId;
-    data.expertiseId = expertiseId;
+export async function sendJobRequest(data) {
     return await sendHttpPostRequest(data, API_JOB_URL)
 }
 
