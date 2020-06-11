@@ -31,6 +31,7 @@ export default function WorkerSignup({route, navigation}) {
             await AsyncStorage.multiSet(
                 [
                     ['userId', response.data.id],
+                    ['workerId', response.data.workerId],
                     ['userType', "1"],
                     ['email', data.email],
                     ['fName', data.fName],

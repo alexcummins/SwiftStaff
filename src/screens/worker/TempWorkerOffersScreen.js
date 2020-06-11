@@ -5,6 +5,7 @@ import {List} from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import {API_JOB_URL, convertDataToJobCardData, getJobRequest, WEBSOCKET_PROTOCOL} from '../../api/APIUtils';
 import UserCard from '../../components/UserCard';
+import AsyncStorage from '@react-native-community/async-storage';
 
 let retrieveNotifications = () => {}
 export default function TempWorkerOffersScreen( props) {
@@ -16,13 +17,18 @@ export default function TempWorkerOffersScreen( props) {
   const [extraInfo, setExtraInfo] = useState('');
   const [jobsList, setJobsList] = useState(props.preFetchDataJobList);
   const [timer, setTimer] = useState(setInterval(retrieveNotifications, 100000))
-
+  const [workerId, setWorkerId] = useState('')
   useFocusEffect(
     React.useCallback(() => {
+      (async () =>{
+        const asyncWorker = await AsyncStorage.getKey("workerId")
+        setWorkerId(asyncWorker)
+      })()
+      const workerIdSocketString = `workerId: ${workerId}`
       console.log(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
       let ws = new WebSocket(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
       ws.onopen = (e) => {
-        ws.send("check")
+        ws.send(workerIdSocketString)
       }
 
       ws.onerror = (e) => {
@@ -42,8 +48,8 @@ export default function TempWorkerOffersScreen( props) {
           setJobsList(newList.reverse())
         }
       };
-      retrieveNotifications= async () => {
-        const res = ws.send("check")
+      retrieveNotifications = async () => {
+        const res = ws.send(workerIdSocketString)
       }
       return () => {
         clearInterval(timer);
