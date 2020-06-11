@@ -3,24 +3,58 @@ import {View, Text, Platform, ToastAndroid, Alert, StyleSheet, Dimensions, Scrol
 import {Card, Title, Paragraph, Button, IconButton, List, Divider} from 'react-native-paper';
 import MapView from 'react-native-maps';
 import MapMarker from 'react-native-maps/lib/components/MapMarker';
-import UserCardInfo from "./UserCardInfo";
-import {CommonActions, useNavigation} from '@react-navigation/native';
+import {CommonActions, useFocusEffect, useNavigation} from '@react-navigation/native';
 
 export default function OfferCard({data}) {
   const navigation = useNavigation();
 
+  const [name, setName] = useState('Eastside Cafe');
+  const [date, setDate] = useState('22/05/2020');
+  const [startTime, setStartTime] = useState('18:00');
+  const [endTime, setEndTime] = useState('20:00');
+  const [rate, setRate] = useState('15.00');
+  const [extraInfo, setExtraInfo] = useState("Waiter");
+  const [restaurantLong, setRestaurantLong] = useState(-0.172002);
+  const [restaurantLat, setRestaurantLat] = useState(51.499014);
+  const [restaurantId, setRestaurantId] = useState('-1');
+
+  function updateCard(data) {
+    setName(data.name);
+    setDate(data.date);
+    setStartTime(data.startTime);
+    setEndTime(data.endTime);
+    setRate(data.hourlyRate);
+    setExtraInfo(data.extraInfo);
+    setRestaurantLong(data.longitude);
+    setRestaurantLat(data.latitude);
+    setRestaurantId(data.restaurantId)
+  }
+
+  function clearValues() {
+    setName('');
+    setDate('');
+    setStartTime('');
+    setEndTime('');
+    setRate('');
+    setExtraInfo('');
+  }
+
+  useFocusEffect(
+    React.useCallback(() => {
+    }), []);
+
   return (
-    <View>
-      <List.Section style={{marginTop:30}}>
+    <ScrollView>
+      <List.Section style={{marginTop: 30}}>
         <Card style={{marginVertical: 10, marginHorizontal: 10}} elevation={10}>
           <Card.Title
-            title='Eastside Cafe'
-            subtitle='22/05/2020'
+            title={name}
+            subtitle={date}
             right={(props) =>
               <IconButton {...props}
                           icon="chevron-right"
                           color="black"
-                          onPress={() => navigation.navigate("RestaurantProfile")}
+                          onPress={() => navigation.navigate("RestaurantProfile", {restaurantId: restaurantId})}
               />
             }
           />
@@ -29,29 +63,29 @@ export default function OfferCard({data}) {
               <View style={styles.container}>
                 <MapView style={styles.mapStyle} showsUserLocation={true}
                          initialRegion={{
-                           latitude: 51.499014,
-                           longitude: -0.172002,
+                           latitude: restaurantLat,
+                           longitude: restaurantLong,
                            latitudeDelta: 0.1,
                            longitudeDelta: 0.1,
                          }}>
-                  <MapMarker coordinate={{latitude: 51.499014, longitude: -0.172002}}/>
+                  <MapMarker coordinate={{latitude: restaurantLat, longitude: restaurantLong}}/>
                 </MapView>
                 <View style={{flexDirection: 'column', flex: 10}}>
                   <List.Section>
                     <List.Item
                       title="Salary"
-                      description='£15.00ph'
-                      left={() => <List.Icon color="#157EFB" icon="checkbox-blank-circle" />}
+                      description={'£' + rate + 'ph'}
+                      left={() => <List.Icon color="#157EFB" icon="checkbox-blank-circle"/>}
                     />
                     <List.Item
                       title="Shift Time"
-                      description='18:00-20:00'
-                      left={() => <List.Icon color="#157EFB" icon="checkbox-blank-circle" />}
+                      description={startTime + '-' + endTime}
+                      left={() => <List.Icon color="#157EFB" icon="checkbox-blank-circle"/>}
                     />
                     <List.Item
                       title="Extra Info"
-                      description='Waiter'
-                      left={() => <List.Icon color="#157EFB" icon="checkbox-blank-circle" />}
+                      description={extraInfo}
+                      left={() => <List.Icon color="#157EFB" icon="checkbox-blank-circle"/>}
                     />
                   </List.Section>
                 </View>
@@ -59,11 +93,19 @@ export default function OfferCard({data}) {
               <View style={{flexDirection: 'row', alignContent: 'center', marginTop: 10}}>
                 <Button style={{flex: 1, alignContent: 'center', marginRight: 5}} labelStyle={{color: 'white'}}
                         mode="contained"
-                        color='red' uppercase={true} onPress={() => {}}>
+                        color='red' uppercase={true} onPress={() => {
+                  clearValues()
+                  //TODO: API Call and Populate Offer Screen By Removing Card
+                }}>
                   Decline
                 </Button>
                 <Button style={{flex: 1, alignContent: 'center', marginLeft: 5}} labelStyle={{color: 'white'}}
-                        mode="contained" color='green' uppercase={true} onPress={() => {}}>
+                        mode="contained" color='green' uppercase={true} onPress={() => {
+                  clearValues()
+                  //TODO: Add to Upcoming Screen
+                  //TODO: API Call and Populate Offer Screen By Removing Card
+
+                }}>
                   Accept
                 </Button>
               </View>
@@ -71,7 +113,7 @@ export default function OfferCard({data}) {
           </Card.Content>
         </Card>
       </List.Section>
-    </View>
+    </ScrollView>
   );
 }
 
