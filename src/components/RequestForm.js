@@ -38,7 +38,7 @@ function RequestForm() {
           console.log(restId)
           setRestaurantId(restId);
         } catch (e) {
-          console.log("no restaurantId found setting defualt");
+          console.log("no restaurantId found - setting default");
         }
 
       })();

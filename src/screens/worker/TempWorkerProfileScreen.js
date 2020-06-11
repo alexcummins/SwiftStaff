@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState} from 'react';
 import {
     StyleSheet,
     Text,
@@ -7,17 +7,19 @@ import {
     Dimensions
 } from 'react-native';
 import {ScrollView} from "react-native";
+import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ProfileCardBasicInfo from "../../components/ProfileCardBasicInfo";
 import ProfileCardList from "../../components/ProfileCardList";
 import ProfileCardText from "../../components/ProfileCardText";
 import navigate from "../../RootNavigation";
+import {getImage, getWorkerProfile} from "../../api/APIUtils"
 
-export default function Profile() {
+export default function WorkerProfile({route}) {
 
     const [firstName, setFirstName] = useState('Mike')
     const [lastName, setLastName] = useState('Adams')
-    const [profileImage, setprofileImage] = useState(require('../../../resources/img/selfie.jpg'));
+    const [profileImage, setprofileImage] = useState('http://localhost:8080/api/v1/downloads/profile/2');
     const [address, setAddress] = useState('15 Alexander Road, London, SW59 0JC');
     const [phoneNumber, setphoneNumber] = useState('07654321234');
     const [skillsAndQualities, setSkillsAndQualities] = useState([
@@ -42,38 +44,45 @@ export default function Profile() {
         'in customer service through volunteering in Marie Curie. I like working with customers ' +
         'directly and I enjoy the fast-paced customer service orientated nature of Cafe work')
 
-    useEffect(() => updateProfile)
-    async function updateProfile() {
-        AsyncStorage.getItem('fName', (notFound, found) => {
-            if (!notFound) {
-                setFirstName(found)
-            }
-            else {
-                // console.log('First name of user not found on Login')
-            }
-        })
-        AsyncStorage.getItem('lName', (notFound, found) => {
-            if (!notFound) {
-                setLastName(found)
-            }
-            else {
-                // console.log('Last name of user not found on Login')
-            }
-        })
-        AsyncStorage.getItem('phone', (notFound, found) => {
-            if (!notFound) {
-                setphoneNumber(found)
-            }
-            else {
-                // console.log('Phone name of user not found on Login')
-            }
-        })
-    }
+    // useFocusEffect(
+    //     React.useCallback(() => {
+    //
+    //         const fetchWorkerProfile = async () => {
+    //             try {
+    //                 console.log(route.params)
+    //                 const worker = await getWorkerProfile(route.params);
+    //                 const profileImage = await getImage({imageId: worker.image, resourceName: "profileImg"})
+    //                 console.log(profileImage)
+    //
+    //                 console.log(worker.fName)
+    //                 setFirstName(worker.fName)
+    //                 setLastName(worker.lName)
+    //                 // Profile Image
+    //                 // Address
+    //                 setphoneNumber(worker.phone)
+    //                 // Qualities
+    //                 // Qualifications
+    //                 // Experience
+    //                 setPersonalStatement(worker.personalStatement)
+    //
+    //             } catch (e) {
+    //                 console.log("Retrieving worker profile faled")
+    //                 console.log(e.getMessage())
+    //             }
+    //         }
+    //
+    //         let promise = fetchWorkerProfile()
+    //         },
+    //         [route.params.userId, route.params.userType])
+    // )
+
+
 
     return (
         <ScrollView style={styles.container}>
             <View style={styles.header}></View>
-            <Image style={styles.avatar} source={profileImage}/>
+            {/*<Image style={styles.avatar} source={profileImage}/>*/}
+            <Image style={styles.avatar} source={{uri: 'http://localhost:8080/api/v1/downloads/profile/2'}}/>
             <View style={styles.body}>
                 <Text style={styles.name}>{firstName}{' '}{lastName}</Text>
                 <ProfileCardBasicInfo data={{ listItemsAndIcons:

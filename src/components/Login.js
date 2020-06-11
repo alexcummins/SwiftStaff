@@ -76,15 +76,10 @@ export default function Login(props) {
         console.log(JSON.stringify(userTypeEnum));
         if (userTypeEnum.WORKER.toString() === data.userType.toString()) {
 
-          var aray = [['userId', data.userId],
-            ['userType', data.userType.toString()],
-            ['email', data.email],
-            ['fname', data.fname],
-            ['lname', data.lname],
-            ['phone', data.phone.toString()]];
           await AsyncStorage.multiSet(
             [
               ['userId', data.userId],
+              ['workerId', data.workerId],
               ['userType', data.userType.toString()],
               ['email', data.email],
               ['fName', ''],
@@ -138,23 +133,13 @@ export default function Login(props) {
 
   return (
     <ScrollView>
-      {/*<Paragraph/>*/}
-      {/*<Paragraph/>*/}
-
       {/*<Button*/}
-      {/*  icon="food"*/}
+      {/*  icon="worker"*/}
       {/*  mode="contained"*/}
-      {/*  onPress={() => goToRestaurant()}*/}
+      {/*  onPress={() => navigation.navigate("HomeTempWorker")}*/}
       {/*>*/}
-      {/*  Restaurant*/}
+      {/*  Worker*/}
       {/*</Button>*/}
-      <Button
-        icon="worker"
-        mode="contained"
-        onPress={() => navigation.navigate("HomeTempWorker")}
-      >
-        Worker
-      </Button>
       <LoginScreen
         spinnerEnable={spinnerEnable}
         spinnerVisibility={true}
