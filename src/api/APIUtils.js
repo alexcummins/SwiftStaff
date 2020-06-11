@@ -1,12 +1,18 @@
 import axios from 'axios';
+import FormData from "form-data";
 
 export const API_BASE_URL = '139.59.200.194:8080/api/v1';
+// export const API_BASE_URL = 'localhost:8080/api/v1';
 export const API_JOB_URL = `${API_BASE_URL}/jobs`;
 export const API_WORKER_SIGNUP_URL = `${API_BASE_URL}/signup/worker`;
 export const API_RESTAURANT_SIGNUP_URL = `${API_BASE_URL}/signup/restaurant`;
 export const HTTP_PROTOCOL = 'http://';
 export const WEBSOCKET_PROTOCOL = 'ws://';
 export const API_LOGIN_URL = `${API_BASE_URL}/login`;
+export const API_PROFILE_WORKER = `${API_BASE_URL}/profile/worker`
+export const API_IMAGE_UPLOAD = `${API_BASE_URL}/uploads`
+export const API_IMAGE_DOWNLOAD = `${API_BASE_URL}/downloads`
+export const API_IMAGE_DOWNLOAD_URI = `${HTTP_PROTOCOL}${API_BASE_URL}`
 
 export async function getJobRequest(workerId) {
     const jobsObjList = []
@@ -28,7 +34,16 @@ export async function getLoginRequest(params) {
     }
 }
 
-export async function sendJobRequest(data) {
+export async function getWorkerProfile(params) {
+    let response = await sendHttpPostRequest(params, API_PROFILE_WORKER)
+    if (response.status === 200) {
+        return response.data
+    }
+}
+
+export async function sendJobRequest(data, restaurantId, expertiseId) {
+    data.restaurantId = restaurantId;
+    data.expertiseId = expertiseId;
     return await sendHttpPostRequest(data, API_JOB_URL)
 }
 
@@ -52,9 +67,9 @@ export async function sendRestaurantSignup(data) {
     return await sendSignup(data, API_RESTAURANT_SIGNUP_URL)
 }
 
-async function sendHttpPostRequest(data, url) {
+async function sendHttpPostRequest(data, url, headers : any = dontStoreCache) {
     let responseObject = {}
-    await axios.post(`${HTTP_PROTOCOL}${url}`, data, dontStoreCache).then( (response) => {
+    await axios.post(`${HTTP_PROTOCOL}${url}`, data, headers).then( (response) => {
         console.log(JSON.stringify(response))
         responseObject = response
     }).catch( (error) => {
@@ -64,10 +79,14 @@ async function sendHttpPostRequest(data, url) {
     return responseObject
 }
 
-let dontStoreCache = {
-    headers: {
-        'Cache-Control': 'no-store'
-    }
+async function sendMultiPartPostRequest(data : FormData, url) {
+    await sendHttpPostRequest(data, url, {
+        headers: {
+            'accept': 'application/json',
+            'Accept-Language': 'en-UK,en;q=0.8',
+            'Content-Type': `multipart/form-data; boundary=${data._boundary}`,
+            'Cache-Control': 'no-store'
+        }})
 }
 
 
@@ -81,6 +100,12 @@ async function sendHttpGetRequest(url, params) {
         responseObject = error.response;
     });
     return responseObject
+}
+
+let dontStoreCache = {
+    headers: {
+        'Cache-Control': 'no-store'
+    }
 }
 
 export function convertDataToJobCardData(data) {

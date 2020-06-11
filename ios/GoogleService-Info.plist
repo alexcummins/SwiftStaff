@@ -32,5 +32,9 @@
 	<string>1:297920942212:ios:1b17e07af3be0926d772d1</string>
 	<key>DATABASE_URL</key>
 	<string>https://swiftstaff-db5e5.firebaseio.com</string>
+	<key>NSCameraUsageDescription</key>
+    <string>This will let you take photos</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>This will let you upload a photo</string>
 </dict>
 </plist>
