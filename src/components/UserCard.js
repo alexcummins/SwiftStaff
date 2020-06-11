@@ -11,17 +11,27 @@ import {sendWorkerAcceptDecline} from '../api/APIUtils';
 
 export default function UserCard({data, updateCallBack, workerId, accepted}) {
 
-    const [name, setName] = useState(data.name);
-    const [date, setDate] = useState(data.date);
-    const [startTime, setStartTime] = useState(data.startTime);
-    const [endTime, setEndTime] = useState(data.endTime);
-    const [rate, setRate] = useState(data.hourlyRate);
-    const [extraInfo, setExtraInfo] = useState(data.extraInfo);
-    const [restaurantLong, setRestaurantLong ] = useState(data.longitude);
-    const [restaurantLat, setRestaurantLat ] = useState(data.latitude);
-    const [restaurantId, setRestaurantId] = useState(data.restaurantId);
+    // const [name, setName] = useState(data.name);
+    // const [date, setDate] = useState(data.date);
+    // const [startTime, setStartTime] = useState(data.startTime);
+    // const [endTime, setEndTime] = useState(data.endTime);
+    // const [rate, setRate] = useState(data.hourlyRate);
+    // const [extraInfo, setExtraInfo] = useState(data.extraInfo);
+    // const [restaurantLong, setRestaurantLong ] = useState(data.longitude);
+    // const [restaurantLat, setRestaurantLat ] = useState(data.latitude);
+    // const [restaurantId, setRestaurantId] = useState(data.restaurantId);
     const [jobId, setJobId] = useState(data.id)
     const navigation = useNavigation();
+
+    const [name, setName] = useState('Eastside Cafe');
+    const [date, setDate] = useState('22/05/2020');
+    const [startTime, setStartTime] = useState('18:00');
+    const [endTime, setEndTime] = useState('20:00');
+    const [rate, setRate] = useState('15.00');
+    const [extraInfo, setExtraInfo] = useState("Waiter");
+    const [restaurantLong, setRestaurantLong] = useState(-0.172002);
+    const [restaurantLat, setRestaurantLat] = useState(51.499014);
+    const [restaurantId, setRestaurantId] = useState("69");
 
     function updateCard(data) {
         setName(data.name);
