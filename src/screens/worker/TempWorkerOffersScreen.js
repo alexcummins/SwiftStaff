@@ -1,9 +1,8 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, Button, Platform, ToastAndroid, Alert, ScrollView} from 'react-native';
-import {Card, Title, Paragraph} from 'react-native-paper';
+import {ScrollView} from 'react-native';
 import {List} from 'react-native-paper';
-import { useFocusEffect } from '@react-navigation/native';
-import {API_JOB_URL, convertDataToJobCardData, getJobRequest, WEBSOCKET_PROTOCOL} from '../../api/APIUtils';
+import {useFocusEffect} from '@react-navigation/native';
+import {API_JOB_URL, convertDataToJobCardData, WEBSOCKET_PROTOCOL} from '../../api/APIUtils';
 import UserCard from '../../components/UserCard';
 import AsyncStorage from '@react-native-community/async-storage';
 
@@ -16,7 +15,6 @@ export default function TempWorkerOffersScreen( props) {
   const [rate, setRate] = useState('');
   const [extraInfo, setExtraInfo] = useState('');
   const [jobsList, setJobsList] = useState(props.preFetchDataJobList);
-  const [timer, setTimer] = useState(setInterval(retrieveNotifications, 100000))
   const [workerId, setWorkerId] = useState('')
   useFocusEffect(
 
@@ -73,15 +71,6 @@ export default function TempWorkerOffersScreen( props) {
   }
 
 
-  function clearValues() {
-    setName('');
-    setDate('');
-    setStartTime('');
-    setEndTime('');
-    setRate('');
-    setExtraInfo('');
-  }
-
 
   return (
     <ScrollView >
@@ -91,16 +80,6 @@ export default function TempWorkerOffersScreen( props) {
     </ScrollView>
   );
 
-
-
-  function notifyMessage(msg: string) {
-    console.log(`Displaying: ${msg}`);
-    if (Platform.OS === 'android') {
-      ToastAndroid.show(msg, ToastAndroid.SHORT);
-    } else {
-      Alert.alert(msg);
-    }
-  }
 }
 
 
