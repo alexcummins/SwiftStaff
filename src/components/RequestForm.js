@@ -74,7 +74,7 @@ function RequestForm() {
 
     function onChangeDate(event, selectedDate) {
         const currentDate = selectedDate || date;
-        setShowDate(Platform.OS === 'ios')
+        setShowDate(false)
         setDate(currentDate)
         setDateString(generateDateString(currentDate))
     }
@@ -87,12 +87,12 @@ function RequestForm() {
         let currentTime;
         if (startOrEnd === "start") {
             currentTime = selectedTime || startTime;
-            setShowTime(Platform.OS === 'ios')
+            setShowTime(false)
             setStartTime(currentTime)
             setStartString(generateTimeString(currentTime))
         } else if (startOrEnd === "end") {
             currentTime = selectedTime || endTime;
-            setShowTime(Platform.OS === 'ios')
+            setShowTime(false)
             setEndTime(currentTime)
             setEndString(generateTimeString(currentTime))
         } else {

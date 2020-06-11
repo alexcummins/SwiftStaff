@@ -22,52 +22,56 @@ export default function TempWorkerOffersScreen( props) {
 
     React.useCallback(() => {
       var ws = {};
-      const asyncWorker = AsyncStorage.getItem("workerId").then((asyncWorkerId) => {
-        setWorkerId(asyncWorkerId)
+      const asyncWorker = AsyncStorage.getItem('workerId').then((asyncWorkerId) => {
+          setWorkerId(asyncWorkerId);
 
-      const workerIdSocketString = `workerId: ${asyncWorkerId}`
-      console.log(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
-        ws = new WebSocket(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
-      ws.onopen = (e) => {
-        console.log(workerIdSocketString)
-        ws.send(workerIdSocketString)
-      }
+          const workerIdSocketString = `workerId: ${asyncWorkerId}`;
+          console.log(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
+          ws = new WebSocket(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
+          ws.onopen = (e) => {
+            console.log(workerIdSocketString);
+            ws.send(workerIdSocketString);
+          };
 
-      ws.onerror = (e) => {
-        // an error occurred
-        console.log(e.message);
-      };
+          ws.onerror = (e) => {
+            console.log(e.message);
+          };
 
-      ws.onclose = (e) => {
-        // connection closed
-        console.log(e.code, e.reason);
-      };
+          ws.onclose = (e) => {
+            console.log(e.code, e.reason);
+          };
 
-      ws.onmessage = (e) => {
-        // a message was received
-        const newList = convertDataToJobCardData(JSON.parse(e.data));
-        if(newList.length !== 0){
-          setJobsList(newList.reverse())
-        }
-      };
-      retrieveNotifications = async () => {
-        const res = ws.send(workerIdSocketString)
-      }
+          ws.onmessage = (e) => {
+            console.log(JSON.stringify(e))
+            if (e.data === 'update') {
+              retrieveNotifications();
+            } else {
+              const newList = convertDataToJobCardData(JSON.parse(e.data));
+              if (newList.length !== 0) {
+                setJobsList(newList.reverse());
+              }
+            }
+          };
+          retrieveNotifications = async () => {
+           ws.send(workerIdSocketString);
+          };
 
-        }
-
-      )
+        },
+      );
       return () => {
         clearInterval(timer);
         ws.close();
       };
 
     }, []))
-
+  const updateJobsList = (newList) => {
+    setJobsList(newList)
+  }
 
   function jobCardMaker(job) {
-    return (<UserCard data={job} key={job.id}/>)
+    return (<UserCard data={job} workerId={workerId} key={job.id} updateCallBack={updateJobsList}/>)
   }
+
 
   function clearValues() {
     setName('');

@@ -6,9 +6,10 @@ import MapMarker from 'react-native-maps/lib/components/MapMarker';
 import UserCardInfo from "./UserCardInfo";
 import {CommonActions, useFocusEffect, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
+import {sendWorkerAcceptDecline} from '../api/APIUtils';
 
 
-export default function UserCard({data}) {
+export default function UserCard({data, updateCallBack, workerId}) {
 
     const [name, setName] = useState(data.name);
     const [date, setDate] = useState(data.date);
@@ -19,6 +20,7 @@ export default function UserCard({data}) {
     const [restaurantLong, setRestaurantLong ] = useState(data.longitude);
     const [restaurantLat, setRestaurantLat ] = useState(data.latitude);
     const [restaurantId, setRestaurantId] = useState(data.restaurantId);
+    const [jobId, setJobId] = useState(data.id)
     const navigation = useNavigation();
 
     function updateCard(data) {
@@ -33,19 +35,73 @@ export default function UserCard({data}) {
         setRestaurantId(data.restaurantId)
     }
 
-    function clearValues() {
-        setName('');
-        setDate('');
-        setStartTime('');
-        setEndTime('');
-        setRate('');
-        setExtraInfo('');
+
+
+    async function declineJob(){
+        let workerId = await AsyncStorage.getItem("workerId");
+        let declineObj = {
+            jobId: jobId,
+            workerId: workerId,
+            commandId: 3
+        }
+        console.log(`Declining ${workerId}`)
+        let newList = await sendWorkerAcceptDecline(declineObj)
+        updateCallBack(newList)
+
     }
+
+
+
+    async function acceptJob(){
+        let workerId = await AsyncStorage.getItem("workerId");
+        let acceptObj = {
+            jobId: jobId,
+            workerId: workerId,
+            commandId: 1
+        }
+        console.log(`Accepting ${workerId}`)
+        let newList = await sendWorkerAcceptDecline(acceptObj)
+        updateCallBack(newList)
+    }
+
 
     useFocusEffect(
       React.useCallback(() => {
       }), []);
 
+    function BottomComponent() {
+
+            if(data.reviewList.includes(workerId)){
+                return (
+                <View style={{flexDirection: 'row', alignContent: 'center', marginTop: 10}}>
+                    <Button style={{flex: 1, alignContent: 'center', marginRight: 5}} labelStyle={{color: 'white'}}
+                            mode="contained"
+                            color='red' uppercase={true} onPress={() => declineJob()}>
+                        Decline
+                    </Button>
+                    <Button style={{flex: 1, alignContent: 'center', marginLeft: 5}} labelStyle={{color: 'white'}}
+                            mode="contained" color='green' uppercase={true} onPress={() => {}}>
+                        Pending
+                    </Button>
+                </View>
+                )
+            } else {
+                return (
+                  <View style={{flexDirection: 'row', alignContent: 'center', marginTop: 10}}>
+                      <Button style={{flex: 1, alignContent: 'center', marginRight: 5}} labelStyle={{color: 'white'}}
+                              mode="contained"
+                              color='red' uppercase={true} onPress={() => declineJob()}>
+                          Decline
+                      </Button>
+                      <Button style={{flex: 1, alignContent: 'center', marginLeft: 5}} labelStyle={{color: 'white'}}
+                              mode="contained" color='green' uppercase={true} onPress={() => acceptJob()}>
+                          Accept
+                      </Button>
+                  </View>
+                )
+            }
+
+    }
     return (
         <View>
             <Card style={{marginVertical: 10, marginHorizontal: 10}} elevation={10}>
@@ -76,17 +132,7 @@ export default function UserCard({data}) {
                                 <UserCardInfo data={data}/>
                             </View>
                         </View>
-                        <View style={{flexDirection: 'row', alignContent: 'center', marginTop: 10}}>
-                            <Button style={{flex: 1, alignContent: 'center', marginRight: 5}} labelStyle={{color: 'white'}}
-                                    mode="contained"
-                                    color='red' uppercase={true} onPress={() => clearValues()}>
-                                Decline
-                            </Button>
-                            <Button style={{flex: 1, alignContent: 'center', marginLeft: 5}} labelStyle={{color: 'white'}}
-                                    mode="contained" color='green' uppercase={true} onPress={() => clearValues()}>
-                                Accept
-                            </Button>
-                        </View>
+                        <BottomComponent/>
                     </View>
                 </Card.Content>
             </Card>
