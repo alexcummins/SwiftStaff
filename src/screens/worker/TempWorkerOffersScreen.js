@@ -21,13 +21,14 @@ export default function TempWorkerOffersScreen( props) {
   useFocusEffect(
     React.useCallback(() => {
       (async () =>{
-        const asyncWorker = await AsyncStorage.getKey("workerId")
+        const asyncWorker = await AsyncStorage.getItem("workerId")
         setWorkerId(asyncWorker)
       })()
       const workerIdSocketString = `workerId: ${workerId}`
       console.log(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
       let ws = new WebSocket(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
       ws.onopen = (e) => {
+        console.log(workerIdSocketString)
         ws.send(workerIdSocketString)
       }
 
