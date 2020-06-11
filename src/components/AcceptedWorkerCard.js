@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Card, List, Title, Divider, Subheading, Button} from 'react-native-paper';
+import {Card, List, Title, Divider, Subheading, Button, Modal} from 'react-native-paper';
 import {StyleSheet, Dimensions, View, Text, TouchableOpacity, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import StarRating from "react-native-star-rating";
@@ -9,7 +9,8 @@ export default function AcceptedWorkerCard({data}) {
 
     const navigation = useNavigation();
 
-    const [rating, setRating] = useState(4.5)
+    const [ratingTotal, setRatingTotal] = useState(14)
+    const [ratingCount, setRatingCount] = useState(3)
     const [userId, setUserId] = useState('2')
     const [userType, setUserType] = useState(2)
 
@@ -30,27 +31,19 @@ export default function AcceptedWorkerCard({data}) {
                         <Text style={style.phoneNumber}>07654321234</Text>
                     </View>
                     <View style={style.buttonsContainer}>
-                        <StarRating
-                            disabled={false}
-                            maxStars={5}
-                            rating={rating}
-                            starSize={width*0.08}
-                            fullStarColor={'#0d72c4'}
-                            containerStyle={style.rating}
-                        />
-                        {/*<Rating type='custom'*/}
-                        {/*        imageSize={width*0.08}*/}
-                        {/*        readonly={true}*/}
-                        {/*        startingValue={rating}*/}
-                        {/*        ratingColor='#3498db'*/}
-                        {/*        ratingBackgroundColor='white'/>*/}
+                        <Rating type='custom'
+                                imageSize={width*0.08}
+                                readonly={true}
+                                startingValue={ratingTotal / ratingCount}
+                                ratingColor='#f1c40f'/>
 
                         <TouchableOpacity style={style.profile}
                                           onPress={() =>
                                               navigation.navigate("JobProfile", {userId:userId, userType:userType})}>
                             <Text>Profile</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={style.phone} hitSlop={{top: 20, bottom: 20, left: 1, right: 1}}>
+                        <TouchableOpacity style={style.phone}
+                                          hitSlop={{top: 20, bottom: 20, left: 1, right: 1}}>
                             <Image style={style.phoneImage}
                                 source={require('../../resources/img/phone.png')}/>
                         </TouchableOpacity>

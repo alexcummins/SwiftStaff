@@ -6,7 +6,7 @@ import {
     Image,
     Dimensions
 } from 'react-native';
-import {ScrollView} from "react-native";
+import {ScrollView, TouchableOpacity} from "react-native";
 import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ProfileCardBasicInfo from "../../components/ProfileCardBasicInfo";
@@ -14,14 +14,22 @@ import ProfileCardList from "../../components/ProfileCardList";
 import ProfileCardText from "../../components/ProfileCardText";
 import navigate from "../../RootNavigation";
 import {getImage, getWorkerProfile} from "../../api/APIUtils"
+import Modal from "react-native-modal";
+import RateWorkerPopUp from "../../components/RateWorkerPopUp";
+import {Button} from "react-native-paper";
 
 export default function WorkerProfile({route}) {
 
+    const [visibility, setVisibility] = useState(false)
+
+    const [userId, setUserId] = useState('2')
     const [firstName, setFirstName] = useState('Mike')
     const [lastName, setLastName] = useState('Adams')
     const [profileImage, setprofileImage] = useState('http://localhost:8080/api/v1/downloads/profile/2');
     const [address, setAddress] = useState('15 Alexander Road, London, SW59 0JC');
     const [phoneNumber, setphoneNumber] = useState('07654321234');
+    const [ratingTotal, setRatingTotal] = useState(14)
+    const [ratingCount, setRatingCount] = useState(3)
     const [skillsAndQualities, setSkillsAndQualities] = useState([
         {name: 'Collaborative'},
         {name: 'Hardworking'},
@@ -46,6 +54,12 @@ export default function WorkerProfile({route}) {
 
     // useFocusEffect(
     //     React.useCallback(() => {
+
+    //        const hideWhenWorkerProfile = async () => {
+    //            await AsyncStorage.getItem('userType', (error, result) => {
+    //                 hide = result === '2'
+    //            })
+    //         }
     //
     //         const fetchWorkerProfile = async () => {
     //             try {
@@ -70,39 +84,66 @@ export default function WorkerProfile({route}) {
     //                 console.log(e.getMessage())
     //             }
     //         }
-    //
+    //         let hidPromise = hideWhenWorkerProfile()
     //         let promise = fetchWorkerProfile()
     //         },
     //         [route.params.userId, route.params.userType])
     // )
 
+    let hide = false
 
+    const toggleShowRateCard = () => {
+        console.log("Got here")
+        setVisibility(!visibility)
+    }
 
     return (
-        <ScrollView style={styles.container}>
-            <View style={styles.header}></View>
-            {/*<Image style={styles.avatar} source={profileImage}/>*/}
-            <Image style={styles.avatar} source={{uri: 'http://localhost:8080/api/v1/downloads/profile/2'}}/>
-            <View style={styles.body}>
-                <Text style={styles.name}>{firstName}{' '}{lastName}</Text>
-                <ProfileCardBasicInfo data={{ listItemsAndIcons:
-                        [
-                            {name: address, icon: 'map-marker'},
-                            {name: phoneNumber, icon: 'phone-outline'},
-                        ]
-                }}/>
-                <ProfileCardList data={{ title:'Skills and Qualities', listItems: skillsAndQualities
-                }}/>
-                <ProfileCardList data={{ title:'Qualifications', listItems: qualifications
-                }}/>
-                <ProfileCardList data={{ title:'Experience', listItems: experience
-                }}/>
-                <ProfileCardText data = {{
-                    title: 'Personal Statement',
-                    body: personalStatement
-                }} />
-            </View>
-        </ScrollView>
+        <View style={{flex:1}}>
+            <ScrollView style={styles.container}>
+                <View style={styles.header}></View>
+                {/*<Image style={styles.avatar} source={profileImage}/>*/}
+                <Image style={styles.avatar} source={{uri: 'http://localhost:8080/api/v1/downloads/profile/2'}}/>
+                <View style={styles.body}>
+                    <Text style={styles.name}>{firstName}{' '}{lastName}</Text>
+                    <ProfileCardBasicInfo data={{ listItemsAndIcons:
+                            [
+                                {name: address, icon: 'map-marker'},
+                                {name: phoneNumber, icon: 'phone-outline'},
+                            ]
+                    }}/>
+                    <ProfileCardList data={{ title:'Skills and Qualities', listItems: skillsAndQualities
+                    }}/>
+                    <ProfileCardList data={{ title:'Qualifications', listItems: qualifications
+                    }}/>
+                    <ProfileCardList data={{ title:'Experience', listItems: experience
+                    }}/>
+                    <ProfileCardText data = {{
+                        title: 'Personal Statement',
+                        body: personalStatement
+                    }} />
+                </View>
+                {!hide ? <View style={styles.placeholder}></View> : null}
+                <Modal isVisible={visibility}
+                       onBackdropPress={() => toggleShowRateCard()}>
+                    <RateWorkerPopUp
+                        userId={userId}
+                        fName="Mike"
+                        lName="Adams"
+                        oldRatingTotal={ratingTotal}
+                        oldRatingCount={ratingCount}
+                        closePopUp={toggleShowRateCard}/>
+                </Modal>
+            </ScrollView>
+            {!hide ?
+            <Button icon="gesture-double-tap"
+                    mode="contained"
+                    dark={true}
+                    onPress={() => toggleShowRateCard()}
+                    style={styles.rateButton}
+                    labelStyle={styles.rateText}
+                    color={'#f1c40f'}>
+                Rate</Button> : null}
+        </View>
     );
 }
 
@@ -145,4 +186,19 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         alignSelf: 'center',
     },
+    placeholder: {
+        height: height *0.15
+    },
+    rateButton: {
+        position: 'absolute',
+        alignSelf: 'center',
+        bottom: height*0.06,
+        borderColor: '#f1c40f',
+        height: height*0.06,
+        width: width*0.4,
+        justifyContent: 'center'
+    },
+    rateText: {
+        fontSize: 15 + height*0.009
+    }
 });
