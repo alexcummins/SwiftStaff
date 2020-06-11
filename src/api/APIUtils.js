@@ -17,9 +17,9 @@ export const API_IMAGE_DOWNLOAD_URI = `${HTTP_PROTOCOL}${API_BASE_URL}`
 
 export async function getJobRequest(workerId) {
     const jobsObjList = []
-    let response = await sendHttpPostRequest(workerId, API_JOB_URL);
+    let response = await sendHttpPostRequest(workerId, API_WORKER_JOB_URL);
     if(response.status === 200){
-        return convertDataToJobCardData(response.data.jobsList);
+        return convertDataToJobCardData(response.data);
     } else {
         return jobsObjList;
     }
@@ -43,8 +43,8 @@ export async function getWorkerProfile(params) {
 }
 
 export async function sendJobRequest(data, restaurantId, expertiseId) {
-    data.restaurantId = restaurantId;
-    data.expertiseId = expertiseId;
+    // data.restaurantId = restaurantId;
+    // data.expertiseId = expertiseId;
     return await sendHttpPostRequest(data, API_JOB_URL)
 }
 
@@ -60,12 +60,34 @@ async function sendSignup(data, url) {
     return {isSuccessful: false}
 }
 
+export async function sendWorkerAcceptDecline(data) {
+    const jobsObjList = []
+    let response =  await sendHttpPatchRequest(data, API_JOB_URL)
+    if(response.status === 200){
+        return convertDataToJobCardData(response.data);
+    } else {
+        return jobsObjList;
+    }
+}
+
 export async function sendWorkerSignup(data) {
     return await sendSignup(data, API_WORKER_SIGNUP_URL)
 }
 
 export async function sendRestaurantSignup(data) {
     return await sendSignup(data, API_RESTAURANT_SIGNUP_URL)
+}
+
+async function sendHttpPatchRequest(data, url){
+    let responseObject = {}
+    await axios.patch(`${HTTP_PROTOCOL}${url}`, data).then((response) => {
+        console.log(JSON.stringify(response))
+        responseObject = response
+    }).catch( (error) => {
+        console.log(JSON.stringify(error))
+        responseObject = error.response
+    });
+    return responseObject
 }
 
 async function sendHttpPostRequest(data, url, headers : any = dontStoreCache) {
@@ -139,7 +161,9 @@ export function convertDataToJobCardData(data) {
             latitude: jobs[i].restaurant.latitude,
             longitude: jobs[i].restaurant.longitude,
             restaurantRating: jobs[i].restaurant.rating,
-            restaurantId: jobs[i].restaurant._id
+            restaurantId: jobs[i].restaurant._id,
+            reviewList: job.reviewList,
+            workerId: job.workerId
         }
         jobsObjList.push(jobObj)
     }

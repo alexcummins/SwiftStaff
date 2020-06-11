@@ -1,11 +1,10 @@
 import React from 'react';
-import {Text} from "react-native-paper";
-import OfferCard from "../../components/OfferCard";
+import UserCard from "../../components/UserCard";
 
 export default function ConfirmedUpcomingScreen() {
 
   return(
-    <OfferCard/>
+    <UserCard/>
   )
 
 }

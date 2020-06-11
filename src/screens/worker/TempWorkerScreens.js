@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import TempWorkerOffersScreen from './TempWorkerOffersScreen';
-import OffersScreen from './OffersScreen';
-import RequestWorkerScreen from '../restaurant/RequestWorkerScreen';
 import TempWorkerHomeScreen from './TempWorkerHomeScreen';
 import {getJobRequest} from '../../api/APIUtils';
 import AsyncStorage from '@react-native-community/async-storage'
@@ -26,13 +24,17 @@ export default function RestaurantScreens({ navigation }) {
   let tempOffersScreen = function(){
     return (<TempWorkerOffersScreen preFetchDataJobList={jobsList}/>)
   }
+
+  let tempOffersScreenAccepted = function () {
+    return (<TempWorkerOffersScreen preFetchDataJobList={jobsList} accepted={true}/>)
+  }
   return (
     <Tab.Navigator tabBarPosition="bottom" initialRouteName="Home">
       <Tab.Screen name="Offers">
         {tempOffersScreen}
       </Tab.Screen>
       <Tab.Screen name="Home" component={TempWorkerHomeScreen} />
-      <Tab.Screen name="Confirmed" component={OffersScreen} />
+      <Tab.Screen name="Confirmed" component={tempOffersScreenAccepted} />
     </Tab.Navigator>
   )
 }
