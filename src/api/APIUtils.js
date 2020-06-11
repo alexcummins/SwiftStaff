@@ -2,7 +2,7 @@ import axios from 'axios';
 import FormData from "form-data";
 
 
-// export const API_BASE_URL = 'localhost:8080/api/v1';
+// export const API_BASE_URL = '192.168.0.14:8080/api/v1';
 
 export const API_BASE_URL = '139.59.200.194:8080/api/v1';
 export const API_JOB_URL = `${API_BASE_URL}/jobs`;
@@ -31,6 +31,7 @@ export async function getJobRequest(workerId) {
 
 export async function getLoginRequest(params) {
     let response = await sendHttpPostRequest(params, API_LOGIN_URL );
+    console.log(response.data);
     if(response.status === 200){
         return {data: response.data, isSuccessful: true};
     } else {

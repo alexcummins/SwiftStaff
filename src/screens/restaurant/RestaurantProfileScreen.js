@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import axios from 'axios';
 import {
   View,
   StyleSheet,
@@ -24,7 +25,7 @@ export default function RestaurantProfile({route}) {
 
   const [name, setName] = useState("Eastside Cafe");
   const [address, setAddress] = useState("Princes Gardens, London, SW72AZ");
-  const [phone, setPhone] = useState("02569984529");
+  const [phone, setPhone] = useState(2569984529);
   const [email, setEmail] = useState("eastsidecafe.com")
   const [longitude, setLongitude] = useState(51.499014);
   const [latitude, setLatitude] = useState(-0.172002);
@@ -39,9 +40,8 @@ export default function RestaurantProfile({route}) {
       const fetchRestaurantProfile = async () => {
         try {
           console.log(route.params)
-          const restaurant = await getRestaurantProfile(route.params.restaurantId);
+          const restaurant = await getRestaurantProfile(route.params);
 
-          if (route.params.restaurantId == -1) {
             console.log(restaurant.name)
             setName(restaurant.name)
             setAddress(restaurant.address)
@@ -54,7 +54,7 @@ export default function RestaurantProfile({route}) {
             setTwitterLink(restaurant.twitterLink)
             setInstagramLink(restaurant.instagramLink)
             // set Photo
-          }
+
         } catch (e) {
           console.log("Retrieving restaurant profile failed")
           console.log(route.params)
