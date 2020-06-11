@@ -143,13 +143,13 @@ export default function Login(props) {
       {/*>*/}
       {/*  Restaurant*/}
       {/*</Button>*/}
-      <Button
-        icon="worker"
-        mode="contained"
-        onPress={() => navigation.navigate("HomeTempWorker")}
-      >
-        Worker
-      </Button>
+      {/*<Button*/}
+      {/*  icon="worker"*/}
+      {/*  mode="contained"*/}
+      {/*  onPress={() => navigation.navigate("HomeTempWorker")}*/}
+      {/*>*/}
+      {/*  Worker*/}
+      {/*</Button>*/}
       <LoginScreen
         spinnerEnable={spinnerEnable}
         spinnerVisibility={true}

@@ -1,8 +1,10 @@
 import axios from 'axios';
 import FormData from "form-data";
 
+
+// export const API_BASE_URL = '192.168.0.14:8080/api/v1';
+
 export const API_BASE_URL = '139.59.200.194:8080/api/v1';
-// export const API_BASE_URL = 'localhost:8080/api/v1';
 export const API_JOB_URL = `${API_BASE_URL}/jobs`;
 export const API_WORKER_JOB_URL = `${API_BASE_URL}/jobs/worker`;
 export const API_WORKER_SIGNUP_URL = `${API_BASE_URL}/signup/worker`;
@@ -11,6 +13,7 @@ export const HTTP_PROTOCOL = 'http://';
 export const WEBSOCKET_PROTOCOL = 'ws://';
 export const API_LOGIN_URL = `${API_BASE_URL}/login`;
 export const API_PROFILE_WORKER = `${API_BASE_URL}/profile/worker`
+export const API_PROFILE_RESTAURANT = `${API_BASE_URL}/profile/restaurant`
 export const API_IMAGE_UPLOAD = `${API_BASE_URL}/uploads`
 export const API_IMAGE_DOWNLOAD = `${API_BASE_URL}/downloads`
 export const API_IMAGE_DOWNLOAD_URI = `${HTTP_PROTOCOL}${API_BASE_URL}`
@@ -28,10 +31,19 @@ export async function getJobRequest(workerId) {
 
 export async function getLoginRequest(params) {
     let response = await sendHttpPostRequest(params, API_LOGIN_URL );
+    console.log(response.data);
     if(response.status === 200){
         return {data: response.data, isSuccessful: true};
     } else {
         return {isSuccessful: false};
+    }
+}
+
+
+export async function getRestaurantProfile(params) {
+    let response = await sendHttpPostRequest(params, API_PROFILE_RESTAURANT)
+    if (response.status === 200) {
+        return response.data
     }
 }
 
