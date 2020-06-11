@@ -9,7 +9,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {sendWorkerAcceptDecline} from '../api/APIUtils';
 
 
-export default function UserCard({data, updateCallBack, workerId}) {
+export default function UserCard({data, updateCallBack, workerId, accepted}) {
 
     const [name, setName] = useState(data.name);
     const [date, setDate] = useState(data.date);
@@ -85,7 +85,9 @@ export default function UserCard({data, updateCallBack, workerId}) {
                     </Button>
                 </View>
                 )
-            } else {
+            } else if(accepted){
+                return null
+            } else{
                 return (
                   <View style={{flexDirection: 'row', alignContent: 'center', marginTop: 10}}>
                       <Button style={{flex: 1, alignContent: 'center', marginRight: 5}} labelStyle={{color: 'white'}}

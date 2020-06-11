@@ -57,7 +57,6 @@ export default function TempWorkerOffersScreen( props) {
         },
       );
       return () => {
-        clearInterval(timer);
         ws.close();
       };
 
@@ -67,7 +66,15 @@ export default function TempWorkerOffersScreen( props) {
   }
 
   function jobCardMaker(job) {
-    return (<UserCard data={job} workerId={workerId} key={job.id} updateCallBack={updateJobsList}/>)
+    if(props.accepted){
+      if(job.workerId === workerId){
+        return (<UserCard data={job} workerId={workerId} key={job.id} accepted={true} updateCallBack={updateJobsList}/>)
+      } else {
+        return null
+      }
+    } else {
+      return (<UserCard data={job} workerId={workerId} key={job.id}  accepted={false} updateCallBack={updateJobsList}/>)
+    }
   }
 
 
