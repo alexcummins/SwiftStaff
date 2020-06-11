@@ -19,14 +19,15 @@ export default function TempWorkerOffersScreen( props) {
   const [timer, setTimer] = useState(setInterval(retrieveNotifications, 100000))
   const [workerId, setWorkerId] = useState('')
   useFocusEffect(
+
     React.useCallback(() => {
-      (async () =>{
-        const asyncWorker = await AsyncStorage.getItem("workerId")
-        setWorkerId(asyncWorker)
-      })()
-      const workerIdSocketString = `workerId: ${workerId}`
+      var ws = {};
+      const asyncWorker = AsyncStorage.getItem("workerId").then((asyncWorkerId) => {
+        setWorkerId(asyncWorkerId)
+
+      const workerIdSocketString = `workerId: ${asyncWorkerId}`
       console.log(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
-      let ws = new WebSocket(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
+        ws = new WebSocket(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
       ws.onopen = (e) => {
         console.log(workerIdSocketString)
         ws.send(workerIdSocketString)
@@ -52,6 +53,10 @@ export default function TempWorkerOffersScreen( props) {
       retrieveNotifications = async () => {
         const res = ws.send(workerIdSocketString)
       }
+
+        }
+
+      )
       return () => {
         clearInterval(timer);
         ws.close();
