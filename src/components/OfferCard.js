@@ -4,6 +4,7 @@ import {Card, Title, Paragraph, Button, IconButton, List, Divider} from 'react-n
 import MapView from 'react-native-maps';
 import MapMarker from 'react-native-maps/lib/components/MapMarker';
 import {CommonActions, useFocusEffect, useNavigation} from '@react-navigation/native';
+import axios from "axios";
 
 export default function OfferCard({data}) {
   const navigation = useNavigation();
@@ -16,7 +17,7 @@ export default function OfferCard({data}) {
   const [extraInfo, setExtraInfo] = useState("Waiter");
   const [restaurantLong, setRestaurantLong] = useState(-0.172002);
   const [restaurantLat, setRestaurantLat] = useState(51.499014);
-  const [restaurantId, setRestaurantId] = useState('-1');
+  const [restaurantId, setRestaurantId] = useState("-1");
 
   function updateCard(data) {
     setName(data.name);
@@ -54,7 +55,10 @@ export default function OfferCard({data}) {
               <IconButton {...props}
                           icon="chevron-right"
                           color="black"
-                          onPress={() => navigation.navigate("RestaurantProfile", {restaurantId: restaurantId})}
+                          onPress={() => {
+                            console.log(restaurantId)
+                            navigation.navigate("RestaurantProfile", {restaurantId: restaurantId})
+                          }}
               />
             }
           />
