@@ -14,7 +14,6 @@ import RestaurantProfileScreen from "./src/screens/restaurant/RestaurantProfileS
 import TempWorkerProfileScreen from "./src/screens/worker/TempWorkerProfileScreen";
 import WorkerSignup from "./src/screens/signup/WorkerSignup";
 import RestaurantSignup from "./src/screens/signup/RestaurantSignup";
-import TempWorkerScreens from "./src/screens/worker/TempWorkerScreens";
 import {userTypeEnumClass} from './src/api/Utils';
 
 const Stack = createStackNavigator();
