@@ -4,6 +4,7 @@ import FormData from "form-data";
 export const API_BASE_URL = '139.59.200.194:8080/api/v1';
 // export const API_BASE_URL = 'localhost:8080/api/v1';
 export const API_JOB_URL = `${API_BASE_URL}/jobs`;
+export const API_WORKER_JOB_URL = `${API_BASE_URL}/jobs/worker`;
 export const API_WORKER_SIGNUP_URL = `${API_BASE_URL}/signup/worker`;
 export const API_RESTAURANT_SIGNUP_URL = `${API_BASE_URL}/signup/restaurant`;
 export const HTTP_PROTOCOL = 'http://';
@@ -16,7 +17,7 @@ export const API_IMAGE_DOWNLOAD_URI = `${HTTP_PROTOCOL}${API_BASE_URL}`
 
 export async function getJobRequest(workerId) {
     const jobsObjList = []
-    let response = await sendHttpGetRequest(API_JOB_URL, workerId);
+    let response = await sendHttpPostRequest(workerId, API_JOB_URL);
     if(response.status === 200){
         return convertDataToJobCardData(response.data.jobsList);
     } else {
