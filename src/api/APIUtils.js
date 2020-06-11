@@ -43,8 +43,8 @@ export async function getWorkerProfile(params) {
 }
 
 export async function sendJobRequest(data, restaurantId, expertiseId) {
-    data.restaurantId = restaurantId;
-    data.expertiseId = expertiseId;
+    // data.restaurantId = restaurantId;
+    // data.expertiseId = expertiseId;
     return await sendHttpPostRequest(data, API_JOB_URL)
 }
 
