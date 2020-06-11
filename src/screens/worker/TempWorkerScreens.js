@@ -5,6 +5,7 @@ import OffersScreen from './OffersScreen';
 import RequestWorkerScreen from '../restaurant/RequestWorkerScreen';
 import TempWorkerHomeScreen from './TempWorkerHomeScreen';
 import {getJobRequest} from '../../api/APIUtils';
+import AsyncStorage from '@react-native-community/async-storage'
 
 
 
@@ -16,7 +17,9 @@ export default function RestaurantScreens({ navigation }) {
   const [jobsList, setJobsList] = useState([])
 
   useEffect(() => {
-    getJobRequest().then((data) => {
+      let workerId;
+      (async () => workerId = await AsyncStorage.getItem("workerId"))
+    getJobRequest({workerId: workerId}).then((data) => {
       setJobsList(data.reverse());
     });
   }, []);

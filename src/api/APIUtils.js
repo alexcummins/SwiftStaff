@@ -8,9 +8,9 @@ export const HTTP_PROTOCOL = 'http://';
 export const WEBSOCKET_PROTOCOL = 'ws://';
 export const API_LOGIN_URL = `${API_BASE_URL}/login`;
 
-export async function getJobRequest() {
+export async function getJobRequest(workerId) {
     const jobsObjList = []
-    let response = await sendHttpGetRequest(API_JOB_URL);
+    let response = await sendHttpGetRequest(API_JOB_URL, workerId);
     if(response.status === 200){
         return convertDataToJobCardData(response.data.jobsList);
     } else {
