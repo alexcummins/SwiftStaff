@@ -148,13 +148,13 @@ export default function Login(props) {
       {/*>*/}
       {/*  Restaurant*/}
       {/*</Button>*/}
-      {/*<Button*/}
-      {/*  icon="worker"*/}
-      {/*  mode="contained"*/}
-      {/*  onPress={() => goToWorker()}*/}
-      {/*>*/}
-      {/*  Worker*/}
-      {/*</Button>*/}
+      <Button
+        icon="worker"
+        mode="contained"
+        onPress={() => navigation.navigate("HomeTempWorker")}
+      >
+        Worker
+      </Button>
       <LoginScreen
         spinnerEnable={spinnerEnable}
         spinnerVisibility={true}
@@ -162,6 +162,7 @@ export default function Login(props) {
         source={background}
         logoComponent={logoComponent}
         switchValue={switchValue}
+        // onPressLogin={() => navigation.navigate("HomeTempWorker")}
         onPressLogin={() => verifyLogin()}
         onPressSettings={() => {
         }}
@@ -173,6 +174,7 @@ export default function Login(props) {
         usernameOnChangeText={(uname) => setUsernameUpdateSpinner(uname)}
         passwordOnChangeText={(paswd) => setPasswordUpdateSpinner(paswd)}
         loginButtonBackgroundColor="#a2a5a9"
+        // delete below
       />
     </ScrollView>
   );
