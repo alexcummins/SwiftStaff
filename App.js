@@ -12,6 +12,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import RestaurantOrWorkerSignup from "./src/screens/signup/RestaurantOrWorkerSignup";
 import RestaurantProfileScreen from "./src/screens/restaurant/RestaurantProfileScreen";
 import TempWorkerProfileScreen from "./src/screens/worker/TempWorkerProfileScreen";
+import TempWorkerScreens from "./src/screens/worker/TempWorkerScreens";
 import WorkerSignup from "./src/screens/signup/WorkerSignup";
 import RestaurantSignup from "./src/screens/signup/RestaurantSignup";
 import {userTypeEnumClass} from './src/api/Utils';
