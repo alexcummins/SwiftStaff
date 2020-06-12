@@ -69,7 +69,7 @@ export const checkPermission = async (permType): Promise<boolean> => {
     }
 }
 
-export const callPhone = (phone : string) => {
+export const callPhone = (phone) => {
     const phoneState = {
         number: `0${phone}`,
         prompt: false
@@ -77,11 +77,4 @@ export const callPhone = (phone : string) => {
     call(phoneState).catch(console.error)
 }
 
-export const callPhone = (phone : string) => {
-    const phoneState = {
-        number: `0${phone}`,
-        prompt: false
-    }
-    call(phoneState).catch(console.error)
-}
 
