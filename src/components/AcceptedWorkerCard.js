@@ -9,26 +9,33 @@ export default function AcceptedWorkerCard({data}) {
 
     const navigation = useNavigation();
 
-    const [ratingTotal, setRatingTotal] = useState(14)
-    const [ratingCount, setRatingCount] = useState(3)
-    const [userId, setUserId] = useState('2')
+    const [ratingTotal, setRatingTotal] = useState(data.ratingTotal)
+    const [ratingCount, setRatingCount] = useState(data.ratingCount)
+    const [workerId, setWorkerId] = useState(data.workerId)
     const [userType, setUserType] = useState(2)
-
+    const [hourlyRate, setHourlyRate] = useState(data.hourlyRate)
+    const [startTime, setStartTime] = useState(data.startTime)
+    const [endTime, setEndTime] = useState(data.startTime)
+    const [date, setDate] = useState(data.date)
+    const [fName, setFName] = useState(data.fName)
+    const [lName, setLName] = useState(data.lName)
+    const [workerPhone, setWorkerPhone] = useState(data.workerPhone)
+    const [jobId, setJobId] = useState(data.jobId)
     return (
-        <Card>
+        <Card style={{marginVertical: 10, marginHorizontal: 10}} elevation={10}>
             <Card.Content style={style.card}>
                 <View style={style.date}>
-                    <Title>18-05-2020</Title>
-                    <Subheading>18:00-20:00</Subheading>
+                    <Title>{date}</Title>
+                    <Subheading>{`${startTime} - ${endTime}`}</Subheading>
                 </View>
                 <View>
-                    <Title>Mike Adams</Title>
+                    <Title>{`${fName} ${lName}`}</Title>
                     <View style={style.jobInfo}>
                         <View>
-                            <Text style={style.jobTitle}>Waiter</Text>
-                            <Text style={style.salary}>£15 per hour</Text>
+                            <Text style={style.jobTitle}></Text>
+                            <Text style={style.salary}>{hourlyRate}</Text>
                         </View>
-                        <Text style={style.phoneNumber}>07654321234</Text>
+                        <Text style={style.phoneNumber}>{`0${workerPhone}`}</Text>
                     </View>
                     <View style={style.buttonsContainer}>
                         <Rating type='custom'
@@ -39,7 +46,7 @@ export default function AcceptedWorkerCard({data}) {
 
                         <TouchableOpacity style={style.profile}
                                           onPress={() =>
-                                              navigation.navigate("JobProfile", {userId:userId, userType:userType})}>
+                                              navigation.navigate("JobProfile", {workerId:workerId, userType:userType})}>
                             <Text>Profile</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={style.phone}

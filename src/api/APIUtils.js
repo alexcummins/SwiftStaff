@@ -232,7 +232,8 @@ export function convertDataToReviewCardData(data) {
             hourlyRate: job.hourlyRate,
             extraInfo: job.extraInfo,
             reviewList: job.reviewList,
-            isConfirmed: job.status === 1
+            isConfirmed: job.status === 1,
+            confirmedWorkerId: job.workerId
         }
 
         const workers = jobs[i].workers
@@ -243,7 +244,8 @@ export function convertDataToReviewCardData(data) {
                 fName: worker.fName,
                 lName: worker.lName,
                 phone: worker.phone,
-                ratingTotal: worker.ratingTotal
+                ratingTotal: worker.ratingTotal,
+                ratingCount: worker.ratingCount
             }
             workersObjList.push(workerObj)
         }
