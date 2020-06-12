@@ -3,24 +3,30 @@ import {Avatar, Button} from 'react-native-paper';
 import React, {useState} from 'react';
 import {CommonActions, useFocusEffect, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
+import {getRestaurantProfile} from '../../api/APIUtils';
 
 export default function RestaurantHomeScreen({data}) {
 
   const navigation = useNavigation();
-
+  const [restaurantData, setRestaurantData] = useState({})
   useFocusEffect(
     React.useCallback(() => {
       (async () => {
         let keys = [];
         let vals = []
+        let restaurantId = ""
         try {
           keys = await AsyncStorage.getAllKeys();
           vals = await AsyncStorage.multiGet(keys)
+           restaurantId = await AsyncStorage.getItem("restaurantId")
         } catch (e) {
           // read key error
         }
 
         console.log(vals)
+
+        const restaurant = await getRestaurantProfile({restaurantId: restaurantId});
+        setRestaurantData(restaurant)
       })();
 
     }), []);
@@ -42,7 +48,7 @@ export default function RestaurantHomeScreen({data}) {
   }
 
   function profile() {
-    navigation.navigate("RestaurantProfile")
+    navigation.navigate("RestaurantProfile", restaurantData)
   }
 
   return (
