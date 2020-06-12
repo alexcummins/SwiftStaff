@@ -17,6 +17,7 @@ export default function ProfileCardList({data}) {
                 <List.Section>
                     {data.listItems.map( itemNames =>
                         <List.Item
+                            key={itemNames.name}
                             title={itemNames.name}
                             titleNumberOfLines={2}
                             left={() => <List.Icon icon="square-small" />}

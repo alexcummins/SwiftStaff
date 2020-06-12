@@ -13,7 +13,7 @@ import ProfileCardBasicInfo from "../../components/ProfileCardBasicInfo";
 import ProfileCardList from "../../components/ProfileCardList";
 import ProfileCardText from "../../components/ProfileCardText";
 import navigate from "../../RootNavigation";
-import {getImage, getWorkerProfile} from "../../api/APIUtils"
+import {getImage, getWorkerProfile, API_IMAGE_DOWNLOAD_URI} from "../../api/APIUtils"
 import Modal from "react-native-modal";
 import RateWorkerPopUp from "../../components/RateWorkerPopUp";
 import {Button} from "react-native-paper";
@@ -23,9 +23,9 @@ export default function WorkerProfile({route}) {
     const [visibility, setVisibility] = useState(false)
 
     const [userId, setUserId] = useState('2')
-    const [firstName, setFirstName] = useState('Mike')
-    const [lastName, setLastName] = useState('Adams')
-    const [profileImage, setprofileImage] = useState('http://localhost:8080/api/v1/downloads/profile/2');
+    const [firstName, setFirstName] = useState('John')
+    const [lastName, setLastName] = useState('Doe')
+    const [profileImage, setprofileImage] = useState(`${API_IMAGE_DOWNLOAD_URI}/profile/2`);
     const [address, setAddress] = useState('15 Alexander Road, London, SW59 0JC');
     const [phoneNumber, setphoneNumber] = useState('07654321234');
     const [ratingTotal, setRatingTotal] = useState(14)
@@ -47,53 +47,53 @@ export default function WorkerProfile({route}) {
         {name: '1 year, Waiter, Romulo Cafe'},
     ])
 
-    const [personalStatement, setPersonalStatement] = useState('My name is Mike, ' +
+    const [personalStatement, setPersonalStatement] = useState('My name is John, ' +
         'I am very hardworking and ameable. Ever since I was 15, I have been' +
         'in customer service through volunteering in Marie Curie. I like working with customers ' +
         'directly and I enjoy the fast-paced customer service orientated nature of Cafe work')
 
-    // useFocusEffect(
-    //     React.useCallback(() => {
+    useFocusEffect(
+        React.useCallback(() => {
 
-    //        const hideWhenWorkerProfile = async () => {
-    //            await AsyncStorage.getItem('userType', (error, result) => {
-    //                 hide = result === '2'
-    //            })
-    //         }
-    //
-    //         const fetchWorkerProfile = async () => {
-    //             try {
-    //                 console.log(route.params)
-    //                 const worker = await getWorkerProfile(route.params);
-    //                 const profileImage = await getImage({imageId: worker.image, resourceName: "profileImg"})
-    //                 console.log(profileImage)
-    //
-    //                 console.log(worker.fName)
-    //                 setFirstName(worker.fName)
-    //                 setLastName(worker.lName)
-    //                 // Profile Image
-    //                 // Address
-    //                 setphoneNumber(worker.phone)
-    //                 // Qualities
-    //                 // Qualifications
-    //                 // Experience
-    //                 setPersonalStatement(worker.personalStatement)
-    //
-    //             } catch (e) {
-    //                 console.log("Retrieving worker profile faled")
-    //                 console.log(e.getMessage())
-    //             }
-    //         }
-    //         let hidPromise = hideWhenWorkerProfile()
-    //         let promise = fetchWorkerProfile()
-    //         },
-    //         [route.params.userId, route.params.userType])
-    // )
+           const hideWhenWorkerProfile = async () => {
+               await AsyncStorage.getItem('userType', (error, result) => {
+                    hide = result === '2'
+               })
+            }
+
+            const fetchWorkerProfile = async () => {
+                try {
+                    console.log(route.params)
+                    const worker = await getWorkerProfile(route.params);
+                    const profileImage = await getImage({imageId: worker.image, resourceName: "profileImg"})
+                    console.log(profileImage)
+
+                    console.log(worker.fName)
+                    setFirstName(worker.fName)
+                    setLastName(worker.lName)
+                    // Profile Image
+                    // Address
+                    setphoneNumber(worker.phone)
+                    // Qualities
+                    // Qualifications
+                    // Experience
+                    setPersonalStatement(worker.personalStatement)
+
+                } catch (e) {
+                    console.log("Retrieving worker profile faled")
+                    console.log(e.getMessage())
+                }
+            }
+            let hidPromise = hideWhenWorkerProfile()
+            let promise = fetchWorkerProfile()
+            },
+            [route.params.userId, route.params.userType])
+    )
 
     let hide = false
 
     const toggleShowRateCard = () => {
-        console.log("Got here")
+        console.log(`${API_IMAGE_DOWNLOAD_URI}/profile/2`)
         setVisibility(!visibility)
     }
 
@@ -127,8 +127,8 @@ export default function WorkerProfile({route}) {
                        onBackdropPress={() => toggleShowRateCard()}>
                     <RateWorkerPopUp
                         userId={userId}
-                        fName="Mike"
-                        lName="Adams"
+                        fName={firstName}
+                        lName={lastName}
                         oldRatingTotal={ratingTotal}
                         oldRatingCount={ratingCount}
                         closePopUp={toggleShowRateCard}/>

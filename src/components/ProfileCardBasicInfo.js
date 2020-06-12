@@ -12,6 +12,7 @@ export default function ProfileCardBasicInfo({data}) {
         <List.Section>
             {data.listItemsAndIcons.map( item =>
                 <List.Item
+                    key={item.name}
                     title={item.name}
                     titleNumberOfLines={2}
                     left={() => <List.Icon icon={item.icon} />}
