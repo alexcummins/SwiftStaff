@@ -69,7 +69,7 @@ export const checkPermission = async (permType): Promise<boolean> => {
     }
 }
 
-export const callPhone = (phone) => {
+export const callPhone = (phone : string) => {
     const phoneState = {
         number: `0${phone}`,
         prompt: false
