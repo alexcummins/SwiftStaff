@@ -200,3 +200,62 @@ export function convertDataToJobCardData(data) {
     console.log(JSON.stringify(jobsObjList))
     return jobsObjList;
 }
+
+export function convertDataToReviewCardData(data) {
+    console.log(JSON.stringify(data))
+    let jobs = data.jobsList
+    const jobsObjList = []
+
+    let jobObj = {
+        id: '',
+        name: '',
+        date: '',
+        startTime: '',
+        endTime: '',
+        hourlyRate: '',
+        extraInfo: '',
+        latitude: 0.0,
+        longitude: 0.0,
+        restaurantRating: 5,
+        restaurantId: ''
+    };
+
+    for (i = 0; i < jobs.length; i++) {
+        const job = jobs[i].job
+        jobObj = {
+            id: job._id,
+            name: jobs[i].restaurant.name,
+            date:  job.date,
+            startTime:  job.startTime,
+            endTime: job.endTime,
+            hourlyRate: job.hourlyRate,
+            extraInfo: job.extraInfo,
+            latitude: jobs[i].restaurant.latitude,
+            longitude: jobs[i].restaurant.longitude,
+            restaurantRating: jobs[i].restaurant.rating,
+            restaurantId: jobs[i].restaurant._id,
+            reviewList: job.reviewList,
+            workerId: job.workerId
+        }
+        const workers = jobs[i].workers
+        for (i = 0; i < workers.length; i++) {
+            worker = (
+                override val _id: String? = null,
+                val fName: String = "John",
+                val lName: String = "Doe",
+                val phone: Long = 79999999,
+                val dob: String = "01/01/2020",
+                val personalStatement: String = " ",
+                val qualificationIds: MutableList<String> = mutableListOf(),
+                val credentials: MutableList<String> = mutableListOf(),
+                val expertiseIds: MutableList<Int> = mutableListOf(),
+            var ratingTotal: Double = 0.0,
+            var ratingCount: Int = 0,
+                val imageIds: MutableList<String> = mutableListOf()
+        ) : Collection
+        }
+        jobsObjList.push(jobObj)
+    }
+    console.log(JSON.stringify(jobsObjList))
+    return jobsObjList;
+}
