@@ -14,7 +14,7 @@ export const API_PROFILE_RESTAURANT = `${API_BASE_URL}/profile/restaurant`
 export const API_NEW_RATING_WORKER = `${API_BASE_URL}/new/rating/worker`
 export const API_IMAGE_UPLOAD = `${API_BASE_URL}/uploads`
 export const API_IMAGE_DOWNLOAD = `${API_BASE_URL}/downloads`
-export const API_IMAGE_DOWNLOAD_URI = `${HTTP_PROTOCOL}${API_BASE_URL}`
+export const API_IMAGE_DOWNLOAD_URI = `${HTTP_PROTOCOL}${API_IMAGE_DOWNLOAD}`
 
 export async function getJobRequest(workerId) {
     const jobsObjList = []

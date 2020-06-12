@@ -13,7 +13,7 @@ import ProfileCardBasicInfo from "../../components/ProfileCardBasicInfo";
 import ProfileCardList from "../../components/ProfileCardList";
 import ProfileCardText from "../../components/ProfileCardText";
 import navigate from "../../RootNavigation";
-import {getImage, getWorkerProfile} from "../../api/APIUtils"
+import {API_IMAGE_DOWNLOAD_URI, getWorkerProfile} from "../../api/APIUtils"
 import Modal from "react-native-modal";
 import RateWorkerPopUp from "../../components/RateWorkerPopUp";
 import {Button} from "react-native-paper";
@@ -25,7 +25,7 @@ export default function WorkerProfile({route}) {
     const [userId, setUserId] = useState('2')
     const [firstName, setFirstName] = useState('Mike')
     const [lastName, setLastName] = useState('Adams')
-    const [profileImage, setprofileImage] = useState('http://localhost:8080/api/v1/downloads/profile/2');
+    const [profileImage, setprofileImage] = useState(`${API_IMAGE_DOWNLOAD_URI}/profile/${userId}`);
     const [address, setAddress] = useState('15 Alexander Road, London, SW59 0JC');
     const [phoneNumber, setphoneNumber] = useState('07654321234');
     const [ratingTotal, setRatingTotal] = useState(14)
@@ -102,7 +102,7 @@ export default function WorkerProfile({route}) {
             <ScrollView style={styles.container}>
                 <View style={styles.header}></View>
                 {/*<Image style={styles.avatar} source={profileImage}/>*/}
-                <Image style={styles.avatar} source={{uri: 'http://localhost:8080/api/v1/downloads/profile/2'}}/>
+                <Image style={styles.avatar} source={{uri: profileImage}}/>
                 <View style={styles.body}>
                     <Text style={styles.name}>{firstName}{' '}{lastName}</Text>
                     <ProfileCardBasicInfo data={{ listItemsAndIcons:
