@@ -4,7 +4,8 @@ import {List} from "react-native-paper";
 import UserCard from "../../components/UserCard";
 import {useFocusEffect} from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
-import {API_JOB_URL, convertDataToJobCardData, WEBSOCKET_PROTOCOL} from "../../api/APIUtils";
+import {API_JOB_URL, convertDataToReviewCardData, WEBSOCKET_PROTOCOL} from "../../api/APIUtils";
+import WorkerReviewCard from "../../components/WorkerReviewCard";
 
 let retrieveNotifications = () => {}
 export default function BookingPendingScreen() {
@@ -38,7 +39,7 @@ export default function BookingPendingScreen() {
                         if (e.data === 'update') {
                             retrieveNotifications();
                         } else {
-                            const newList = convertDataToJobCardData(JSON.parse(e.data));
+                            const newList = convertDataToReviewCardData(JSON.parse(e.data));
                             if (newList.length !== 0) {
                                 setJobsList(newList.reverse());
                             }

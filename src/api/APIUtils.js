@@ -222,6 +222,8 @@ export function convertDataToReviewCardData(data) {
 
     for (i = 0; i < jobs.length; i++) {
         const job = jobs[i].job
+        const workersObjList = []
+
         jobObj = {
             id: job._id,
             name: jobs[i].restaurant.name,
@@ -230,31 +232,23 @@ export function convertDataToReviewCardData(data) {
             endTime: job.endTime,
             hourlyRate: job.hourlyRate,
             extraInfo: job.extraInfo,
-            latitude: jobs[i].restaurant.latitude,
-            longitude: jobs[i].restaurant.longitude,
-            restaurantRating: jobs[i].restaurant.rating,
             restaurantId: jobs[i].restaurant._id,
             reviewList: job.reviewList,
-            workerId: job.workerId
         }
+
         const workers = jobs[i].workers
         for (i = 0; i < workers.length; i++) {
-            worker = (
-                override val _id: String? = null,
-                val fName: String = "John",
-                val lName: String = "Doe",
-                val phone: Long = 79999999,
-                val dob: String = "01/01/2020",
-                val personalStatement: String = " ",
-                val qualificationIds: MutableList<String> = mutableListOf(),
-                val credentials: MutableList<String> = mutableListOf(),
-                val expertiseIds: MutableList<Int> = mutableListOf(),
-            var ratingTotal: Double = 0.0,
-            var ratingCount: Int = 0,
-                val imageIds: MutableList<String> = mutableListOf()
-        ) : Collection
+            const worker = workers[i]
+            const workerObj = {
+                id: worker._id,
+                fName: worker.fName,
+                lName: worker.lName,
+                phone: worker.phone,
+                ratingTotal: worker.ratingTotal
+            }
+            workersObjList.push(workerObj)
         }
-        jobsObjList.push(jobObj)
+        jobsObjList.push([jobObj, workersObjList])
     }
     console.log(JSON.stringify(jobsObjList))
     return jobsObjList;
