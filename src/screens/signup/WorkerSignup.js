@@ -32,7 +32,7 @@ export default function WorkerSignup({route, navigation}) {
                 [
                     ['userId', response.data.id],
                     ['workerId', response.data.workerId],
-                    ['userType', "1"],
+                    ['userType', "2"],
                     ['email', data.email],
                     ['fName', data.fName],
                     ['lName', data.lName],
