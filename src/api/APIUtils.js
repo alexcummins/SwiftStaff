@@ -226,13 +226,11 @@ export function convertDataToReviewCardData(data) {
 
         jobObj = {
             id: job._id,
-            name: jobs[i].restaurant.name,
             date:  job.date,
             startTime:  job.startTime,
             endTime: job.endTime,
             hourlyRate: job.hourlyRate,
             extraInfo: job.extraInfo,
-            restaurantId: jobs[i].restaurant._id,
             reviewList: job.reviewList,
         }
 
@@ -248,7 +246,7 @@ export function convertDataToReviewCardData(data) {
             }
             workersObjList.push(workerObj)
         }
-        jobsObjList.push([jobObj, workersObjList])
+        jobsObjList.push({jobObj: jobObj, workersObj: workersObjList})
     }
     console.log(JSON.stringify(jobsObjList))
     return jobsObjList;

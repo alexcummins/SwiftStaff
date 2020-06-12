@@ -1,13 +1,15 @@
 import React, {useState} from "react";
 import {View, StyleSheet, SafeAreaView, ScrollView} from "react-native";
-import {List} from "react-native-paper";
+import {List, Text} from "react-native-paper";
 import UserCard from "../../components/UserCard";
 import {useFocusEffect} from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
 import {API_JOB_URL, convertDataToReviewCardData, WEBSOCKET_PROTOCOL} from "../../api/APIUtils";
 import WorkerReviewCard from "../../components/WorkerReviewCard";
+import ListAccordion from "react-native-paper/src/components/List/ListAccordion";
 
-let retrieveNotifications = () => {}
+let retrieveNotifications = () => {
+}
 export default function BookingPendingScreen() {
     const [jobsList, setJobsList] = useState([]);
     const [restaurantId, setRestaurantId] = useState('')
@@ -60,22 +62,29 @@ export default function BookingPendingScreen() {
         setJobsList(newList)
     }
 
-    function jobReviewCardMaker(job, worker) {
-        if(props.accepted){
-            if(job.workerId === workerId){
-                return (<WorkerReviewCard job={job} worker={worker} key={job.id} accepted={true} updateCallBack={updateJobsList}/>)
-            } else {
-                return null
-            }
-        } else {
-            return (<WorkerReviewCard job={job} worker={worker} key={job.id}  accepted={false} updateCallBack={updateJobsList}/>)
-        }
+    function workerReviewCardMaker(worker) {
+        return (
+            <WorkerReviewCard worker={worker} key={worker.id} updateCallBack={updateJobsList}/>
+        )
+    }
+
+    function jobReviewListAccordionMaker(jobWorkerObj) {
+        return (
+            <List.Accordion
+                title={`${jobWorkerObj.workersObj.length} Workers to review!`}
+                description={`${jobWorkerObj.jobObj.date} ${jobWorkerObj.jobObj.startTime} to ${jobWorkerObj.jobObj.endTime}
+                £${jobWorkerObj.jobObj.hourlyRate} per hour.`}
+                key={jobWorkerObj.toString()}
+            >
+                {jobWorkerObj.workersObj.map(workerReviewCardMaker)}
+            </List.Accordion>
+        )
     }
 
     return (
         <ScrollView style={{marginTop: 30}}>
-            <List.Section style={{marginTop:30}}>
-                {jobsList.map(jobReviewCardMaker)}
+            <List.Section style={{marginTop: 30}}>
+                {jobsList.map(jobReviewListAccordionMaker)}
             </List.Section>
         </ScrollView>
     );

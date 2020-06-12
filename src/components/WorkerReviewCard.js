@@ -2,40 +2,29 @@ import AsyncStorage from "@react-native-community/async-storage";
 import {sendWorkerAcceptDecline} from "../api/APIUtils";
 import React, {useState} from "react";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
-import {StyleSheet, View} from "react-native";
-import {Button, Card, IconButton} from "react-native-paper";
+import {Dimensions, Image, StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Button, Card, Divider, IconButton, Subheading, Title} from "react-native-paper";
 import MapView from "react-native-maps";
 import MapMarker from "react-native-maps/lib/components/MapMarker";
 import UserCardInfo from "./UserCardInfo";
+import {Rating} from "react-native-ratings";
 
-export default function WorkerReviewCard({data, updateCallBack, workerId, accepted}) {
+export default function WorkerReviewCard({worker, updateCallBack}) {
 
-    const [name, setName] = useState(data.name);
-    const [date, setDate] = useState(data.date);
-    const [startTime, setStartTime] = useState(data.startTime);
-    const [endTime, setEndTime] = useState(data.endTime);
-    const [rate, setRate] = useState(data.hourlyRate);
-    const [extraInfo, setExtraInfo] = useState(data.extraInfo);
-    const [restaurantLong, setRestaurantLong] = useState(data.longitude);
-    const [restaurantLat, setRestaurantLat] = useState(data.latitude);
-    const [restaurantId, setRestaurantId] = useState(data.restaurantId);
-    const [jobId, setJobId] = useState(data.id)
-    const navigation = useNavigation();
+    const [fName, setFName] = useState("");
+    const [lName, setLName] = useState("");
+    const [rating, setRating] = useState(0);
+    const [workerId, setId] = useState();
 
-    function updateCard(data) {
-        setName(data.name);
-        setDate(data.date);
-        setStartTime(data.startTime);
-        setEndTime(data.endTime);
-        setRate(data.hourlyRate);
-        setExtraInfo(data.extraInfo);
-        setRestaurantLong(data.longitude);
-        setRestaurantLat(data.latitude);
-        setRestaurantId(data.restaurantId)
+
+    function updateCard() {
+        setFName(worker.fName);
+        setLName(worker.lName);
+        setRating(worker.ratingTotal);
+        setId(worker.id);
     }
 
     async function acceptWorker() {
-        let workerId = await AsyncStorage.getItem("workerId");
         let acceptObj = {
             jobId: jobId,
             workerId: workerId,
@@ -47,7 +36,6 @@ export default function WorkerReviewCard({data, updateCallBack, workerId, accept
     }
 
     async function declineWorker() {
-        let workerId = await AsyncStorage.getItem("workerId");
         let acceptObj = {
             jobId: jobId,
             workerId: workerId,
@@ -62,9 +50,8 @@ export default function WorkerReviewCard({data, updateCallBack, workerId, accept
         React.useCallback(() => {
         }), []);
 
-    function BottomComponent() {
 
-        if (data.reviewList.includes(workerId)) {
+    function BottomComponent() {
             return (
                 <View style={{flexDirection: 'row', alignContent: 'center', marginTop: 10}}>
                     <Button style={{flex: 1, alignContent: 'center', marginRight: 5}} labelStyle={{color: 'white'}}
@@ -73,69 +60,123 @@ export default function WorkerReviewCard({data, updateCallBack, workerId, accept
                         Decline
                     </Button>
                     <Button style={{flex: 1, alignContent: 'center', marginLeft: 5}} labelStyle={{color: 'white'}}
-                            mode="contained" color='green' uppercase={true} onPress={() => {
-                    }}>
-                        Pending
-                    </Button>
-                </View>
-            )
-        } else if (accepted) {
-            return null
-        } else {
-            return (
-                <View style={{flexDirection: 'row', alignContent: 'center', marginTop: 10}}>
-                    <Button style={{flex: 1, alignContent: 'center', marginRight: 5}} labelStyle={{color: 'white'}}
-                            mode="contained"
-                            color='red' uppercase={true} onPress={() => declineWorker()}>
-                        Decline
-                    </Button>
-                    <Button style={{flex: 1, alignContent: 'center', marginLeft: 5}} labelStyle={{color: 'white'}}
-                            mode="contained" color='green' uppercase={true} onPress={() => acceptJob()}>
+                            mode="contained" color='green' uppercase={true} onPress={() => declineWorker()}>
                         Accept
                     </Button>
                 </View>
             )
         }
 
-    }
-
     return (
-        <View>
-            <Card style={{marginVertical: 10, marginHorizontal: 10}} elevation={10}>
-                <Card.Title
-                    title={data.name}
-                    subtitle={data.date}
-                    right={(props) =>
-                        <IconButton {...props}
-                                    icon="chevron-right"
-                                    color="black"
-                                    onPress={() => navigation.navigate("RestaurantProfile")}
-                        />
-                    }
-                />
-                <Card.Content>
-                    <View style={{flexDirection: 'column'}}>
-                        <View style={styles.container}>
-                            <MapView style={styles.mapStyle} showsUserLocation={true}
-                                     initialRegion={{
-                                         latitude: restaurantLat,
-                                         longitude: restaurantLong,
-                                         latitudeDelta: 0.1,
-                                         longitudeDelta: 0.1,
-                                     }}>
-                                <MapMarker coordinate={{latitude: restaurantLat, longitude: restaurantLong}}/>
-                            </MapView>
-                            <View style={{flexDirection: 'column', flex: 10}}>
-                                <UserCardInfo data={data}/>
-                            </View>
-                        </View>
-                        <BottomComponent/>
+        <Card>
+            <Card.Content style={style.card}>
+                <View>
+                    <Title>{`${worker.fName} ${worker.lName}`}</Title>
+                    <View style={style.buttonsContainer}>
+                        <Rating type='custom'
+                                imageSize={width * 0.08}
+                                readonly={true}
+                                startingValue={worker.ratingTotal}
+                                ratingColor='#f1c40f'/>
+
+                        <TouchableOpacity style={style.profile}
+                                          onPress={() =>
+                                              navigation.navigate("JobProfile", {userId: userId, userType: userType})}>
+                            <Text>Profile</Text>
+                        </TouchableOpacity>
                     </View>
-                </Card.Content>
-            </Card>
-        </View>
-    );
+                </View>
+                <Divider/>
+            </Card.Content>
+        </Card>
+    )
 }
+
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
+
+const style = StyleSheet.create({
+    card: {
+        // flex: 1,
+        alignItems: 'flex-start',
+        flexDirection: 'column'
+    },
+    date: {
+        // flex: 1,
+        fontSize: 28,
+        color: "#696969",
+        fontWeight: "600",
+        height: height * 0.06,
+    },
+    workerInfo: {
+        padding: 10,
+        flex: 1,
+        // width: '100%',
+        height: height * 0.24,
+    },
+    profileTitle: {
+        flexDirection: 'row'
+    },
+    jobInfo: {
+        flexDirection: 'column',
+        height: height * 0.05,
+        width: width,
+        padding: '1%'
+    },
+    jobTitle: {
+        // flex: 1,
+        // width: 100,
+        height: '50%',
+    },
+    salary: {
+        // flex: 1,
+        // width: 100,
+        height: '50%',
+    },
+    phoneNumber: {
+        // flex: 1,
+        // width: 100,
+        height: '50%',
+        alignSelf: 'flex-end',
+        top: '50%',
+        right: '10%',
+        position: 'absolute',
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+        width: width,
+        // justifyContent: 'space-around',
+        marginTop: '2%',
+    },
+    rating: {
+        flexDirection: 'row',
+        // justifyContent: 'center',
+        // alignItems: 'center',
+        // width: width*0.2,
+        // marginRight: width*0.15
+    },
+    profile: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: width * 0.1,
+        backgroundColor: "#00BFFF",
+        width: width * 0.2,
+        marginLeft: width * 0.05
+    },
+    phone: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        // width: width*0.2,
+        // marginLeft: width*0.05
+    },
+    phoneImage: {
+        height: height * 0.05,
+        resizeMode: 'contain'
+    }
+})
 
 const styles = StyleSheet.create({
     container: {
