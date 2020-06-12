@@ -3,7 +3,7 @@ import LoginScreen from 'react-native-login-screen';
 import {ScrollView} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
-const background = require('../../resources/img/background.jpg');
+const background = require('../../resources/img/gradientBackgroundFlipped.png');
 import set from '@babel/runtime/helpers/esm/set';
 import Logo from './Logo';
 import navigate from '../RootNavigation';
