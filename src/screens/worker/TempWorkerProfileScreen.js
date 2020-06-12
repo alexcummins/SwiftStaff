@@ -13,7 +13,7 @@ import ProfileCardBasicInfo from "../../components/ProfileCardBasicInfo";
 import ProfileCardList from "../../components/ProfileCardList";
 import ProfileCardText from "../../components/ProfileCardText";
 import navigate from "../../RootNavigation";
-import {getImage, getWorkerProfile, API_IMAGE_DOWNLOAD_URI} from "../../api/APIUtils"
+import {API_IMAGE_DOWNLOAD_URI, getWorkerProfile} from "../../api/APIUtils"
 import Modal from "react-native-modal";
 import RateWorkerPopUp from "../../components/RateWorkerPopUp";
 import {Button} from "react-native-paper";
