@@ -9,19 +9,20 @@ import MapMarker from "react-native-maps/lib/components/MapMarker";
 import UserCardInfo from "./UserCardInfo";
 import {Rating} from "react-native-ratings";
 
-export default function WorkerReviewCard({worker, updateCallBack}) {
+export default function WorkerReviewCard({worker, jobsId, updateCallBack}) {
 
-    const [fName, setFName] = useState("");
-    const [lName, setLName] = useState("");
-    const [rating, setRating] = useState(0);
-    const [workerId, setId] = useState();
-
+    const [fName, setFName] = useState(worker.fName);
+    const [lName, setLName] = useState(worker.lName);
+    const [rating, setRating] = useState(worker.ratingTotal);
+    const [workerId, setWorkerId] = useState(worker.id);
+    const [jobId, setJobId] = useState(jobsId);
 
     function updateCard() {
         setFName(worker.fName);
         setLName(worker.lName);
         setRating(worker.ratingTotal);
-        setId(worker.id);
+        setWorkerId(worker.id);
+        setJobId(jobsId);
     }
 
     async function acceptWorker() {
@@ -30,7 +31,7 @@ export default function WorkerReviewCard({worker, updateCallBack}) {
             workerId: workerId,
             commandId: 2
         }
-        console.log(`Accepting ${workerId}`)
+        console.log(`Accepting ${workerId} ${jobId}`)
         let newList = await sendWorkerAcceptDecline(acceptObj)
         updateCallBack(newList)
     }
@@ -41,7 +42,7 @@ export default function WorkerReviewCard({worker, updateCallBack}) {
             workerId: workerId,
             commandId: 4
         }
-        console.log(`Declining ${workerId}`)
+        console.log(`Declining ${workerId} ${jobId}`)
         let newList = await sendWorkerAcceptDecline(acceptObj)
         updateCallBack(newList)
     }
@@ -84,6 +85,12 @@ export default function WorkerReviewCard({worker, updateCallBack}) {
                                               navigation.navigate("JobProfile", {userId: userId, userType: userType})}>
                             <Text>Profile</Text>
                         </TouchableOpacity>
+
+                        <TouchableOpacity style={style.profile}
+                                          onPress={() => acceptWorker()}>
+                            <Text>Accept</Text>
+                        </TouchableOpacity>
+
                     </View>
                 </View>
                 <Divider/>

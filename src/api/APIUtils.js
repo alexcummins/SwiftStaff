@@ -232,6 +232,7 @@ export function convertDataToReviewCardData(data) {
             hourlyRate: job.hourlyRate,
             extraInfo: job.extraInfo,
             reviewList: job.reviewList,
+            isConfirmed: job.workerId.length > 5
         }
 
         const workers = jobs[i].workers

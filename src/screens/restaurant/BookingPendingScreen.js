@@ -62,23 +62,29 @@ export default function BookingPendingScreen() {
         setJobsList(newList)
     }
 
-    function workerReviewCardMaker(worker) {
+    function workerReviewCardMaker(worker, jobsId) {
         return (
-            <WorkerReviewCard worker={worker} key={worker.id} updateCallBack={updateJobsList}/>
+            <WorkerReviewCard worker={worker} jobsId={jobsId} key={worker.id} updateCallBack={updateJobsList}/>
         )
     }
 
     function jobReviewListAccordionMaker(jobWorkerObj) {
+      if (jobWorkerObj.jobObj.isConfirmed) {
+        return null
+      } else {
         return (
-            <List.Accordion
-                title={`${jobWorkerObj.workersObj.length} Workers to review!`}
-                description={`${jobWorkerObj.jobObj.date} ${jobWorkerObj.jobObj.startTime} to ${jobWorkerObj.jobObj.endTime}
+          <List.Accordion
+            title={`${jobWorkerObj.workersObj.length} Workers to review!`}
+            description={`${jobWorkerObj.jobObj.date} ${jobWorkerObj.jobObj.startTime} to ${jobWorkerObj.jobObj.endTime}
                 £${jobWorkerObj.jobObj.hourlyRate} per hour.`}
-                key={jobWorkerObj.toString()}
-            >
-                {jobWorkerObj.workersObj.map(workerReviewCardMaker)}
-            </List.Accordion>
+            key={jobWorkerObj.toString()}
+          >
+            {jobWorkerObj.workersObj.map((worker) => {
+              return workerReviewCardMaker(worker, jobWorkerObj.jobObj.id)
+            })}
+          </List.Accordion>
         )
+      }
     }
 
     return (
