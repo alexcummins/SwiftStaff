@@ -4,6 +4,7 @@ import {StyleSheet, Dimensions, View, Text, TouchableOpacity, Image} from 'react
 import {useNavigation} from '@react-navigation/native';
 import StarRating from "react-native-star-rating";
 import {Rating} from 'react-native-ratings'
+import {callPhone} from "../api/Utils";
 
 export default function AcceptedWorkerCard({data}) {
 
@@ -13,6 +14,11 @@ export default function AcceptedWorkerCard({data}) {
     const [ratingCount, setRatingCount] = useState(3)
     const [userId, setUserId] = useState('2')
     const [userType, setUserType] = useState(2)
+    const [firstName, setFirstName] = useState('Mike')
+    const [lastName, setLastName] = useState('Adams')
+    const [phone, setPhone] = useState(7654321234)
+    const [hourlyRate, setHourlyRate] = useState(15)
+    const [credential, setJobCredential] = useState('Waiter')
 
     return (
         <Card>
@@ -22,13 +28,13 @@ export default function AcceptedWorkerCard({data}) {
                     <Subheading>18:00-20:00</Subheading>
                 </View>
                 <View>
-                    <Title>Mike Adams</Title>
+                    <Title>{firstName}{' '}{lastName}</Title>
                     <View style={style.jobInfo}>
                         <View>
-                            <Text style={style.jobTitle}>Waiter</Text>
-                            <Text style={style.salary}>£15 per hour</Text>
+                            <Text style={style.jobTitle}>{credential}</Text>
+                            <Text style={style.salary}>£{hourlyRate} per hour</Text>
                         </View>
-                        <Text style={style.phoneNumber}>07654321234</Text>
+                        <Text style={style.phoneNumber}>{'0'}{phone}</Text>
                     </View>
                     <View style={style.buttonsContainer}>
                         <Rating type='custom'
@@ -43,7 +49,8 @@ export default function AcceptedWorkerCard({data}) {
                             <Text>Profile</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={style.phone}
-                                          hitSlop={{top: 20, bottom: 20, left: 1, right: 1}}>
+                                          hitSlop={{top: 20, bottom: 20, left: 1, right: 1}}
+                                          onPress={() => callPhone(phone)}>
                             <Image style={style.phoneImage}
                                 source={require('../../resources/img/phone.png')}/>
                         </TouchableOpacity>

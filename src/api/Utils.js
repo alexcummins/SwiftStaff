@@ -1,5 +1,6 @@
 import {Alert, Platform, ToastAndroid} from "react-native";
 import {check, request, PERMISSIONS, RESULTS} from "react-native-permissions";
+import call from "react-native-phone-call";
 
 export function notifyMessage(msg: string) {
     console.log(`Displaying: ${msg}`);
@@ -33,12 +34,23 @@ const REQUEST_PERMISSION_TYPE = {
     photos: PLATFORM_PHOTOS_PERMISSIONS
 }
 
-const PERMISSION_TYPE = {
+export const PERMISSION_TYPE = {
     camera: 'camera',
     photos: 'photos'
 }
 
-const checkPermission = async (permType): Promise<boolean> => {
+const requestPermission = async (permissions): Promise<boolean> => {
+    try {
+        const result = await request(permissions)
+        return result === RESULTS.GRANTED
+    } catch (e) {
+        console.log(e)
+        console.log("Request Permission Unknown failure")
+        return false
+    }
+}
+
+export const checkPermission = async (permType): Promise<boolean> => {
     const permissions = REQUEST_PERMISSION_TYPE[permType][Platform.OS]
     if (!permissions) {
         return true
@@ -57,15 +69,12 @@ const checkPermission = async (permType): Promise<boolean> => {
     }
 }
 
-const requestPermission = async (permissions): Promise<boolean> => {
-    try {
-        const result = await request(permissions)
-        return result === RESULTS.GRANTED
-    } catch (e) {
-        console.log(e)
-        console.log("Request Permission Unknown failure")
-        return false
+export const callPhone = (phone) => {
+    const phoneState = {
+        number: `0${phone}`,
+        prompt: false
     }
+    call(phoneState).catch(console.error)
 }
 
 
