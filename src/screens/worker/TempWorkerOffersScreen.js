@@ -8,12 +8,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 let retrieveNotifications = () => {}
 export default function TempWorkerOffersScreen( props) {
-  const [name, setName] = useState('');
-  const [date, setDate] = useState('');
-  const [startTime, setStartTime] = useState('');
-  const [endTime, setEndTime] = useState('');
-  const [rate, setRate] = useState('');
-  const [extraInfo, setExtraInfo] = useState('');
   const [jobsList, setJobsList] = useState(props.preFetchDataJobList);
   const [workerId, setWorkerId] = useState('')
   useFocusEffect(
@@ -73,7 +67,11 @@ export default function TempWorkerOffersScreen( props) {
         return null
       }
     } else {
-      return (<UserCard data={job} workerId={workerId} key={job.id}  accepted={false} updateCallBack={updateJobsList}/>)
+      if(job.workerId === workerId){
+        return null
+      } else {
+        return (<UserCard data={job} workerId={workerId} key={job.id}  accepted={false} updateCallBack={updateJobsList}/>)
+      }
     }
   }
 

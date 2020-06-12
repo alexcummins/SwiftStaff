@@ -118,15 +118,15 @@ export default function App({navigator}) {
     <Stack.Navigator initialRouteName={initialRoute}>
       <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
       <Stack.Screen name="HomeRestaurant" component={RestaurantScreens} options={{headerShown: false, title:'Back'}} />
-      {/*<Stack.Screen name="HomeTempWorker" component={TempWorkerScreens} options={{headerShown: false, title:'Back'}}/>*/}
-      <Stack.Screen name="HomeTempWorker" component={TempWorkerScreens} />
+      {<Stack.Screen name="HomeTempWorker" component={TempWorkerScreens} options={{headerShown: false, title:'Back'}}/>}
+
 
       <Stack.Screen name="RestaurantOrWorkerSignup" component={RestaurantOrWorkerSignup}
                     options={{title: 'Sign up'}}/>
       <Stack.Screen name="RestaurantSignup" component={RestaurantSignup} options={{title: 'Restaurant Signup'}}/>
       <Stack.Screen name="WorkerSignup" component={WorkerSignup} options={{title: 'Worker Signup'}}/>
       <Stack.Screen name="JobProfile" component={TempWorkerProfileScreen} options={{headerShown: true, title: 'Profile'}} />
-      <Stack.Screen name="RestaurantProfile" component={RestaurantProfileScreen} />
+      <Stack.Screen name="RestaurantProfile" component={RestaurantProfileScreen} options={{headerShown: false, title: 'Restaurant Profile'}}/>
     </Stack.Navigator>
   )
 }

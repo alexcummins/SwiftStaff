@@ -23,12 +23,12 @@ import {getRestaurantProfile} from "../../api/APIUtils";
 
 export default function RestaurantProfile({route}) {
 
-  const [name, setName] = useState("Eastside Cafe");
-  const [address, setAddress] = useState("Princes Gardens, London, SW72AZ");
+  const [name, setName] = useState(route.params.restaurantName);
+  const [address, setAddress] = useState("");
   const [phone, setPhone] = useState(2569984529);
-  const [email, setEmail] = useState("eastsidecafe.com")
-  const [longitude, setLongitude] = useState(51.499014);
-  const [latitude, setLatitude] = useState(-0.172002);
+  const [email, setEmail] = useState("")
+  const [longitude, setLongitude] = useState(route.params.longitude);
+  const [latitude, setLatitude] = useState(route.params.latitude);
   const [facebookLink, setFacebookLink] = useState("https://facebook.com");
   const [twitterLink, setTwitterLink] = useState("https://twitter.com");
   const [instagramLink, setInstagramLink] = useState("https://instagram.com");
@@ -40,7 +40,7 @@ export default function RestaurantProfile({route}) {
       const fetchRestaurantProfile = async () => {
         try {
           console.log(route.params)
-          const restaurant = await getRestaurantProfile(route.params);
+          const restaurant = await getRestaurantProfile({restaurantId: route.params.restaurantId});
 
             console.log(restaurant.name)
             setName(restaurant.name)
@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
   },
   buttonAlign: {
     alignItems: 'flex-start',
+    marginTop: 30
   },
   titleContainer: {
     color: 'rgba(237, 237, 237, 0.8)',
