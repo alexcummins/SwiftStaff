@@ -45,7 +45,7 @@ export default function TempWorkerHomeScreen() {
   }
 
   function profile() {
-      navigation.navigate("JobProfile")
+      navigation.navigate("JobProfile", {viewerType: 2})
   }
 
   return (
