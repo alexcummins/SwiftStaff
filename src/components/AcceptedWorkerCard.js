@@ -52,7 +52,7 @@ export default function AcceptedWorkerCard({data}) {
                         </TouchableOpacity>
                         <TouchableOpacity style={style.phone}
                                           hitSlop={{top: 20, bottom: 20, left: 1, right: 1}}
-                                          onPress={() => callPhone(phone)}>
+                                          onPress={() => callPhone(workerPhone)}>
                             <Image style={style.phoneImage}
                                 source={require('../../resources/img/phone.png')}/>
                         </TouchableOpacity>
