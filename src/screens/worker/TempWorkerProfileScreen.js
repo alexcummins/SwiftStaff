@@ -30,6 +30,7 @@ export default function WorkerProfile({route}) {
     const [phoneNumber, setphoneNumber] = useState('07654321234');
     const [ratingTotal, setRatingTotal] = useState(14)
     const [ratingCount, setRatingCount] = useState(3)
+    const [hide, setHide] = useState(false)
     const [skillsAndQualities, setSkillsAndQualities] = useState([
         {name: 'Collaborative'},
         {name: 'Hardworking'},
@@ -57,7 +58,8 @@ export default function WorkerProfile({route}) {
 
            const hideWhenWorkerProfile = async () => {
                await AsyncStorage.getItem('userType', (error, result) => {
-                    hide = result === '2'
+                   console.log(result)
+                   setHide(result === '2')
                })
             }
 
@@ -65,8 +67,6 @@ export default function WorkerProfile({route}) {
                 try {
                     console.log(route.params)
                     const worker = await getWorkerProfile(route.params);
-                    const profileImage = await getImage({imageId: worker.image, resourceName: "profileImg"})
-                    console.log(profileImage)
 
                     console.log(worker.fName)
                     setFirstName(worker.fName)
@@ -90,7 +90,7 @@ export default function WorkerProfile({route}) {
             [route.params.userId, route.params.userType])
     )
 
-    let hide = false
+
 
     const toggleShowRateCard = () => {
         setVisibility(!visibility)
@@ -107,7 +107,7 @@ export default function WorkerProfile({route}) {
                     <ProfileCardBasicInfo data={{ listItemsAndIcons:
                             [
                                 {name: address, icon: 'map-marker'},
-                                {name: phoneNumber, icon: 'phone-outline'},
+                                {name: `0${phoneNumber}`, icon: 'phone-outline'},
                             ]
                     }}/>
                     <ProfileCardList data={{ title:'Skills and Qualities', listItems: skillsAndQualities

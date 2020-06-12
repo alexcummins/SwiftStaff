@@ -1,6 +1,6 @@
 import {Text, View} from 'react-native';
 import {Avatar, Button} from 'react-native-paper';
-import React from 'react';
+import React, {useState} from 'react';
 import {CommonActions, useFocusEffect, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage'
 import {API_JOB_URL, WEBSOCKET_PROTOCOL} from '../../api/APIUtils';
@@ -9,15 +9,19 @@ export default function TempWorkerHomeScreen() {
 
   const navigation = useNavigation();
 
+  const [workerId, setWorkerId] = useState("")
 
   useFocusEffect(
     React.useCallback(() => {
       (async () => {
         let keys = [];
         let vals = []
+        let workerId = ""
         try {
           keys = await AsyncStorage.getAllKeys();
           vals = await AsyncStorage.multiGet(keys)
+          workerId = await AsyncStorage.getItem("workerId")
+          setWorkerId(workerId)
         } catch (e) {
           // read key error
         }
@@ -45,7 +49,7 @@ export default function TempWorkerHomeScreen() {
   }
 
   function profile() {
-      navigation.navigate("JobProfile")
+      navigation.navigate("JobProfile", {userId: workerId, userType: '2'})
   }
 
   return (
