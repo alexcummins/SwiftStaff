@@ -93,7 +93,6 @@ export default function WorkerProfile({route}) {
     let hide = false
 
     const toggleShowRateCard = () => {
-        console.log(`${API_IMAGE_DOWNLOAD_URI}/profile/2`)
         setVisibility(!visibility)
     }
 
@@ -102,7 +101,7 @@ export default function WorkerProfile({route}) {
             <ScrollView style={styles.container}>
                 <View style={styles.header}></View>
                 {/*<Image style={styles.avatar} source={profileImage}/>*/}
-                <Image style={styles.avatar} source={{uri: 'http://localhost:8080/api/v1/downloads/profile/2'}}/>
+                <Image style={styles.avatar} source={{uri: profileImage}}/>
                 <View style={styles.body}>
                     <Text style={styles.name}>{firstName}{' '}{lastName}</Text>
                     <ProfileCardBasicInfo data={{ listItemsAndIcons:
