@@ -42,6 +42,7 @@
     "react-native-paper": "^3.10.1",
     "react-native-paper-form-builder": "^1.0.6",
     "react-native-permissions": "^2.1.5",
+    "react-native-phone-call": "^1.0.9",
     "react-native-ratings": "^7.2.0",
     "react-native-reanimated": "^1.9.0",
     "react-native-safe-area-context": "^3.0.2",

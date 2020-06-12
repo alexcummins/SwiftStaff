@@ -1,5 +1,6 @@
 import {Alert, Platform, ToastAndroid} from "react-native";
 import {check, request, PERMISSIONS, RESULTS} from "react-native-permissions";
+import call from "react-native-phone-call";
 
 export function notifyMessage(msg: string) {
     console.log(`Displaying: ${msg}`);
@@ -68,4 +69,11 @@ const requestPermission = async (permissions): Promise<boolean> => {
     }
 }
 
+export const callPhone = (phone : string) => {
+    const phoneState = {
+        number: `0${phone}`,
+        prompt: false
+    }
+    call(phoneState).catch(console.error)
+}
 
