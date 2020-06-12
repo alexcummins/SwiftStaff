@@ -24,6 +24,7 @@ export default function RestaurantScreens({ navigation }) {
   let tempOffersScreenAccepted = function () {
     return (<TempWorkerOffersScreen preFetchDataJobList={jobsList} accepted={true}/>)
   }
+
   return (
     <Tab.Navigator tabBarPosition="bottom" initialRouteName="Home">
       <Tab.Screen name="Offers">

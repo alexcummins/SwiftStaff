@@ -200,3 +200,57 @@ export function convertDataToJobCardData(data) {
     console.log(JSON.stringify(jobsObjList))
     return jobsObjList;
 }
+
+export function convertDataToReviewCardData(data) {
+    console.log(JSON.stringify(data))
+    let jobs = data.jobsList
+    const jobsObjList = []
+
+    let jobObj = {
+        id: '',
+        name: '',
+        date: '',
+        startTime: '',
+        endTime: '',
+        hourlyRate: '',
+        extraInfo: '',
+        latitude: 0.0,
+        longitude: 0.0,
+        restaurantRating: 5,
+        restaurantId: ''
+    };
+
+    for (i = 0; i < jobs.length; i++) {
+        const job = jobs[i].job
+        const workersObjList = []
+
+        jobObj = {
+            id: job._id,
+            date:  job.date,
+            startTime:  job.startTime,
+            endTime: job.endTime,
+            hourlyRate: job.hourlyRate,
+            extraInfo: job.extraInfo,
+            reviewList: job.reviewList,
+            isConfirmed: job.status === 1,
+            confirmedWorkerId: job.workerId
+        }
+
+        const workers = jobs[i].workers
+        for (i = 0; i < workers.length; i++) {
+            const worker = workers[i]
+            const workerObj = {
+                id: worker._id,
+                fName: worker.fName,
+                lName: worker.lName,
+                phone: worker.phone,
+                ratingTotal: worker.ratingTotal,
+                ratingCount: worker.ratingCount
+            }
+            workersObjList.push(workerObj)
+        }
+        jobsObjList.push({jobObj: jobObj, workersObj: workersObjList})
+    }
+    console.log(JSON.stringify(jobsObjList))
+    return jobsObjList;
+}
