@@ -101,7 +101,9 @@ export default function WorkerProfile({route}) {
             <ScrollView style={styles.container}>
                 <View style={styles.header}></View>
                 {/*<Image style={styles.avatar} source={profileImage}/>*/}
-                <Image style={styles.avatar} source={{uri: profileImage}}/>
+                <TouchableOpacity style={styles.avatarButton}>
+                    <Image style={styles.avatar} source={{uri: profileImage}}/>
+                </TouchableOpacity>
                 <View style={styles.body}>
                     <Text style={styles.name}>{firstName}{' '}{lastName}</Text>
                     <ProfileCardBasicInfo data={{ listItemsAndIcons:
@@ -158,7 +160,7 @@ const styles = StyleSheet.create({
         height: height*0.2,
         backgroundColor: "#00BFFF"
     },
-    avatar:{
+    avatarButton:{
         flex: 1,
         height: height*0.2,
         width: undefined,
@@ -166,10 +168,18 @@ const styles = StyleSheet.create({
         top: height*0.1,
         position: 'absolute',
 
+    },
+    avatar:{
+        flex: 1,
+        height: height*0.2,
+        width: undefined,
+        alignSelf: 'center',
+
         aspectRatio: 1,
         borderRadius: 63,
         borderWidth: 4,
         borderColor: "white",
+        backgroundColor: "rgba(255,255,255,0.7)"
     },
     body: {
         flex: 1,
