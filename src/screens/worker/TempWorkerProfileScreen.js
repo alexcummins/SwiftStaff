@@ -52,43 +52,64 @@ export default function WorkerProfile({route}) {
         'in customer service through volunteering in Marie Curie. I like working with customers ' +
         'directly and I enjoy the fast-paced customer service orientated nature of Cafe work')
 
-    // useFocusEffect(
-    //     React.useCallback(() => {
+    useFocusEffect(
+        React.useCallback(() => {
 
-    //        const hideWhenWorkerProfile = async () => {
-    //            await AsyncStorage.getItem('userType', (error, result) => {
-    //                 hide = result === '2'
-    //            })
-    //         }
-    //
-    //         const fetchWorkerProfile = async () => {
-    //             try {
-    //                 console.log(route.params)
-    //                 const worker = await getWorkerProfile(route.params);
-    //                 const profileImage = await getImage({imageId: worker.image, resourceName: "profileImg"})
-    //                 console.log(profileImage)
-    //
-    //                 console.log(worker.fName)
-    //                 setFirstName(worker.fName)
-    //                 setLastName(worker.lName)
-    //                 // Profile Image
-    //                 // Address
-    //                 setphoneNumber(worker.phone)
-    //                 // Qualities
-    //                 // Qualifications
-    //                 // Experience
-    //                 setPersonalStatement(worker.personalStatement)
-    //
-    //             } catch (e) {
-    //                 console.log("Retrieving worker profile faled")
-    //                 console.log(e.getMessage())
-    //             }
-    //         }
-    //         let hidPromise = hideWhenWorkerProfile()
-    //         let promise = fetchWorkerProfile()
-    //         },
-    //         [route.params.userId, route.params.userType])
-    // )
+           const hideWhenWorkerProfile = async () => {
+               await AsyncStorage.getItem('userType', (error, result) => {
+                    hide = result === '2'
+               })
+            }
+
+           let appropriateId = ''
+           let appropriateType = 0
+
+            const getDetails = async () => {
+               if (route.params.viewerType === 2) {
+                   await AsyncStorage.multiGet(['userId','userType']).then(response => {
+                       appropriateId = response[0][1]
+                       appropriateType = response[1][1]
+                   })
+               } else {
+                   appropriateId = route.params.userId
+                   appropriateType = route.params.userType
+               }
+               setUserId(appropriateId)
+             }
+
+            const fetchWorkerProfile = async () => {
+                try {
+                    // Set workerInfo to get item
+                    console.log(route.params)
+                    let details = getDetails()
+                    let workerInfo = {userId: appropriateId, userType: appropriateType}
+                    const worker = await getWorkerProfile(workerInfo);
+
+                    // const profileImage = await getImage({imageId: worker.image, resourceName: "profileImg"})
+                    console.log(profileImage)
+
+                    // Set profile info based on server info
+                    console.log(worker.fName)
+                    setFirstName(worker.fName)
+                    setLastName(worker.lName)
+                    // Profile Image
+                    // Address
+                    setphoneNumber(`0${worker.phone}`)
+                    // Qualities
+                    // Qualifications
+                    // Experience
+                    setPersonalStatement(worker.personalStatement)
+
+                } catch (e) {
+                    console.log("Retrieving worker profile faled")
+                    console.log(e.getMessage())
+                }
+            }
+            let hidePromise = hideWhenWorkerProfile()
+            let promise = fetchWorkerProfile()
+            },
+            [route.params.userId, route.params.userType])
+    )
 
     let hide = false
 
@@ -102,7 +123,9 @@ export default function WorkerProfile({route}) {
             <ScrollView style={styles.container}>
                 <View style={styles.header}></View>
                 {/*<Image style={styles.avatar} source={profileImage}/>*/}
-                <Image style={styles.avatar} source={{uri: profileImage}}/>
+                <TouchableOpacity style={styles.avatarButton}>
+                    <Image style={styles.avatar} source={{uri: profileImage}}/>
+                </TouchableOpacity>
                 <View style={styles.body}>
                     <Text style={styles.name}>{firstName}{' '}{lastName}</Text>
                     <ProfileCardBasicInfo data={{ listItemsAndIcons:
@@ -159,7 +182,7 @@ const styles = StyleSheet.create({
         height: height*0.2,
         backgroundColor: "#00BFFF"
     },
-    avatar:{
+    avatarButton:{
         flex: 1,
         height: height*0.2,
         width: undefined,
@@ -167,10 +190,18 @@ const styles = StyleSheet.create({
         top: height*0.1,
         position: 'absolute',
 
+    },
+    avatar:{
+        flex: 1,
+        height: height*0.2,
+        width: undefined,
+        alignSelf: 'center',
+
         aspectRatio: 1,
         borderRadius: 63,
         borderWidth: 4,
         borderColor: "white",
+        backgroundColor: "rgba(255,255,255,0.7)"
     },
     body: {
         flex: 1,
