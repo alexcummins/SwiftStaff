@@ -4,6 +4,7 @@ import {StyleSheet, Dimensions, View, Text, TouchableOpacity, Image} from 'react
 import {useNavigation} from '@react-navigation/native';
 import StarRating from "react-native-star-rating";
 import {Rating} from 'react-native-ratings'
+import {callPhone} from "../api/Utils";
 
 export default function AcceptedWorkerCard({data}) {
 
@@ -50,7 +51,8 @@ export default function AcceptedWorkerCard({data}) {
                             <Text>Profile</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={style.phone}
-                                          hitSlop={{top: 20, bottom: 20, left: 1, right: 1}}>
+                                          hitSlop={{top: 20, bottom: 20, left: 1, right: 1}}
+                                          onPress={() => callPhone(phone)}>
                             <Image style={style.phoneImage}
                                 source={require('../../resources/img/phone.png')}/>
                         </TouchableOpacity>
