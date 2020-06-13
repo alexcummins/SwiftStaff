@@ -10,7 +10,7 @@ export default function () {
     return (
         <View style={styles.container}>
             <View style={styles.row}>
-                    <Image source={require('../../resources/img/SwiftStaffLogoCropped.png')}
+                    <Image source={require('../../resources/img/SwiftStaffLogoCroppedSmall.png')}
                            style={{flex: 1, height: screenHeight * 0.2, width: screenWidth * 0.5}}
                            resizeMode="contain"/>
             </View>
