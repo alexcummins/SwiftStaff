@@ -13,7 +13,7 @@ export default function AcceptedWorkerCard({data}) {
     const [ratingTotal, setRatingTotal] = useState(data.ratingTotal)
     const [ratingCount, setRatingCount] = useState(data.ratingCount)
     const [workerId, setWorkerId] = useState(data.workerId)
-    const [userType, setUserType] = useState(2)
+    const [userType, setUserType] = useState('1')
     const [hourlyRate, setHourlyRate] = useState(data.hourlyRate)
     const [startTime, setStartTime] = useState(data.startTime)
     const [endTime, setEndTime] = useState(data.startTime)
@@ -42,12 +42,12 @@ export default function AcceptedWorkerCard({data}) {
                         <Rating type='custom'
                                 imageSize={width*0.08}
                                 readonly={true}
-                                startingValue={ratingTotal / (ratingCount + 1)}
+                                startingValue={ratingCount === 0 ? 0 : ratingTotal / ratingCount}
                                 ratingColor='#f1c40f'/>
 
                         <TouchableOpacity style={style.profile}
                                           onPress={() =>
-                                              navigation.navigate("JobProfile", {workerId:workerId, userType:userType, viewerType: 1})}>
+                                              navigation.navigate("JobProfile", {workerId:workerId})}>
                             <Text>Profile</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={style.phone}
