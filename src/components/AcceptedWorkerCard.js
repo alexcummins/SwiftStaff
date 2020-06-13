@@ -47,7 +47,7 @@ export default function AcceptedWorkerCard({data}) {
 
                         <TouchableOpacity style={style.profile}
                                           onPress={() =>
-                                              navigation.navigate("JobProfile", {workerId:workerId, userType:userType})}>
+                                              navigation.navigate("JobProfile", {workerId:workerId, userType:userType, viewerType: 1})}>
                             <Text>Profile</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={style.phone}

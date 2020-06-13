@@ -34,12 +34,23 @@ const REQUEST_PERMISSION_TYPE = {
     photos: PLATFORM_PHOTOS_PERMISSIONS
 }
 
-const PERMISSION_TYPE = {
+export const PERMISSION_TYPE = {
     camera: 'camera',
     photos: 'photos'
 }
 
-const checkPermission = async (permType): Promise<boolean> => {
+const requestPermission = async (permissions): Promise<boolean> => {
+    try {
+        const result = await request(permissions)
+        return result === RESULTS.GRANTED
+    } catch (e) {
+        console.log(e)
+        console.log("Request Permission Unknown failure")
+        return false
+    }
+}
+
+export const checkPermission = async (permType): Promise<boolean> => {
     const permissions = REQUEST_PERMISSION_TYPE[permType][Platform.OS]
     if (!permissions) {
         return true
@@ -58,17 +69,6 @@ const checkPermission = async (permType): Promise<boolean> => {
     }
 }
 
-const requestPermission = async (permissions): Promise<boolean> => {
-    try {
-        const result = await request(permissions)
-        return result === RESULTS.GRANTED
-    } catch (e) {
-        console.log(e)
-        console.log("Request Permission Unknown failure")
-        return false
-    }
-}
-
 export const callPhone = (phone : string) => {
     const phoneState = {
         number: `0${phone}`,
@@ -76,4 +76,5 @@ export const callPhone = (phone : string) => {
     }
     call(phoneState).catch(console.error)
 }
+
 
