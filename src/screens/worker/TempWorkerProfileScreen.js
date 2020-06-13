@@ -90,8 +90,6 @@ export default function WorkerProfile({route}) {
             [route.params.userId, route.params.userType])
     )
 
-
-
     const toggleShowRateCard = () => {
         setVisibility(!visibility)
     }
