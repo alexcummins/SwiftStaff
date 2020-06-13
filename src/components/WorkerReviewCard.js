@@ -11,15 +11,15 @@ import {Rating} from "react-native-ratings";
 
 export default function WorkerReviewCard({worker, jobsId, updateCallBack}) {
 
-    const [fName, setFName] = useState(worker.fName);
-    const [lName, setLName] = useState(worker.lName);
+    const [fname, setFname] = useState(worker.fname);
+    const [lname, setLname] = useState(worker.lname);
     const [rating, setRating] = useState(worker.ratingTotal);
     const [workerId, setWorkerId] = useState(worker.id);
     const [jobId, setJobId] = useState(jobsId);
 
     function updateCard() {
-        setFName(worker.fName);
-        setLName(worker.lName);
+        setFname(worker.fname);
+        setLname(worker.lname);
         setRating(worker.ratingTotal);
         setWorkerId(worker.id);
         setJobId(jobsId);
@@ -72,7 +72,7 @@ export default function WorkerReviewCard({worker, jobsId, updateCallBack}) {
         <Card>
             <Card.Content style={style.card}>
                 <View>
-                    <Title>{`${worker.fName} ${worker.lName}`}</Title>
+                    <Title>{`${fname} ${lname}`}</Title>
                     <View style={style.buttonsContainer}>
                         <Rating type='custom'
                                 imageSize={width * 0.08}

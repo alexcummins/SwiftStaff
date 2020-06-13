@@ -31,8 +31,8 @@ export default function RestaurantSignup({route, navigation}) {
                     ['restaurantName', data.name],
                     ['restaurantAddress', data.address],
                     ['restaurantPhone', data.phone.toString()],
-                    ['fName', ""],
-                    ['lName', ""]
+                    ['fname', ""],
+                    ['lname', ""]
                 ])
             navigation.dispatch(
                 CommonActions.reset({

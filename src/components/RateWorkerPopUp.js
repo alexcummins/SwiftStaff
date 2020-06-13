@@ -47,7 +47,7 @@ export default function RateWorkerPopUp(props) {
     return (
             <Card>
                 <Card.Content style={styles.rateCard}>
-                    <Title>Rate {props.fName} {props.lName} !</Title>
+                    <Title>Rate {props.fname} {props.lname} !</Title>
                     <Divider/>
                     <Rating showRating={true}
                             fractions="1"

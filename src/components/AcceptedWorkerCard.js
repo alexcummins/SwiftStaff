@@ -18,8 +18,8 @@ export default function AcceptedWorkerCard({data}) {
     const [startTime, setStartTime] = useState(data.startTime)
     const [endTime, setEndTime] = useState(data.startTime)
     const [date, setDate] = useState(data.date)
-    const [fName, setFName] = useState(data.fName)
-    const [lName, setLName] = useState(data.lName)
+    const [fname, setFname] = useState(data.fname)
+    const [lname, setLname] = useState(data.lname)
     const [workerPhone, setWorkerPhone] = useState(data.workerPhone)
     const [jobId, setJobId] = useState(data.jobId)
     return (
@@ -30,7 +30,7 @@ export default function AcceptedWorkerCard({data}) {
                     <Subheading>{`${startTime} - ${endTime}`}</Subheading>
                 </View>
                 <View>
-                    <Title>{`${fName} ${lName}`}</Title>
+                    <Title>{`${fname} ${lname}`}</Title>
                     <View style={style.jobInfo}>
                         <View>
                             <Text style={style.jobTitle}></Text>

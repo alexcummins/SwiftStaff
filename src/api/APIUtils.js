@@ -243,8 +243,8 @@ export function convertDataToReviewCardData(data) {
             const worker = workers[i]
             const workerObj = {
                 id: worker._id,
-                fName: worker.fName,
-                lName: worker.lName,
+                fname: worker.fname,
+                lname: worker.lname,
                 phone: worker.phone,
                 ratingTotal: worker.ratingTotal,
                 ratingCount: worker.ratingCount

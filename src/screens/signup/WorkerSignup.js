@@ -34,8 +34,8 @@ export default function WorkerSignup({route, navigation}) {
                     ['workerId', response.data.workerId],
                     ['userType', "2"],
                     ['email', data.email],
-                    ['fName', data.fName],
-                    ['lName', data.lName],
+                    ['fname', data.fname],
+                    ['lname', data.lname],
                     ['phone', data.phone.toString()],
                     ['dob', data.dob],
                 ])
@@ -55,9 +55,9 @@ export default function WorkerSignup({route, navigation}) {
 
     const form = useForm({
         defaultValues: {
-            fName: '',
+            fname: '',
 
-            lName: '',
+            lname: '',
 
             phone: ''
         },

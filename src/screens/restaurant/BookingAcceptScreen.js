@@ -72,8 +72,8 @@ export default function BookingAcceptScreen() {
         return el.id === jobWorkerObj.jobObj.confirmedWorkerId
       })
       let dataObj = {
-        fName: workerObj.fName,
-        lName: workerObj.lName,
+        fname: workerObj.fname,
+        lname: workerObj.lname,
         workerPhone: workerObj.phone,
         date: jobWorkerObj.jobObj.date,
         startTime: jobWorkerObj.jobObj.startTime,

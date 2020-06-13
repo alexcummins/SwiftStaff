@@ -82,8 +82,8 @@ export default function Login(props) {
               ['workerId', data.workerId],
               ['userType', data.userType.toString()],
               ['email', data.email],
-              ['fName', ''],
-              ['lName', ''],
+              ['fname', data.fname],
+              ['lname', data.lname],
               ['phone', data.phone.toString()],
             ]);
           goToWorker();
@@ -96,8 +96,8 @@ export default function Login(props) {
               ['restaurantEmail', data.restaurantEmail],
               ['restaurantName', data.restaurantName],
               ['restaurantPhone', data.restaurantPhone.toString()],
-              ['fName', data.fName],
-              ['lName', data.lName],
+              ['fname', data.fname],
+              ['lname', data.lname],
               ['restaurantId', data.restaurantId]
             ]);
           console.log('about to navigate');

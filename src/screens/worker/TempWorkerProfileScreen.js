@@ -23,8 +23,8 @@ export default function WorkerProfile({route}) {
     const [visibility, setVisibility] = useState(false)
 
     const [userId, setUserId] = useState('2')
-    const [firstName, setFirstName] = useState('John')
-    const [lastName, setLastName] = useState('Doe')
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
     const [profileImage, setprofileImage] = useState(`${API_IMAGE_DOWNLOAD_URI}/profile/2`);
     const [address, setAddress] = useState('15 Alexander Road, London, SW59 0JC');
     const [phoneNumber, setphoneNumber] = useState('07654321234');
@@ -68,9 +68,9 @@ export default function WorkerProfile({route}) {
                     console.log(route.params)
                     const worker = await getWorkerProfile(route.params);
 
-                    console.log(worker.fName)
-                    setFirstName(worker.fName)
-                    setLastName(worker.lName)
+                    console.log(worker.fname)
+                    setFirstName(worker.fname)
+                    setLastName(worker.lname)
                     // Profile Image
                     // Address
                     setphoneNumber(worker.phone)
@@ -126,8 +126,8 @@ export default function WorkerProfile({route}) {
                        onBackdropPress={() => toggleShowRateCard()}>
                     <RateWorkerPopUp
                         userId={userId}
-                        fName={firstName}
-                        lName={lastName}
+                        fname={firstName}
+                        lname={lastName}
                         oldRatingTotal={ratingTotal}
                         oldRatingCount={ratingCount}
                         closePopUp={toggleShowRateCard}/>
