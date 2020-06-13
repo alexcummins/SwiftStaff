@@ -68,15 +68,16 @@ export default function WorkerProfile({route}) {
                     console.log(route.params)
                     const worker = await getWorkerProfile(route.params);
 
-                    console.log(worker.fname)
+                    console.log(worker)
                     setFirstName(worker.fname)
                     setLastName(worker.lname)
-                    // Profile Image
                     // Address
                     setphoneNumber(worker.phone)
-                    // Qualities
-                    // Qualifications
+                    // Skills&Qualities
                     // Experience
+                    // Qualifications
+                    setRatingTotal(worker.ratingTotal)
+                    setRatingCount(worker.ratingCount)
                     setPersonalStatement(worker.personalStatement)
 
                 } catch (e) {

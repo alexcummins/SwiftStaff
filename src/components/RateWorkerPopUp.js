@@ -21,6 +21,7 @@ export default function RateWorkerPopUp(props) {
         if (props.oldRatingCount !== 0) {
             result = props.oldRatingTotal / props.oldRatingCount
         }
+        console.log(result)
         return result
     }
 
@@ -51,7 +52,7 @@ export default function RateWorkerPopUp(props) {
                     <Divider/>
                     <Rating showRating={true}
                             fractions="1"
-                            startingValue={startValue().toString()}
+                            startingValue={startValue()}
                             onFinishRating={(rating) => onFinishRating(rating)}/>
                     {!completed ?
                         <Button icon="gesture-double-tap"

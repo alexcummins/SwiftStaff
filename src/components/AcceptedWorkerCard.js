@@ -42,7 +42,7 @@ export default function AcceptedWorkerCard({data}) {
                         <Rating type='custom'
                                 imageSize={width*0.08}
                                 readonly={true}
-                                startingValue={ratingCount === 0 ? 0 : ratingTotal / ratingCount + 1}
+                                startingValue={ratingCount === 0 ? 0 : ratingTotal / ratingCount}
                                 ratingColor='#f1c40f'/>
 
                         <TouchableOpacity style={style.profile}
