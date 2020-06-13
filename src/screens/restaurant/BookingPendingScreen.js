@@ -12,13 +12,11 @@ let retrieveNotifications = () => {
 }
 export default function BookingPendingScreen() {
     const [jobsList, setJobsList] = useState([]);
-    const [restaurantId, setRestaurantId] = useState('')
 
     useFocusEffect(
         React.useCallback(() => {
             var ws = {};
             const asyncRestaurant = AsyncStorage.getItem('restaurantId').then((asyncRestaurant) => {
-                    setRestaurantId(asyncRestaurant);
 
                     const workerIdSocketString = `restaurantId: ${asyncRestaurant}`;
                     console.log(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
@@ -46,6 +44,7 @@ export default function BookingPendingScreen() {
                                 setJobsList(newList.reverse());
                             }
                         }
+                        ws.close()
                     };
                     retrieveNotifications = async () => {
                         ws.send(workerIdSocketString);
@@ -58,33 +57,36 @@ export default function BookingPendingScreen() {
             };
 
         }, []))
+
     const updateJobsList = (newList) => {
         setJobsList(newList)
     }
 
     function workerReviewCardMaker(worker, jobsId) {
         return (
-            <WorkerReviewCard worker={worker} jobsId={jobsId} key={worker.id} updateCallBack={updateJobsList}/>
+            <WorkerReviewCard worker={worker} jobsId={jobsId} key={worker.id + jobsId} updateCallBack={updateJobsList}/>
         )
     }
 
     function jobReviewListAccordionMaker(jobWorkerObj) {
-      if (jobWorkerObj.jobObj.isConfirmed) {
-        return null
-      } else {
-        return (
-          <List.Accordion
-            title={`${jobWorkerObj.workersObj.length} Workers to review!`}
-            description={`${jobWorkerObj.jobObj.date} ${jobWorkerObj.jobObj.startTime} to ${jobWorkerObj.jobObj.endTime}
+        console.log("JobWorkerObj:")
+        console.log(JSON.stringify(jobWorkerObj))
+        if (jobWorkerObj.jobObj.isConfirmed) {
+            return null
+        } else {
+            return (
+                <List.Accordion
+                    title={`${jobWorkerObj.workersObj.length} workers to review!`}
+                    description={`${jobWorkerObj.jobObj.date} ${jobWorkerObj.jobObj.startTime} to ${jobWorkerObj.jobObj.endTime}
                 £${jobWorkerObj.jobObj.hourlyRate} per hour.`}
-            key={jobWorkerObj.toString()}
-          >
-            {jobWorkerObj.workersObj.map((worker) => {
-              return workerReviewCardMaker(worker, jobWorkerObj.jobObj.id)
-            })}
-          </List.Accordion>
-        )
-      }
+                    key={jobWorkerObj.toString()}
+                >
+                    {jobWorkerObj.workersObj.map((worker) => {
+                        return workerReviewCardMaker(worker, jobWorkerObj.jobObj.id)
+                    })}
+                </List.Accordion>
+            )
+        }
     }
 
     return (

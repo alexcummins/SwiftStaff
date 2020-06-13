@@ -7,63 +7,68 @@ import {getRestaurantProfile} from '../../api/APIUtils';
 
 export default function RestaurantHomeScreen({data}) {
 
-  const navigation = useNavigation();
-  const [restaurantData, setRestaurantData] = useState({})
-  useFocusEffect(
-    React.useCallback(() => {
-      (async () => {
-        let keys = [];
-        let vals = []
-        let restaurantId = ""
+    const navigation = useNavigation();
+    const [restaurantData, setRestaurantData] = useState({})
+
+    useFocusEffect(
+        React.useCallback(() => {
+            (async () => {
+                let keys = [];
+                let vals = []
+                let restaurantId = ""
+                try {
+                    keys = await AsyncStorage.getAllKeys();
+                    vals = await AsyncStorage.multiGet(keys)
+                    restaurantId = await AsyncStorage.getItem("restaurantId")
+                } catch (e) {
+                    // read key error
+                }
+
+                console.log(vals)
+
+                const restaurant = await getRestaurantProfile({restaurantId: restaurantId});
+                setRestaurantData(restaurant)
+                return undefined
+            })();
+
+        }), []);
+
+    async function logout() {
         try {
-          keys = await AsyncStorage.getAllKeys();
-          vals = await AsyncStorage.multiGet(keys)
-           restaurantId = await AsyncStorage.getItem("restaurantId")
+            const keys = await AsyncStorage.getAllKeys();
+            await AsyncStorage.multiRemove(keys);
         } catch (e) {
-          // read key error
+            console.error('Error clearing app data.');
         }
 
-        console.log(vals)
-
-        const restaurant = await getRestaurantProfile({restaurantId: restaurantId});
-        setRestaurantData(restaurant)
-      })();
-
-    }), []);
-  async function logout(){
-    try {
-      const keys = await AsyncStorage.getAllKeys();
-      await AsyncStorage.multiRemove(keys);
-    } catch(e) {
-      console.error('Error clearing app data.');
+        navigation.dispatch(
+            CommonActions.reset({
+                index: 0,
+                routes: [
+                    {name: 'Login'}
+                ],
+            }));
     }
 
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 0,
-        routes: [
-          { name: 'Login' }
-        ],
-      }));
-  }
+    function profile() {
+        console.log("Restaurant data:")
+        console.log(JSON.stringify(restaurantData))
+        navigation.navigate("RestaurantProfile", restaurantData)
+    }
 
-  function profile() {
-    navigation.navigate("RestaurantProfile", restaurantData)
-  }
-
-  return (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }} >
-        <Text>SwiftStaff</Text>
-        <Button
-          icon="logout"
-          mode="contained"
-          onPress={() => logout()}
-        >Logout</Button>
-        <Button
-          icon="account-circle"
-          mode="contained"
-          onPress={() => profile()}
-        >Profile</Button>
-      </View>
-  )
+    return (
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+            <Text>SwiftStaff</Text>
+            <Button
+                icon="logout"
+                mode="contained"
+                onPress={() => logout()}
+            >Logout</Button>
+            <Button
+                icon="account-circle"
+                mode="contained"
+                onPress={() => profile()}
+            >Profile</Button>
+        </View>
+    )
 }

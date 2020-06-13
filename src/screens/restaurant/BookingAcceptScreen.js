@@ -59,6 +59,7 @@ export default function BookingAcceptScreen() {
       };
 
     }, []))
+
   const updateJobsList = (newList) => {
     setJobsList(newList)
   }

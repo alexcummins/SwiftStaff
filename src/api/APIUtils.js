@@ -41,6 +41,7 @@ export async function getLoginRequest(params) {
 
 
 export async function getRestaurantProfile(params) {
+    console.log(`Getting restaurant profile with restaurantId ${params.restaurantId}`)
     let response = await sendHttpPostRequest(params, API_PROFILE_RESTAURANT)
     if (response.status === 200) {
         return response.data
@@ -239,8 +240,9 @@ export function convertDataToReviewCardData(data) {
         }
 
         const workers = jobs[i].workers
-        for (i = 0; i < workers.length; i++) {
-            const worker = workers[i]
+        let j;
+        for (j = 0; j < workers.length; j++) {
+            const worker = workers[j]
             const workerObj = {
                 id: worker._id,
                 fname: worker.fname,
@@ -253,6 +255,7 @@ export function convertDataToReviewCardData(data) {
         }
         jobsObjList.push({jobObj: jobObj, workersObj: workersObjList})
     }
+    console.log("Job objects fetched:")
     console.log(JSON.stringify(jobsObjList))
     return jobsObjList;
 }
