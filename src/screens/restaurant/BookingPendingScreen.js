@@ -64,7 +64,11 @@ export default function BookingPendingScreen() {
 
     function workerReviewCardMaker(worker, jobsId) {
         return (
-            <WorkerReviewCard worker={worker} jobsId={jobsId} key={worker.id + jobsId} updateCallBack={updateJobsList}/>
+            <>
+                <Text> Key: {`worker.id.toString() jobsId.toString()`} </Text>
+                <WorkerReviewCard worker={worker} jobsId={jobsId} key={`${jobsId}${worker.workerId}`}
+                                  updateCallBack={updateJobsList}/>
+            </>
         )
     }
 
@@ -79,7 +83,7 @@ export default function BookingPendingScreen() {
                     title={`${jobWorkerObj.workersObj.length} workers to review!`}
                     description={`${jobWorkerObj.jobObj.date} ${jobWorkerObj.jobObj.startTime} to ${jobWorkerObj.jobObj.endTime}
                 £${jobWorkerObj.jobObj.hourlyRate} per hour.`}
-                    key={jobWorkerObj.toString()}
+                    key={jobWorkerObj.jobObj.id}
                 >
                     {jobWorkerObj.workersObj.map((worker) => {
                         return workerReviewCardMaker(worker, jobWorkerObj.jobObj.id)
