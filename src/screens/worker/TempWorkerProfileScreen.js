@@ -22,14 +22,14 @@ export default function WorkerProfile({route}) {
 
     const [visibility, setVisibility] = useState(false)
 
-    const [userId, setUserId] = useState('2')
+    const [userId, setUserId] = useState(route.params.workerId)
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
-    const [profileImage, setprofileImage] = useState(`${API_IMAGE_DOWNLOAD_URI}/profile/2`);
+    const [profileImage, setprofileImage] = useState(`${API_IMAGE_DOWNLOAD_URI}/profile/${userId}`);
     const [address, setAddress] = useState('15 Alexander Road, London, SW59 0JC');
-    const [phoneNumber, setphoneNumber] = useState('07654321234');
-    const [ratingTotal, setRatingTotal] = useState(14)
-    const [ratingCount, setRatingCount] = useState(3)
+    const [phoneNumber, setphoneNumber] = useState(7654321234);
+    const [ratingTotal, setRatingTotal] = useState(5)
+    const [ratingCount, setRatingCount] = useState(1)
     const [hide, setHide] = useState(false)
     const [skillsAndQualities, setSkillsAndQualities] = useState([
         {name: 'Collaborative'},
@@ -56,7 +56,7 @@ export default function WorkerProfile({route}) {
     useFocusEffect(
         React.useCallback(() => {
 
-           const hideWhenWorkerProfile = async () => {
+           const hideWhenWorkerAccess = async () => {
                await AsyncStorage.getItem('userType', (error, result) => {
                    console.log(result)
                    setHide(result === '2')
@@ -80,11 +80,11 @@ export default function WorkerProfile({route}) {
                     setPersonalStatement(worker.personalStatement)
 
                 } catch (e) {
-                    console.log("Retrieving worker profile faled")
+                    console.log("Retrieving worker profile failed")
                     console.log(e.getMessage())
                 }
             }
-            let hidPromise = hideWhenWorkerProfile()
+            let hidPromise = hideWhenWorkerAccess()
             let promise = fetchWorkerProfile()
             },
             [route.params.userId, route.params.userType])

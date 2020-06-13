@@ -49,7 +49,7 @@ export default function TempWorkerHomeScreen() {
   }
 
   function profile() {
-      navigation.navigate("JobProfile", {userId: workerId, userType: '2'})
+      navigation.navigate("JobProfile", {workerId: workerId})
   }
 
   return (
