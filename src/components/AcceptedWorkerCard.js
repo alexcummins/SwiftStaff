@@ -1,12 +1,14 @@
 import React, {useState} from 'react';
-import {Card, List, Title, Divider, Subheading, Button, Modal} from 'react-native-paper';
+import {Card, List, Title, Divider, Subheading, Button, Modal, IconButton, Chip} from 'react-native-paper';
 import {StyleSheet, Dimensions, View, Text, TouchableOpacity, Image} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import StarRating from "react-native-star-rating";
 import {Rating} from 'react-native-ratings'
 import {callPhone} from "../api/Utils";
+import ExtraInfo from "./ExtraInfo";
+import WorkerReviewCard from "./WorkerReviewCard";
 
-export default function AcceptedWorkerCard({data}) {
+export default function AcceptedWorkerCard({data, worker}) {
 
     const navigation = useNavigation();
 
@@ -22,45 +24,23 @@ export default function AcceptedWorkerCard({data}) {
     const [lname, setLname] = useState(data.lname)
     const [workerPhone, setWorkerPhone] = useState(data.workerPhone)
     const [jobId, setJobId] = useState(data.jobId)
+
     return (
         <Card style={{marginVertical: 10, marginHorizontal: 10}} elevation={10}>
-            <Card.Content style={style.card}>
-                <View style={style.date}>
-                    <Title>{date}</Title>
-                    <Subheading>{`${startTime} - ${endTime}`}</Subheading>
+            <Card.Title title={`Confirmed booking ${data.date}`}/>
+            <Card.Content>
+                <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                    <Title>{`£${data.hourlyRate} per hour.`}</Title>
+                    <Title>{`${data.startTime} - ${data.endTime}`}</Title>
                 </View>
-                <View>
-                    <Title>{`${fname} ${lname}`}</Title>
-                    <View style={style.jobInfo}>
-                        <View>
-                            <Text style={style.jobTitle}></Text>
-                            <Text style={style.salary}>{hourlyRate}</Text>
-                        </View>
-                        <Text style={style.phoneNumber}>{`0${workerPhone}`}</Text>
-                    </View>
-                    <View style={style.buttonsContainer}>
-                        <Rating type='custom'
-                                imageSize={width*0.08}
-                                readonly={true}
-                                startingValue={ratingCount === 0 ? 0 : ratingTotal / ratingCount}
-                                ratingColor='#f1c40f'/>
-
-                        <TouchableOpacity style={style.profile}
-                                          onPress={() =>
-                                              navigation.navigate("JobProfile", {workerId:workerId})}>
-                            <Text>Profile</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity style={style.phone}
-                                          hitSlop={{top: 20, bottom: 20, left: 1, right: 1}}
-                                          onPress={() => callPhone(workerPhone)}>
-                            <Image style={style.phoneImage}
-                                source={require('../../resources/img/phone.png')}/>
-                        </TouchableOpacity>
-                    </View>
+                <View style={{flexDirection: "row", flexWrap: "wrap", marginTop: 15}}>
+                    {data.credentials.map((c) => <Chip key={c} style={{margin: 5}}>{c}</Chip>)}
                 </View>
-                <Divider/>
+                <ExtraInfo extraInfo={data.extraInfo} defaultLines={1}/>
             </Card.Content>
+            <WorkerReviewCard worker={worker} jobsId={data.jobId} showBottomBar={false} showPhoneNumber={true}/>
         </Card>
+
     );
 }
 

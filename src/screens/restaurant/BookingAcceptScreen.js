@@ -12,93 +12,94 @@ import AcceptedWorkerCard from '../../components/AcceptedWorkerCard';
 let retrieveNotifications = () => {
 }
 export default function BookingAcceptScreen() {
-  const [jobsList, setJobsList] = useState([]);
-  const [restaurantId, setRestaurantId] = useState('')
+    const [jobsList, setJobsList] = useState([]);
+    const [restaurantId, setRestaurantId] = useState('')
 
-  useFocusEffect(
-    React.useCallback(() => {
-      var ws = {};
-      const asyncRestaurant = AsyncStorage.getItem('restaurantId').then((asyncRestaurant) => {
-          setRestaurantId(asyncRestaurant);
+    useFocusEffect(
+        React.useCallback(() => {
+            var ws = {};
+            const asyncRestaurant = AsyncStorage.getItem('restaurantId').then((asyncRestaurant) => {
+                    setRestaurantId(asyncRestaurant);
 
-          const workerIdSocketString = `restaurantId: ${asyncRestaurant}`;
-          console.log(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
-          ws = new WebSocket(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
-          ws.onopen = (e) => {
-            console.log(workerIdSocketString);
-            ws.send(workerIdSocketString);
-          };
+                    const workerIdSocketString = `restaurantId: ${asyncRestaurant}`;
+                    console.log(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
+                    ws = new WebSocket(`${WEBSOCKET_PROTOCOL}${API_JOB_URL}`);
+                    ws.onopen = (e) => {
+                        console.log(workerIdSocketString);
+                        ws.send(workerIdSocketString);
+                    };
 
-          ws.onerror = (e) => {
-            console.log(e.message);
-          };
+                    ws.onerror = (e) => {
+                        console.log(e.message);
+                    };
 
-          ws.onclose = (e) => {
-            console.log(e.code, e.reason);
-          };
+                    ws.onclose = (e) => {
+                        console.log(e.code, e.reason);
+                    };
 
-          ws.onmessage = (e) => {
-            console.log(JSON.stringify(e))
-            if (e.data === 'update') {
-              retrieveNotifications();
-            } else {
-              const newList = convertDataToReviewCardData(JSON.parse(e.data));
-              if (newList.length !== 0) {
-                setJobsList(newList.reverse());
-              }
-            }
-          };
-          retrieveNotifications = async () => {
-            ws.send(workerIdSocketString);
-          };
+                    ws.onmessage = (e) => {
+                        console.log(JSON.stringify(e))
+                        if (e.data === 'update') {
+                            retrieveNotifications();
+                        } else {
+                            const newList = convertDataToReviewCardData(JSON.parse(e.data));
+                            if (newList.length !== 0) {
+                                setJobsList(newList.reverse());
+                            }
+                        }
+                    };
+                    retrieveNotifications = async () => {
+                        ws.send(workerIdSocketString);
+                    };
 
-        },
-      );
-      return () => {
-        ws.close();
-      };
+                },
+            );
+            return () => {
+                ws.close();
+            };
 
-    }, []))
+        }, []))
 
-  const updateJobsList = (newList) => {
-    setJobsList(newList)
-  }
-
-
-  function jobReviewListAccordionMaker(jobWorkerObj) {
-    if (!jobWorkerObj.jobObj.isConfirmed) {
-      return null
-    } else {
-      let workerObj = jobWorkerObj.workersObj.find((el) => {
-        return el.id === jobWorkerObj.jobObj.confirmedWorkerId
-      })
-      let dataObj = {
-        fname: workerObj.fname,
-        lname: workerObj.lname,
-        workerPhone: workerObj.phone,
-        date: jobWorkerObj.jobObj.date,
-        startTime: jobWorkerObj.jobObj.startTime,
-        endTime: jobWorkerObj.jobObj.endTime,
-        hourlyRate: jobWorkerObj.jobObj.hourlyRate,
-        workerId: workerObj.id,
-        ratingCount: workerObj.ratingCount,
-        ratingTotal: workerObj.ratingTotal,
-        jobId: jobWorkerObj.jobObj.id
-      }
-      return (
-
-        <AcceptedWorkerCard data={dataObj} key={jobWorkerObj.jobObj.id} updateCallBack={updateJobsList}/>
-
-      )
+    const updateJobsList = (newList) => {
+        setJobsList(newList)
     }
-  }
 
-  return (
-    <ScrollView >
-      <List.Section >
-        {jobsList.map(jobReviewListAccordionMaker)}
-      </List.Section>
-    </ScrollView>
-  );
+
+    function jobReviewListAccordionMaker(jobWorkerObj) {
+        if (!jobWorkerObj.jobObj.isConfirmed) {
+            return null
+        } else {
+            let workerObj = jobWorkerObj.workersObj.find((el) => {
+                return el.id === jobWorkerObj.jobObj.confirmedWorkerId
+            })
+            let dataObj = {
+                fname: workerObj.fname,
+                lname: workerObj.lname,
+                workerPhone: workerObj.phone,
+                date: jobWorkerObj.jobObj.date,
+                startTime: jobWorkerObj.jobObj.startTime,
+                endTime: jobWorkerObj.jobObj.endTime,
+                hourlyRate: jobWorkerObj.jobObj.hourlyRate,
+                workerId: workerObj.id,
+                ratingCount: workerObj.ratingCount,
+                ratingTotal: workerObj.ratingTotal,
+                credentials: jobWorkerObj.jobObj.credentials,
+                extraInfo: jobWorkerObj.jobObj.extraInfo,
+                jobId: jobWorkerObj.jobObj.id
+            }
+            return (
+                <AcceptedWorkerCard data={dataObj} worker={workerObj} key={jobWorkerObj.jobObj.id}
+                                    updateCallBack={updateJobsList} showBottomBar={true} showPhoneNumber={false}/>
+            )
+        }
+    }
+
+    return (
+        <ScrollView>
+            <List.Section>
+                {jobsList.map(jobReviewListAccordionMaker)}
+            </List.Section>
+        </ScrollView>
+    );
 
 }

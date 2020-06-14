@@ -9,8 +9,9 @@ import MapMarker from "react-native-maps/lib/components/MapMarker";
 import UserCardInfo from "./UserCardInfo";
 import {Rating} from "react-native-ratings";
 import {scale} from "react-native-size-matters";
+import {callPhone} from "../api/Utils";
 
-export default function WorkerReviewCard({worker, jobsId, updateCallBack}) {
+export default function WorkerReviewCard({worker, jobsId, updateCallBack, showBottomBar, showPhoneNumber}) {
 
     const navigation = useNavigation();
 
@@ -83,16 +84,21 @@ export default function WorkerReviewCard({worker, jobsId, updateCallBack}) {
                             Profile
                         </Button>
                     </View>
-                    <View style={{alignSelf: "flex-start", marginTop: 5}}>
+                    <View style={{flexDirection:"row", alignSelf: "flex-start", marginTop: 5}}>
                         <Rating type='custom'
                                 imageSize={width * 0.08}
                                 readonly={true}
                                 startingValue={worker.ratingCount === 0 ? 0 : worker.ratingTotal / worker.ratingCount}
                                 ratingColor='#f1c40f'/>
                     </View>
+                    {showPhoneNumber &&
+                        //darkorchid
+                    <Button mode={"contained"} icon={"phone-in-talk"} style={{marginTop: 15}} color="darkorchid"
+                            onPress={() => callPhone(worker.phone)}>
+                        {worker.phone}
+                    </Button>}
                 </View>
-                <BottomComponent/>
-                <Divider/>
+                {showBottomBar && <BottomComponent/>}
             </Card.Content>
         </Surface>
     )
