@@ -23,7 +23,7 @@ import LoadingPopUp from "../../components/LoadingPopUp";
 export default function WorkerProfile({route}) {
 
     const [visibility, setVisibility] = useState(false)
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
 
     const [userId, setUserId] = useState(route.params.workerId)
     const [firstName, setFirstName] = useState('')
