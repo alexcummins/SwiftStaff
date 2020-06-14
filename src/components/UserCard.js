@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, Platform, ToastAndroid, Alert, StyleSheet, Dimensions} from 'react-native';
+import {View, Text, Platform, ToastAndroid, Alert, StyleSheet, Dimensions, TouchableOpacity} from 'react-native';
 import {Card, Title, Paragraph, Button, IconButton} from 'react-native-paper';
 import MapView from 'react-native-maps';
 import MapMarker from 'react-native-maps/lib/components/MapMarker';
@@ -116,6 +116,8 @@ export default function UserCard({data, updateCallBack, workerId, accepted}) {
     return (
         <View>
             <Card style={{marginVertical: 10, marginHorizontal: 10}} elevation={10}>
+                <TouchableOpacity onPress={() => navigation.navigate("RestaurantProfile", {restaurantId: restaurantId,latitude: restaurantLat,
+                    longitude: restaurantLong, restaurantName: name }) }>
                 <Card.Title
                   title={data.name}
                   subtitle={data.date}
@@ -128,6 +130,7 @@ export default function UserCard({data, updateCallBack, workerId, accepted}) {
                     />
                   }
                 />
+                </TouchableOpacity>
                 <Card.Content>
                     <View style={{flexDirection: 'column'}}>
                         <View style={styles.container}>
