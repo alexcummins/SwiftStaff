@@ -220,6 +220,7 @@ export function convertDataToReviewCardData(data) {
         latitude: 0.0,
         longitude: 0.0,
         restaurantRating: 5,
+        credentials: [],
         restaurantId: ''
     };
 
@@ -236,6 +237,7 @@ export function convertDataToReviewCardData(data) {
             extraInfo: job.extraInfo,
             reviewList: job.reviewList,
             isConfirmed: job.status === 1,
+            credentials: job.credentials,
             confirmedWorkerId: job.workerId
         }
 

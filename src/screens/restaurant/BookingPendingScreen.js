@@ -1,17 +1,21 @@
 import React, {useState} from "react";
-import {View, StyleSheet, SafeAreaView, ScrollView} from "react-native";
-import {List, Text} from "react-native-paper";
+import {View, StyleSheet, ScrollView} from "react-native";
+import {Card, List, Title, Button, IconButton, Chip, Portal, Dialog, Paragraph, Text} from "react-native-paper";
 import UserCard from "../../components/UserCard";
 import {useFocusEffect} from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
 import {API_JOB_URL, convertDataToReviewCardData, WEBSOCKET_PROTOCOL} from "../../api/APIUtils";
 import WorkerReviewCard from "../../components/WorkerReviewCard";
 import ListAccordion from "react-native-paper/src/components/List/ListAccordion";
+import ExtraInfo from "../../components/ExtraInfo";
 
 let retrieveNotifications = () => {
 }
 export default function BookingPendingScreen() {
+
     const [jobsList, setJobsList] = useState([]);
+    const [confirmDelete, setConfirmDelete] = useState(false)
+    const [deleteBookingId, setDeleteBookingId] = useState("")
 
     useFocusEffect(
         React.useCallback(() => {
@@ -62,13 +66,20 @@ export default function BookingPendingScreen() {
         setJobsList(newList)
     }
 
+    function showDeleteDialogue(id) {
+        setConfirmDelete(true)
+        setDeleteBookingId(id)
+    }
+
+
+    function deleteBooking(deleteBookingId) {
+
+    }
+
     function workerReviewCardMaker(worker, jobsId) {
         return (
-            <>
-                <Text> Key: {`worker.id.toString() jobsId.toString()`} </Text>
-                <WorkerReviewCard worker={worker} jobsId={jobsId} key={`${jobsId}${worker.workerId}`}
-                                  updateCallBack={updateJobsList}/>
-            </>
+            <WorkerReviewCard worker={worker} jobsId={jobsId} key={`${jobsId}${worker.workerId}`}
+                              updateCallBack={updateJobsList}/>
         )
     }
 
@@ -79,26 +90,64 @@ export default function BookingPendingScreen() {
             return null
         } else {
             return (
-                <List.Accordion
-                    title={`${jobWorkerObj.workersObj.length} workers to review!`}
-                    description={`${jobWorkerObj.jobObj.date} ${jobWorkerObj.jobObj.startTime} to ${jobWorkerObj.jobObj.endTime}
-                £${jobWorkerObj.jobObj.hourlyRate} per hour.`}
-                    key={jobWorkerObj.jobObj.id}
-                >
-                    {jobWorkerObj.workersObj.map((worker) => {
-                        return workerReviewCardMaker(worker, jobWorkerObj.jobObj.id)
-                    })}
-                </List.Accordion>
+                <Card style={{marginVertical: 10, marginHorizontal: 10}} key={jobWorkerObj.jobObj.id}>
+                    <Card.Title title={`Booking ${jobWorkerObj.jobObj.date}`}
+                                right={(props) => <IconButton icon={"delete-circle"} color={"red"} size={30}
+                                                              style={{alignSelf: "flex-end"}}
+                                onPress={() => showDeleteDialogue(jobWorkerObj.jobObj.id)}/>}/>
+                    <Card.Content>
+                        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+                            <Title>{`£${jobWorkerObj.jobObj.hourlyRate} per hour.`}</Title>
+                            <Title>{`${jobWorkerObj.jobObj.startTime} - ${jobWorkerObj.jobObj.endTime}`}</Title>
+                        </View>
+                        <View style={{flexDirection: "row", flexWrap: "wrap", marginTop: 15}}>
+                            {jobWorkerObj.jobObj.credentials.map((c) => <Chip key={c} style={{margin: 5}}>{c}</Chip>)}
+                        </View>
+                        <ExtraInfo extraInfo={jobWorkerObj.jobObj.extraInfo} defaultLines={1}/>
+                    </Card.Content>
+                    <List.Accordion
+                        title={`${jobWorkerObj.workersObj.length} workers to review!`}
+                        key={jobWorkerObj.jobObj.id}
+                        left={props => <List.Icon {...props} icon="account-question"/>}
+                    >
+                        {jobWorkerObj.workersObj.map((worker) => {
+                            return workerReviewCardMaker(worker, jobWorkerObj.jobObj.id)
+                        })}
+                    </List.Accordion>
+                </Card>
             )
         }
     }
 
+    function deleteBookingConfirmation() {
+        return <Portal>
+            <Dialog
+                visible={confirmDelete}
+                onDismiss={() => setConfirmDelete(false)}>
+                <Dialog.Title>Delete job booking</Dialog.Title>
+                <Dialog.Content>
+                    <Paragraph style>Are you sure you want to delete this booking?</Paragraph>
+                </Dialog.Content>
+                <Dialog.Actions>
+                    <Button onPress={() => setConfirmDelete(false)} labelStyle={{fontSize: 15}}>
+                        Cancel
+                    </Button>
+                    <Button onPress={() => deleteBooking(deleteBookingId)} labelStyle={{fontSize: 15}}>
+                        Ok
+                    </Button>
+                </Dialog.Actions>
+            </Dialog>
+        </Portal>;
+    }
+
     return (
-        <ScrollView style={{marginTop: 30}}>
-            <List.Section style={{marginTop: 30}}>
+        <ScrollView style={{marginTop: 0}}>
+            <List.Section style={{marginTop: 15}}>
                 {jobsList.map(jobReviewListAccordionMaker)}
             </List.Section>
+            {deleteBookingConfirmation()}
         </ScrollView>
     );
-
 }
+
+
