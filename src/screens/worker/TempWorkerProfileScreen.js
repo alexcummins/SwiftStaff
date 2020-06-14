@@ -17,6 +17,7 @@ import {API_IMAGE_DOWNLOAD_URI, getWorkerProfile} from "../../api/APIUtils"
 import Modal from "react-native-modal";
 import RateWorkerPopUp from "../../components/RateWorkerPopUp";
 import {Button} from "react-native-paper";
+import {imagePicker} from "../../api/Utils";
 
 export default function WorkerProfile({route}) {
 
@@ -25,9 +26,9 @@ export default function WorkerProfile({route}) {
     const [userId, setUserId] = useState(route.params.workerId)
     const [firstName, setFirstName] = useState('')
     const [lastName, setLastName] = useState('')
-    const [profileImage, setprofileImage] = useState(`${API_IMAGE_DOWNLOAD_URI}/profile/${userId}`);
+    const [profileImage, setProfileImage] = useState('');
     const [address, setAddress] = useState('15 Alexander Road, London, SW59 0JC');
-    const [phoneNumber, setphoneNumber] = useState(7654321234);
+    const [phoneNumber, setPhoneNumber] = useState(7654321234);
     const [ratingTotal, setRatingTotal] = useState(5)
     const [ratingCount, setRatingCount] = useState(1)
     const [hide, setHide] = useState(false)
@@ -72,7 +73,9 @@ export default function WorkerProfile({route}) {
                     setFirstName(worker.fname)
                     setLastName(worker.lname)
                     // Address
-                    setphoneNumber(worker.phone)
+                    console.log(worker.profileImageId)
+                    setProfileImage(`${API_IMAGE_DOWNLOAD_URI}/profile/${worker.profileImageId}`)
+                    setPhoneNumber(worker.phone)
                     // Skills&Qualities
                     // Experience
                     // Qualifications
@@ -95,12 +98,17 @@ export default function WorkerProfile({route}) {
         setVisibility(!visibility)
     }
 
+    async function changeProfileImage() {
+        await imagePicker("2", userId, "Profile", setProfileImage)
+    }
+
     return (
         <View style={{flex:1}}>
             <ScrollView style={styles.container}>
                 <View style={styles.header}></View>
                 {/*<Image style={styles.avatar} source={profileImage}/>*/}
-                <TouchableOpacity style={styles.avatarButton}>
+                <TouchableOpacity style={styles.avatarButton}
+                                  onPress={() => changeProfileImage()}>
                     <Image style={styles.avatar} source={{uri: profileImage}}/>
                 </TouchableOpacity>
                 <View style={styles.body}>
