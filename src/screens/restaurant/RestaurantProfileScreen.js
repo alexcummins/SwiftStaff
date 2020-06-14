@@ -28,12 +28,12 @@ export default function RestaurantProfile({route}) {
   const [name, setName] = useState(route.params.restaurantName);
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState(2569984529);
-  const [email, setEmail] = useState("test@email.com")
+  const [email, setEmail] = useState("")
   const [longitude, setLongitude] = useState(route.params.longitude);
   const [latitude, setLatitude] = useState(route.params.latitude);
-  const [facebookLink, setFacebookLink] = useState("https://facebook.com");
-  const [twitterLink, setTwitterLink] = useState("https://twitter.com");
-  const [instagramLink, setInstagramLink] = useState("https://instagram.com");
+  const [facebookLink, setFacebookLink] = useState("");
+  const [twitterLink, setTwitterLink] = useState("");
+  const [instagramLink, setInstagramLink] = useState("");
   const [profileImage, setprofileImage] = useState(`${API_IMAGE_DOWNLOAD_URI}/profile/${restaurantId}`);
 
   const navigation = useNavigation();
@@ -52,7 +52,6 @@ export default function RestaurantProfile({route}) {
             setEmail(restaurant.email)
             setLongitude(restaurant.longitude)
             setLatitude(restaurant.latitude)
-            // TODO:
             setFacebookLink(restaurant.facebookLink)
             setTwitterLink(restaurant.twitterLink)
             setInstagramLink(restaurant.instagramLink)
@@ -105,25 +104,23 @@ export default function RestaurantProfile({route}) {
 
       <Divider />
 
-
-      {/*<View style={styles.userBioRow}>*/}
-      {/*  <Text style={styles.userBioText}>Our mission is to serve the downtown business community by providing the highest-quality coffees, sandwiches, snacks, baked goods, noodles, rice and specialty laksa and Laksam in an atmosphere that meets the needs of customers who are in a hurry as well as those who want a place to relax and enjoy their beverages and food.</Text>*/}
-      {/*</View>*/}
-
       <View style={styles.socialRow}>
         <IconButton
+          disabled={!twitterLink.length}
           icon='twitter'
           size={35}
           color='#56ACEE'
           onPress={() => Linking.openURL(twitterLink)}
         />
         <IconButton
+          disabled={!facebookLink.length}
           icon='facebook'
           size={35}
           color='#3B5A98'
           onPress={() => Linking.openURL(facebookLink)}
         />
         <IconButton
+          disabled={!instagramLink.length}
           icon='instagram'
           size={35}
           color='#bc2a8d'
