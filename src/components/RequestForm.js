@@ -15,7 +15,7 @@ import {
 
 import {useForm} from 'react-hook-form';
 
-import {Button, HelperText, TextInput} from 'react-native-paper';
+import {Button, Dialog, HelperText, Paragraph, Portal, TextInput} from 'react-native-paper';
 import {sendJobRequest} from '../api/APIUtils';
 import {notifyMessage} from '../api/Utils';
 import {useFocusEffect} from '@react-navigation/native';
@@ -64,6 +64,8 @@ function RequestForm() {
 
     const [extraInfo, setExtraInfo] = useState("")
 
+    const [showJobConfirmation, setShowJobConfirmation] = useState(false)
+
     function generateDateString(d) {
         return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
     }
@@ -109,6 +111,17 @@ function RequestForm() {
         if (isNaN(hourlyRate)) {
             setIsHourlyRateError(true)
         }
+    }
+
+    function jobSentConfirmation() {
+        return <Portal>
+            <Dialog
+                visible={showJobConfirmation}
+                onDismiss={() => setShowJobConfirmation(false)}>
+                <Dialog.Title>Job request successfully submitted.</Dialog.Title>
+                <Button onPress={() => setShowJobConfirmation(false)}>Ok</Button>
+            </Dialog>
+        </Portal>;
     }
 
     return (
@@ -222,11 +235,13 @@ function RequestForm() {
                         }).then(r => {
                             console.log(r);
                             notifyMessage("Job Request successfully submitted");
+                            setShowJobConfirmation(true)
                         });
                     }}>
                     Submit
                 </Button>
             </View>
+            {jobSentConfirmation()}
         </View>
     );
 }
