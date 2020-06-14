@@ -1,6 +1,8 @@
 import {Alert, Platform, ToastAndroid} from "react-native";
 import {check, request, PERMISSIONS, RESULTS} from "react-native-permissions";
 import call from "react-native-phone-call";
+import ImagePicker from "react-native-image-picker";
+import {uploadImage} from "./APIUtils";
 
 export function notifyMessage(msg: string) {
     console.log(`Displaying: ${msg}`);
@@ -78,3 +80,30 @@ export const callPhone = (phone : string) => {
 }
 
 
+export const imagePicker = async (userType : string, userId: string, resourceName : string, setter = (_) =>{}) => {
+
+    checkPermission(PERMISSION_TYPE.photos)
+    checkPermission(PERMISSION_TYPE.camera)
+
+    const options = {
+        title: `Update ${resourceName} Picture`,
+        storageOptions: {
+            skipBackup: true,
+            path: 'images',
+        },
+    };
+
+    ImagePicker.showImagePicker(options, (response) => {
+        console.log('Response = ', response);
+
+        if (response.didCancel) {
+            console.log('User cancelled image picker');
+        } else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+        } else {
+            console.log("Got here")
+            uploadImage(response.uri, userType, userId, resourceName.toLowerCase())
+            setter(response.uri)
+        }
+    });
+}
