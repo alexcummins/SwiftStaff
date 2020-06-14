@@ -72,5 +72,10 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>LSApplicationQueriesSchemes</key>
+    <array>
+        <string>telprompt</string>
+        <string>tel</string>
+    </array>
 </dict>
 </plist>

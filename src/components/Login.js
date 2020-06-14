@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import LoginScreen from 'react-native-login-screen';
-import {ScrollView} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const background = require('../../resources/img/gradientBackgroundFlipped.png');
@@ -132,7 +132,8 @@ export default function Login(props) {
   }
 
   return (
-    <ScrollView>
+    <View>
+    {/*<ScrollView>*/}
       {/*<Paragraph/>*/}
       {/*<Paragraph/>*/}
 
@@ -171,7 +172,8 @@ export default function Login(props) {
         loginButtonBackgroundColor="#a2a5a9"
         // delete below
       />
-    </ScrollView>
+    {/*</ScrollView>*/}
+    </View>
   );
 
 }
