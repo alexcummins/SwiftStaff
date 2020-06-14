@@ -19,20 +19,23 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import MapView from 'react-native-maps';
 import MapMarker from 'react-native-maps/lib/components/MapMarker';
-import {getRestaurantProfile} from "../../api/APIUtils";
+import {API_IMAGE_DOWNLOAD_URI, getRestaurantProfile} from "../../api/APIUtils";
+import {callPhone} from "../../api/Utils";
 
 export default function RestaurantProfile({route}) {
 
+  const [restaurantId, setRestaurantId] = useState(route.params.restaurantId)
   const [name, setName] = useState(route.params.restaurantName);
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState(2569984529);
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState("test@email.com")
   const [longitude, setLongitude] = useState(route.params.longitude);
   const [latitude, setLatitude] = useState(route.params.latitude);
   const [facebookLink, setFacebookLink] = useState("https://facebook.com");
   const [twitterLink, setTwitterLink] = useState("https://twitter.com");
   const [instagramLink, setInstagramLink] = useState("https://instagram.com");
-  const [profileImage, setprofileImage] = useState('../../../resources/img/restaurantfront.jpg');
+  const [profileImage, setprofileImage] = useState(`${API_IMAGE_DOWNLOAD_URI}/profile/${restaurantId}`);
+
   const navigation = useNavigation();
 
   useFocusEffect(
@@ -53,13 +56,11 @@ export default function RestaurantProfile({route}) {
             setFacebookLink(restaurant.facebookLink)
             setTwitterLink(restaurant.twitterLink)
             setInstagramLink(restaurant.instagramLink)
-            // set Photo
 
         } catch (e) {
           console.log("Retrieving restaurant profile failed")
           console.log(route.params)
           console.log(route.params.restaurantId)
-          // console.log(e.getMessage())
         }
       }
       let promise = fetchRestaurantProfile()
@@ -70,8 +71,7 @@ export default function RestaurantProfile({route}) {
     <ScrollView>
 
       <ImageBackground
-        // TODO: Make image source requirement dynamic
-        source={require('../../../resources/img/restaurantfront.jpg')}
+        source={{uri: profileImage}}
         style={styles.imageContainer}
       >
         <IconButton
@@ -90,14 +90,14 @@ export default function RestaurantProfile({route}) {
       </View>
         <View style={styles.userContactInfoRow}>
           <Button icon='cellphone' onPress={() => {
-            //TODO: Call
+            callPhone(phone)
           }}>
-            {phone}
+            0{phone}
           </Button>
         </View>
         <View style={styles.userContactInfoRow}>
           <Button icon='email' onPress={() => {
-            //TODO: Send Email
+            Linking.openURL(`mailto:${email}`)
           }}> {email}
           </Button>
         </View>
@@ -135,7 +135,7 @@ export default function RestaurantProfile({route}) {
 
       <View style={[styles.userContactInfoRow, {paddingTop: 5, paddingBottom: 10}]}>
         <Button icon='map-marker' />
-        <Text style={styles.userContactInfoRow}> {address} </Text>
+        <Text style={styles.userContactInfoText}> {address} </Text>
       </View>
 
       <View style={styles.container}>
@@ -205,6 +205,9 @@ const styles = StyleSheet.create({
 
   },
   userContactInfoText: {
+    width: 0,
+    flexGrow: 1,
+    flex: 1,
     color: '#A5A5A5',
     fontSize: 15,
     fontWeight: '600',
