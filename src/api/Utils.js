@@ -80,7 +80,11 @@ export const callPhone = (phone : string) => {
 }
 
 
-export const imagePicker = async (userType : string, userId: string, resourceName : string, setter = (_) =>{}) => {
+export const imagePicker = async (userType : string,
+                                  userId: string,
+                                  resourceName : string,
+                                  setter = (_) => {},
+                                  loading = (_) => {}) => {
 
     checkPermission(PERMISSION_TYPE.photos)
     checkPermission(PERMISSION_TYPE.camera)
@@ -102,8 +106,17 @@ export const imagePicker = async (userType : string, userId: string, resourceNam
             console.log('ImagePicker Error: ', response.error);
         } else {
             console.log("Got here")
-            uploadImage(response.uri, userType, userId, resourceName.toLowerCase())
-            setter(response.uri)
+            console.log(loading)
+            console.log("Loading")
+            loading(true)
+            uploadImage(response.uri, userType, userId, resourceName.toLowerCase()).then(introduceDelay(setter,loading, response.uri))
         }
     });
+}
+
+// Delay doesn't actually introduce a delay. Refactor/ Remove
+function introduceDelay(setter = (_) => {}, loading = (_) => {}, uri) {
+    loading(false)
+    setter(uri)
+    console.log("I deleyaed")
 }
