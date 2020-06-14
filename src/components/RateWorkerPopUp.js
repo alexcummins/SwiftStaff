@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {Card, Button, Title, Divider} from 'react-native-paper';
 import {StyleSheet, Dimensions} from 'react-native';
 import Modal from "react-native-modal";
-import {Rating} from "react-native-ratings";
+import {AirbnbRating} from "react-native-ratings";
 import {TouchableOpacity} from 'react-native';
 import {sendNewWorkerRating} from "../api/APIUtils";
 
@@ -50,10 +50,10 @@ export default function RateWorkerPopUp(props) {
                 <Card.Content style={styles.rateCard}>
                     <Title>Rate {props.fname} {props.lname} !</Title>
                     <Divider/>
-                    <Rating showRating={true}
-                            fractions="1"
-                            startingValue={startValue()}
-                            onFinishRating={(rating) => onFinishRating(rating)}/>
+                    <AirbnbRating showRating={true}
+                                  startingValue={startValue()}
+                                  onFinishRating={(rating) => onFinishRating(rating)}
+                                  reviews={['Terrible', 'Bad', 'Okay', 'Great', 'Amazing!']}/>
                     {!completed ?
                         <Button icon="gesture-double-tap"
                                          mode="outlined"

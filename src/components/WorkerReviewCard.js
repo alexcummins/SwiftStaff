@@ -78,7 +78,7 @@ export default function WorkerReviewCard({worker, jobsId, updateCallBack, showBo
                 <View>
                     <View style={{flexDirection: "row", alignContent: 'center', justifyContent:"center"}}>
                         <Title style={{flex: 1, marginLeft: 5, flexWrap: "wrap"}}>{`${fname} ${lname}`}</Title>
-                        <Button style={{flex: 0.6, alignContent: 'center'}} labelStyle={{color: 'white'}}
+                        <Button style={{flex: 0.6, alignContent: 'center', justifyContent: 'center'}} labelStyle={{color: 'white'}}
                                 mode="contained" uppercase={true} onPress={() =>
                             navigation.navigate("JobProfile", {workerId: workerId})}>
                             Profile
