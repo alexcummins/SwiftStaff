@@ -18,10 +18,12 @@ import Modal from "react-native-modal";
 import RateWorkerPopUp from "../../components/RateWorkerPopUp";
 import {Button} from "react-native-paper";
 import {imagePicker} from "../../api/Utils";
+import LoadingPopUp from "../../components/LoadingPopUp";
 
 export default function WorkerProfile({route}) {
 
     const [visibility, setVisibility] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     const [userId, setUserId] = useState(route.params.workerId)
     const [firstName, setFirstName] = useState('')
@@ -99,7 +101,7 @@ export default function WorkerProfile({route}) {
     }
 
     async function changeProfileImage() {
-        await imagePicker("2", userId, "Profile", setProfileImage)
+        await imagePicker("2", userId, "Profile", setProfileImage, setLoading)
     }
 
     return (
@@ -141,6 +143,7 @@ export default function WorkerProfile({route}) {
                         oldRatingCount={ratingCount}
                         closePopUp={toggleShowRateCard}/>
                 </Modal>
+                <LoadingPopUp loading={loading} message="Uploading Image"/>
             </ScrollView>
             {!hide ?
             <Button icon="gesture-double-tap"
