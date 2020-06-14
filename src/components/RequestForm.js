@@ -33,9 +33,9 @@ function RequestForm() {
 
         try {
           let keys = await AsyncStorage.getAllKeys();
-          console.log(JSON.stringify(keys))
+          // console.log(JSON.stringify(keys))
           let restId = await AsyncStorage.getItem("restaurantId");
-          console.log(restId)
+          // console.log(restId)
           setRestaurantId(restId);
         } catch (e) {
           console.log("no restaurantId found - setting default");
@@ -76,7 +76,7 @@ function RequestForm() {
 
     function onChangeDate(event, selectedDate) {
         const currentDate = selectedDate || date;
-        setShowDate(false)
+        setShowDate(showDate)
         setDate(currentDate)
         setDateString(generateDateString(currentDate))
     }
@@ -89,12 +89,12 @@ function RequestForm() {
         let currentTime;
         if (startOrEnd === "start") {
             currentTime = selectedTime || startTime;
-            setShowTime(false)
+            setShowTime(showTime)
             setStartTime(currentTime)
             setStartString(generateTimeString(currentTime))
         } else if (startOrEnd === "end") {
             currentTime = selectedTime || endTime;
-            setShowTime(false)
+            setShowTime(showTime)
             setEndTime(currentTime)
             setEndString(generateTimeString(currentTime))
         } else {
@@ -234,7 +234,7 @@ function RequestForm() {
                             extraInfo: extraInfo
                         }).then(r => {
                             console.log(r);
-                            notifyMessage("Job Request successfully submitted");
+                            // notifyMessage("Job Request successfully submitted");
                             setShowJobConfirmation(true)
                         });
                     }}>
