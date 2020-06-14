@@ -87,6 +87,8 @@ export default function BookingPendingScreen() {
     function workerReviewCardMaker(worker, jobsId) {
         return (
             <WorkerReviewCard worker={worker} jobsId={jobsId} key={`${jobsId}${worker.workerId}`}
+                              showBottomBar={true}
+                              showPhoneNumber={false}
                               updateCallBack={updateJobsList}/>
         )
     }
