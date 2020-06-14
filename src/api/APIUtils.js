@@ -108,6 +108,16 @@ export async function sendRestaurantSignup(data) {
     return await sendSignup(data, API_RESTAURANT_SIGNUP_URL)
 }
 
+export async function uploadImage(localURI: string, userType : string, userId: string, resourceName : string) {
+    console.log("Here")
+    let data = new FormData()
+    data.append("user-type", userType)
+    data.append("user-Id", userId)
+    data.append("resource-name", resourceName)
+    data.append("photo-load", {uri: localURI, name: resourceName, type: "image/jpg"})
+    return await sendMultiPartPostRequest(data, `${API_IMAGE_UPLOAD}`)
+}
+
 async function sendHttpPatchRequest(data, url){
     let responseObject = {}
     await axios.patch(`${HTTP_PROTOCOL}${url}`, data).then((response) => {
