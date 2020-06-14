@@ -8,6 +8,7 @@ export const API_JOB_URL = `${API_BASE_URL}/jobs`;
 export const API_WORKER_JOB_URL = `${API_BASE_URL}/jobs/worker`;
 export const API_WORKER_SIGNUP_URL = `${API_BASE_URL}/signup/worker`;
 export const API_RESTAURANT_SIGNUP_URL = `${API_BASE_URL}/signup/restaurant`;
+export const API_RESTAURANT_DELETE_JOB = `${API_BASE_URL}/jobs/delete`
 export const HTTP_PROTOCOL = 'http://';
 export const WEBSOCKET_PROTOCOL = 'ws://';
 export const API_LOGIN_URL = `${API_BASE_URL}/login`;
@@ -28,9 +29,18 @@ export async function getJobRequest(workerId) {
     }
 }
 
+export async function deleteJob(jobId) {
+    let response = await sendHttpPostRequest(jobId, API_RESTAURANT_DELETE_JOB);
+    if(response.status === 200){
+        return {isSuccessful: true};
+    } else {
+        return {isSuccessful: false};
+    }
+}
+
 
 export async function getLoginRequest(params) {
-    let response = await sendHttpPostRequest(params, API_LOGIN_URL );
+    let response = await sendHttpPostRequest(params, API_LOGIN_URL);
     console.log(response.data);
     if(response.status === 200){
         return {data: response.data, isSuccessful: true};

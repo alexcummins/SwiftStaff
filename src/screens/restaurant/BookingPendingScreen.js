@@ -4,10 +4,11 @@ import {Card, List, Title, Button, IconButton, Chip, Portal, Dialog, Paragraph, 
 import UserCard from "../../components/UserCard";
 import {useFocusEffect} from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
-import {API_JOB_URL, convertDataToReviewCardData, WEBSOCKET_PROTOCOL} from "../../api/APIUtils";
+import {API_JOB_URL, convertDataToReviewCardData, deleteJob, WEBSOCKET_PROTOCOL} from "../../api/APIUtils";
 import WorkerReviewCard from "../../components/WorkerReviewCard";
 import ListAccordion from "react-native-paper/src/components/List/ListAccordion";
 import ExtraInfo from "../../components/ExtraInfo";
+import {notifyMessage} from "../../api/Utils";
 
 let retrieveNotifications = () => {
 }
@@ -72,8 +73,15 @@ export default function BookingPendingScreen() {
     }
 
 
-    function deleteBooking(deleteBookingId) {
-
+    async function deleteBooking(deleteBookingId) {
+        setConfirmDelete(false)
+        const success = await deleteJob({_id: deleteBookingId})
+        if (success.isSuccessful) {
+            notifyMessage("Job booking successfully deleted")
+        }
+        else {
+            notifyMessage("Error: Could not delete job booking")
+        }
     }
 
     function workerReviewCardMaker(worker, jobsId) {
