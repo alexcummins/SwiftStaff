@@ -7,6 +7,7 @@ import UserCardInfo from "./UserCardInfo";
 import {CommonActions, useFocusEffect, useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {sendWorkerAcceptDecline} from '../api/APIUtils';
+import {notifyMessage} from '../api/Utils';
 
 
 export default function UserCard({data, updateCallBack, workerId, accepted}) {
@@ -22,6 +23,8 @@ export default function UserCard({data, updateCallBack, workerId, accepted}) {
     const [restaurantId, setRestaurantId] = useState(data.restaurantId);
     const [jobId, setJobId] = useState(data.id)
     const navigation = useNavigation();
+    const [acceptIsLoading, setAcceptIsLoading] = useState(false)
+    const [declineIsLoading, setDeclineIsLoading] = useState(false)
 
     // const [name, setName] = useState('Eastside Cafe');
     // const [date, setDate] = useState('22/05/2020');
@@ -48,6 +51,7 @@ export default function UserCard({data, updateCallBack, workerId, accepted}) {
 
 
     async function declineJob(){
+        setDeclineIsLoading(true)
         let workerId = await AsyncStorage.getItem("workerId");
         let declineObj = {
             jobId: jobId,
@@ -56,13 +60,19 @@ export default function UserCard({data, updateCallBack, workerId, accepted}) {
         }
         console.log(`Declining ${workerId}`)
         let newList = await sendWorkerAcceptDecline(declineObj)
-        updateCallBack(newList)
-
+        if(newList.isSuccessful){
+            setDeclineIsLoading(false)
+            updateCallBack(newList.jobObjList)
+        } else {
+            notifyMessage("Sorry there was an error please check your internet connection and try again!")
+            setDeclineIsLoading(false)
+        }
     }
 
 
 
     async function acceptJob(){
+        setAcceptIsLoading(true)
         let workerId = await AsyncStorage.getItem("workerId");
         let acceptObj = {
             jobId: jobId,
@@ -71,7 +81,13 @@ export default function UserCard({data, updateCallBack, workerId, accepted}) {
         }
         console.log(`Accepting ${workerId}`)
         let newList = await sendWorkerAcceptDecline(acceptObj)
-        updateCallBack(newList)
+        if(newList.isSuccessful){
+            setAcceptIsLoading(false)
+            updateCallBack(newList.jobObjList)
+        } else {
+            notifyMessage("Sorry there was an error please check your internet connection and try again!")
+            setAcceptIsLoading(false)
+        }
     }
 
 
@@ -87,10 +103,12 @@ export default function UserCard({data, updateCallBack, workerId, accepted}) {
                 <View style={{flexDirection: 'row', alignContent: 'center', marginTop: 10}}>
                     <Button style={{flex: 1, alignContent: 'center', marginRight: 5}} labelStyle={{color: 'white'}}
                             mode="contained"
+                            disabled={acceptIsLoading || declineIsLoading} loading={declineIsLoading}
                             color='red' uppercase={true} onPress={() => declineJob()}>
                         Decline
                     </Button>
                     <Button style={{flex: 1, alignContent: 'center', marginLeft: 5}} labelStyle={{color: 'white'}}
+                            disabled={acceptIsLoading || declineIsLoading}
                             mode="contained" color='green' uppercase={true} onPress={() => {}}>
                         Pending
                     </Button>
@@ -101,10 +119,12 @@ export default function UserCard({data, updateCallBack, workerId, accepted}) {
                   <View style={{flexDirection: 'row', alignContent: 'center', marginTop: 10}}>
                       <Button style={{flex: 1, alignContent: 'center', marginRight: 5}} labelStyle={{color: 'white'}}
                               mode="contained"
+                              disabled={acceptIsLoading || declineIsLoading} loading={declineIsLoading}
                               color='red' uppercase={true} onPress={() => declineJob()}>
                           Decline
                       </Button>
                       <Button style={{flex: 1, alignContent: 'center', marginLeft: 5}} labelStyle={{color: 'white'}}
+                              disabled={acceptIsLoading || declineIsLoading} loading={acceptIsLoading}
                               mode="contained" color='green' uppercase={true} onPress={() => acceptJob()}>
                           Accept
                       </Button>

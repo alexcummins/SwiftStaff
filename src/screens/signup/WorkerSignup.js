@@ -9,6 +9,7 @@ import {useForm} from "react-hook-form";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from "@react-native-community/async-storage";
 import SelectCredentials from "../../components/SelectCredentials";
+import {firebase} from '@react-native-firebase/messaging';
 
 export default function WorkerSignup({route, navigation}) {
     const {email} = route.params
@@ -24,6 +25,7 @@ export default function WorkerSignup({route, navigation}) {
         data.password = password
         data.dob = dobString
         data.credentials = credentials
+        data.fcmToken = await firebase.messaging().getToken()
         setLoading(true)
         let response = await sendWorkerSignup(data)
         console.log(JSON.stringify(response))
@@ -86,7 +88,7 @@ export default function WorkerSignup({route, navigation}) {
 
                             type: 'input',
 
-                            name: 'fName', // Same as defined in default values
+                            name: 'fname', // Same as defined in default values
 
                             label: "First name",
 
@@ -106,7 +108,7 @@ export default function WorkerSignup({route, navigation}) {
 
                             type: 'input',
 
-                            name: 'lName', // Same as defined in default values
+                            name: 'lname', // Same as defined in default values
 
                             label: "Last name",
 

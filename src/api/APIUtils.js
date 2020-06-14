@@ -94,9 +94,22 @@ export async function sendWorkerAcceptDecline(data) {
     const jobsObjList = []
     let response =  await sendHttpPatchRequest(data, API_JOB_URL)
     if(response.status === 200){
-        return convertDataToJobCardData(response.data);
+        let  jobsObjList = convertDataToJobCardData(response.data);
+        return {jobObjList: jobsObjList, isSuccessful: true}
+
     } else {
-        return jobsObjList;
+        return {jobObjList: jobsObjList, isSuccessful: false};
+    }
+}
+
+export async function sendRestaurantAcceptDecline(data) {
+    const jobsObjList = []
+    let response =  await sendHttpPatchRequest(data, API_JOB_URL)
+    if(response.status === 200){
+        let  jobsObjList = convertDataToReviewCardData(response.data);
+        return {jobObjList: jobsObjList, isSuccessful: true}
+    } else {
+        return {jobObjList: jobsObjList, isSuccessful: false};
     }
 }
 

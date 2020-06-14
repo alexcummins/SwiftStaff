@@ -8,6 +8,7 @@ import FormBuilder from "react-native-paper-form-builder";
 import {useForm} from "react-hook-form";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import AsyncStorage from "@react-native-community/async-storage";
+import {firebase} from '@react-native-firebase/messaging';
 
 export default function RestaurantSignup({route, navigation}) {
     const {email} = route.params
@@ -17,6 +18,7 @@ export default function RestaurantSignup({route, navigation}) {
     async function createAccount(data) {
         data.email = email
         data.password = password
+        data.fcmToken = await firebase.messaging().getToken()
         setloading(true)
         let response = await sendRestaurantSignup(data)
         console.log(JSON.stringify(response))
