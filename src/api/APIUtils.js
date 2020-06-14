@@ -1,8 +1,8 @@
 import axios from 'axios';
 import FormData from "form-data";
 
-export const API_BASE_URL = '139.59.200.194:8080/api/v1';
-// export const API_BASE_URL = 'localhost:8080/api/v1';
+// export const API_BASE_URL = '139.59.200.194:8080/api/v1';
+export const API_BASE_URL = 'localhost:8080/api/v1';
 
 export const API_JOB_URL = `${API_BASE_URL}/jobs`;
 export const API_WORKER_JOB_URL = `${API_BASE_URL}/jobs/worker`;
@@ -95,6 +95,16 @@ export async function sendWorkerSignup(data) {
 
 export async function sendRestaurantSignup(data) {
     return await sendSignup(data, API_RESTAURANT_SIGNUP_URL)
+}
+
+export async function uploadImage(localURI: string, userType : string, userId: string, resourceName : string) {
+    console.log("Here")
+    let data = new FormData()
+    data.append("user-type", userType)
+    data.append("user-Id", userId)
+    data.append("resource-name", resourceName)
+    data.append("photo-load", {uri: localURI, name: resourceName, type: "image/jpg"})
+    return await sendMultiPartPostRequest(data, `${API_IMAGE_UPLOAD}`)
 }
 
 async function sendHttpPatchRequest(data, url){
