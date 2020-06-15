@@ -27,6 +27,7 @@ export default function WorkerSignup({route, navigation}) {
         data.credentials = credentials
         data.fcmToken = await firebase.messaging().getToken()
         setLoading(true)
+        console.log(data)
         let response = await sendWorkerSignup(data)
         console.log(JSON.stringify(response))
         if (response.isSuccessful) {
