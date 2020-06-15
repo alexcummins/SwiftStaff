@@ -1,24 +1,24 @@
 import React from 'react';
-import {Card, List, Title, Divider} from 'react-native-paper';
+import {Card, List, Title, Divider, Surface} from 'react-native-paper';
 import {StyleSheet, Dimensions} from 'react-native';
 
 export default function ProfileCardList({data}) {
 
     ProfileCardList.defaultProps = {
         title: '',
-        listItems: []
+        listItems: [],
     }
 
     return (
-        <Card style={style.Card}>
+        <Surface elevation={5} style={style.Card}>
             <Card.Content>
-                <Title> {data.title} </Title>
-                <Divider />
-                <List.Section>
-                    {data.listItems.map( itemNames =>
+                <List.Section style={{marginBottom:15}}>
+                    <List.Subheader>{data.title}</List.Subheader>
+                    <Divider style={{marginBottom: 10}}/>
+                    {data.listItems.map( (itemNames, index) =>
                         <List.Item
-                            key={itemNames.name}
-                            title={itemNames.name}
+                            key={index}
+                            title={itemNames}
                             titleNumberOfLines={2}
                             left={() => <List.Icon icon="square-small" />}
                             style={style.listItem}
@@ -26,7 +26,7 @@ export default function ProfileCardList({data}) {
                     )}
                 </List.Section>
             </Card.Content>
-        </Card>
+        </Surface>
     );
 }
 
@@ -38,9 +38,5 @@ const style = StyleSheet.create({
     },
     Card: {
         marginTop: 10,
-        backgroundColor: "rgb(255,255,255)"
-    },
-    ListSection: {
-        top: 100
     },
 })

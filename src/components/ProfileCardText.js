@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, Paragraph, Title, Divider} from 'react-native-paper';
+import {Card, Paragraph, Title, Divider, Surface, List} from 'react-native-paper';
 
 export default function ProfileCardText({data}) {
 
@@ -9,13 +9,13 @@ export default function ProfileCardText({data}) {
     }
 
     return (
-        <Card style={{marginTop: 10, backgroundColor: "#ffffff"}}>
+        <Surface elevation={5} style={{marginTop: 10}}>
             <Card.Content>
-                <Title> {data.title} </Title>
-                <Divider />
-                <Paragraph style={{margin:10}}> {data.body} </Paragraph>
+                <List.Subheader>{data.title}</List.Subheader>
+                <Divider style={{marginBottom: 10}}/>
+                <Paragraph style={{margin:10, marginBottom:30}}> {data.body} </Paragraph>
             </Card.Content>
-        </Card>
+        </Surface>
     );
 
 
