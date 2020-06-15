@@ -38,10 +38,19 @@ export default function RestaurantProfile({route}) {
   const [instagramLink, setInstagramLink] = useState("");
   const [profileImage, setProfileImage] = useState(`${API_IMAGE_DOWNLOAD_URI}/profile/${restaurantId}`);
 
+  const [workerAccess, setWorkerAccess] = useState(true)
   const navigation = useNavigation();
 
   useFocusEffect(
     React.useCallback(() => {
+
+      const hideWhenWorkerAccess = async () => {
+        await AsyncStorage.getItem('userType', (error, result) => {
+          console.log(result)
+          setWorkerAccess(result === '2')
+        })
+      }
+
       const fetchRestaurantProfile = async () => {
         try {
           console.log(route.params)
@@ -63,6 +72,7 @@ export default function RestaurantProfile({route}) {
           console.log(route.params.restaurantId)
         }
       }
+      let hidePromise = hideWhenWorkerAccess()
       let promise = fetchRestaurantProfile()
     }, [route.params.restaurantId])
   )
@@ -82,21 +92,23 @@ export default function RestaurantProfile({route}) {
               style={styles.buttonAlign}
               onPress = {() => navigation.goBack()}
           />
-          <IconButton style={styles.settings}
-                      icon="settings"
-                      size={height * 0.05}
-                      color='rgb(237, 237, 237)'
-                      onPress={() => {navigation.navigate("RestaurantProfileEdit", {
-                        restaurantId: restaurantId,
-                        name: name,
-                        address: address,
-                        phone: phone,
-                        email: address,
-                        facebookLink: facebookLink,
-                        twitterLink: twitterLink,
-                        instagramLink: instagramLink,
-                        profileImage: profileImage
-                      })}}/>
+          { !workerAccess ?
+              <IconButton style={styles.settings}
+                          icon="settings"
+                          size={height * 0.05}
+                          color='rgb(237, 237, 237)'
+                          onPress={() => {navigation.navigate("RestaurantProfileEdit", {
+                              restaurantId: restaurantId,
+                              name: name,
+                              address: address,
+                              phone: phone,
+                              email: address,
+                              facebookLink: facebookLink,
+                              twitterLink: twitterLink,
+                              instagramLink: instagramLink,
+                              profileImage: profileImage
+                          })}}/>
+              : null}
         </ImageBackground>
 
         <View style={styles.userNameRow}>
