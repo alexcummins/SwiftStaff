@@ -25,6 +25,7 @@ export default function WorkerSignup({route, navigation}) {
         data.dob = dobString
         data.credentials = credentials
         setLoading(true)
+        console.log(data)
         let response = await sendWorkerSignup(data)
         console.log(JSON.stringify(response))
         if (response.isSuccessful) {
@@ -86,7 +87,7 @@ export default function WorkerSignup({route, navigation}) {
 
                             type: 'input',
 
-                            name: 'fName', // Same as defined in default values
+                            name: 'fname', // Same as defined in default values
 
                             label: "First name",
 
@@ -106,7 +107,7 @@ export default function WorkerSignup({route, navigation}) {
 
                             type: 'input',
 
-                            name: 'lName', // Same as defined in default values
+                            name: 'lname', // Same as defined in default values
 
                             label: "Last name",
 
