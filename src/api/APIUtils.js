@@ -1,8 +1,8 @@
 import axios from 'axios';
 import FormData from "form-data";
 
-// export const API_BASE_URL = '139.59.200.194:8080/api/v1';
-export const API_BASE_URL = 'localhost:8080/api/v1';
+export const API_BASE_URL = '139.59.200.194:8080/api/v1';
+// export const API_BASE_URL = 'localhost:8080/api/v1';
 
 export const API_JOB_URL = `${API_BASE_URL}/jobs`;
 export const API_WORKER_JOB_URL = `${API_BASE_URL}/jobs/worker`;
