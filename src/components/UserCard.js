@@ -145,8 +145,7 @@ export default function UserCard({data, updateCallBack, workerId, accepted}) {
                     <IconButton {...props}
                       icon="chevron-right"
                       color="black"
-                      onPress={() => navigation.navigate("RestaurantProfile", {restaurantId: restaurantId,latitude: restaurantLat,
-                          longitude: restaurantLong, restaurantName: name, modifyContent: false }) }
+                      onPress={() => navigation.navigate("RestaurantProfile", {restaurantId: restaurantId}) }
                     />
                   }
                 />

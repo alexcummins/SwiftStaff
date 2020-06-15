@@ -8,7 +8,8 @@ import {getRestaurantProfile} from '../../api/APIUtils';
 export default function RestaurantHomeScreen({data}) {
 
   const navigation = useNavigation();
-  const [restaurantData, setRestaurantData] = useState({})
+  const [restaurantId, setRestaurantId] = useState('')
+
   useFocusEffect(
     React.useCallback(() => {
       (async () => {
@@ -16,21 +17,18 @@ export default function RestaurantHomeScreen({data}) {
         let vals = []
         let restaurantId = ""
         try {
-          keys = await AsyncStorage.getAllKeys();
-          vals = await AsyncStorage.multiGet(keys)
-           restaurantId = await AsyncStorage.getItem("restaurantId")
+            keys = await AsyncStorage.getAllKeys();
+            vals = await AsyncStorage.multiGet(keys)
+            restaurantId = await AsyncStorage.getItem("restaurantId")
+            setRestaurantId(restaurantId)
         } catch (e) {
           // read key error
         }
 
         console.log(vals)
-
-        const restaurant = await getRestaurantProfile({restaurantId: restaurantId});
-        restaurant.modifyContent = true
-        setRestaurantData(restaurant)
       })();
-
     }), []);
+
   async function logout(){
     try {
       const keys = await AsyncStorage.getAllKeys();
@@ -48,11 +46,9 @@ export default function RestaurantHomeScreen({data}) {
       }));
   }
 
-    function profile() {
-        console.log("Restaurant data:")
-        console.log(JSON.stringify(restaurantData))
-        navigation.navigate("RestaurantProfile", restaurantData)
-    }
+  function profile() {
+    navigation.navigate("RestaurantProfile", {restaurantId: restaurantId})
+  }
 
     return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
