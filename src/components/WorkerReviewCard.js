@@ -114,7 +114,7 @@ export default function WorkerReviewCard({worker, jobsId, updateCallBack, showBo
                         //darkorchid
                     <Button mode={"contained"} icon={"phone-in-talk"} style={{marginTop: 15}} color="darkorchid"
                             onPress={() => callPhone(worker.phone)}>
-                        {worker.phone}
+                        {`0${worker.phone}`}
                     </Button>}
                 </View>
                 {showBottomBar && <BottomComponent/>}
