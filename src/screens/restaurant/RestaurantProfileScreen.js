@@ -20,7 +20,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import MapView from 'react-native-maps';
 import MapMarker from 'react-native-maps/lib/components/MapMarker';
-import {API_IMAGE_DOWNLOAD_URI, getRestaurantProfile, sendUpdateRestaurantProfile} from "../../api/APIUtils";
+import {API_IMAGE_DOWNLOAD_URI, getRestaurantProfile} from "../../api/APIUtils";
 import {callPhone} from "../../api/Utils";
 
 export default function RestaurantProfile({route}) {
