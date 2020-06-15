@@ -95,7 +95,7 @@ export default function RestaurantOrWorkerSignup({navigation}) {
                         onValueChange={value => setUserType(value)}
                         value={userType}
                     >
-                        <RadioButton.Item icon="account-tie" label="Restaurant Manager" value={userTypeEnum.restaurant}
+                        <RadioButton.Item icon="account-tie" label="Business Manager" value={userTypeEnum.restaurant}
                                           style={{color: 'red'}}/>
                         <RadioButton.Item icon="worker" label="Worker" value={userTypeEnum.worker}/>
                     </RadioButton.Group>

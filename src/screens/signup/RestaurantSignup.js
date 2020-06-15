@@ -76,7 +76,7 @@ export default function RestaurantSignup({route, navigation}) {
 
                             name: 'name', // Same as defined in default values
 
-                            label: "Restaurant name",
+                            label: "Business name",
 
                             variant: 'outlined',
 
@@ -96,7 +96,7 @@ export default function RestaurantSignup({route, navigation}) {
 
                             name: 'address', // Same as defined in default values
 
-                            label: "Restaurant address",
+                            label: "Business address",
 
                             variant: 'outlined',
 
@@ -115,7 +115,7 @@ export default function RestaurantSignup({route, navigation}) {
 
                             name: 'phone', // Same as defined in default values
 
-                            label: "Restaurant phone number",
+                            label: "Business phone number",
 
                             variant: 'outlined',
 
@@ -138,7 +138,7 @@ export default function RestaurantSignup({route, navigation}) {
 
                             name: 'restaurantEmailAddress', // Same as defined in default values
 
-                            label: "Restaurant email address",
+                            label: "Business email address",
 
                             variant: 'outlined',
 
