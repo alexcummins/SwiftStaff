@@ -7,7 +7,7 @@ import {
     Text,
     Dimensions,
     ImageBackground,
-    Linking,
+    TouchableOpacity,
 } from 'react-native';
 import {
     Button,
@@ -21,8 +21,8 @@ import AsyncStorage from '@react-native-community/async-storage';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import MapView from 'react-native-maps';
 import MapMarker from 'react-native-maps/lib/components/MapMarker';
-import {API_IMAGE_DOWNLOAD_URI, getRestaurantProfile, updateRestaurantProfile} from "../../api/APIUtils";
-import {callPhone} from "../../api/Utils";
+import {API_IMAGE_DOWNLOAD_URI, getRestaurantProfile, updateRestaurantProfile, uploadImage} from "../../api/APIUtils";
+import {callPhone, imagePicker} from "../../api/Utils";
 
 export default function RestaurantProfile({route}) {
 
@@ -40,6 +40,10 @@ export default function RestaurantProfile({route}) {
 
     const navigation = useNavigation();
 
+    async function pickImage() {
+        await imagePicker("1", restaurantId, "Profile", setProfileImage, false)
+    }
+
     async function apply() {
         console.log("Trying to update")
         await updateRestaurantProfile({
@@ -54,24 +58,26 @@ export default function RestaurantProfile({route}) {
             description: description
         })
 
-        // API call for images
+        await uploadImage(profileImage, "1", restaurantId, "profile")
     }
 
     return (
         <ScrollView>
-            <ImageBackground
-                // TODO: Make image source requirement dynamic
-                source={require('../../../resources/img/restaurantfront.jpg')}
-                style={styles.imageContainer}
-            >
-                <IconButton
-                    icon='chevron-left-circle'
-                    size={height * 0.05}
-                    color='rgb(237, 237, 237)'
-                    style={styles.buttonAlign}
-                    onPress = {() => navigation.goBack()}
-                />
-            </ImageBackground>
+            <TouchableOpacity onPress={() => pickImage()}>
+                <ImageBackground
+                    // TODO: Make image source requirement dynamic
+                    source={{uri: profileImage}}
+                    style={styles.imageContainer}
+                >
+                </ImageBackground>
+            </TouchableOpacity>
+            <IconButton
+                icon='chevron-left-circle'
+                size={height * 0.05}
+                color='rgb(237, 237, 237)'
+                style={styles.buttonAlign}
+                onPress = {() => navigation.goBack()}
+            />
 
             <View style={styles.userNameRow}>
                 <Text style={styles.userNameText}>{name}</Text>

@@ -36,8 +36,8 @@ export default function RestaurantProfile({route}) {
   const [facebookLink, setFacebookLink] = useState("");
   const [twitterLink, setTwitterLink] = useState("");
   const [instagramLink, setInstagramLink] = useState("");
-  const [profileImage, setProfileImage] = useState(`${API_IMAGE_DOWNLOAD_URI}/profile/${restaurantId}`);
-  const [description, setDescription] = useState('asdsahdasgidgisahdfjsahkjdfbsakfb')
+  const [profileImage, setProfileImage] = useState('');
+  const [description, setDescription] = useState('')
 
   const [workerAccess, setWorkerAccess] = useState(true)
   const navigation = useNavigation();
@@ -60,7 +60,7 @@ export default function RestaurantProfile({route}) {
           console.log(restaurant.name)
           setName(restaurant.name)
           setAddress(restaurant.address)
-          setPhone(`0${restaurant.phone}`)
+          setPhone(restaurant.phone)
           setEmail(restaurant.email)
           setLongitude(restaurant.longitude)
           setLatitude(restaurant.latitude)
@@ -68,6 +68,7 @@ export default function RestaurantProfile({route}) {
           setTwitterLink(restaurant.twitterLink)
           setInstagramLink(restaurant.instagramLink)
           setDescription(restaurant.description)
+          setProfileImage(`${API_IMAGE_DOWNLOAD_URI}/profile/${restaurant.profileImageId}`)
 
         } catch (e) {
           console.log("Retrieving restaurant profile failed")
@@ -92,7 +93,7 @@ export default function RestaurantProfile({route}) {
       <ScrollView>
         <ImageBackground
             // TODO: Make image source requirement dynamic
-            source={require('../../../resources/img/restaurantfront.jpg')}
+            source={{uri: profileImage}}
             style={styles.imageContainer}
         >
           <IconButton
@@ -131,7 +132,7 @@ export default function RestaurantProfile({route}) {
             <Button icon='cellphone' onPress={() => {
               callPhone(phone)
             }}>
-              {phone}
+              {`${phone}`}
             </Button>
           </View>
           <View style={styles.userContactInfoRow}>
