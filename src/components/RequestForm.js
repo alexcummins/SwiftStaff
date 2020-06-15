@@ -10,7 +10,8 @@ import {
     Alert,
     Keyboard,
     TouchableWithoutFeedback,
-    Dimensions
+    Dimensions,
+    TouchableOpacity
 } from 'react-native';
 
 import {useForm} from 'react-hook-form';
@@ -27,27 +28,27 @@ import SelectCredentials from "./SelectCredentials";
 
 function RequestForm() {
 
-  useFocusEffect(
-    React.useCallback(() => {
-      (async () => {
+    useFocusEffect(
+        React.useCallback(() => {
+            (async () => {
 
-        try {
-          let keys = await AsyncStorage.getAllKeys();
-          // console.log(JSON.stringify(keys))
-          let restId = await AsyncStorage.getItem("restaurantId");
-          // console.log(restId)
-          setRestaurantId(restId);
-        } catch (e) {
-          console.log("no restaurantId found - setting default");
-        }
+                try {
+                    let keys = await AsyncStorage.getAllKeys();
+                    // console.log(JSON.stringify(keys))
+                    let restId = await AsyncStorage.getItem("restaurantId");
+                    // console.log(restId)
+                    setRestaurantId(restId);
+                } catch (e) {
+                    console.log("no restaurantId found - setting default");
+                }
 
-      })();
-    }), []);
+            })();
+        }), []);
 
     const [restaurantId, setRestaurantId] = useState("")
 
     const [hourlyRate, setHourlyRate] = useState("")
-    const [isHourlyRateError, setIsHourlyRateError] = useState("")
+    const [isHourlyRateError, setIsHourlyRateError] = useState(false)
     const [date, setDate] = useState(new Date(Date.now()))
     const [dateString, setDateString] = useState(generateDateString(date))
 
@@ -55,7 +56,8 @@ function RequestForm() {
     const [startTime, setStartTime] = useState(new Date(Date.now()))
     const [startString, setStartString] = useState("")
     const [endString, setEndString] = useState("")
-    const [endTime, setEndTime] = useState("")
+    const [endTime, setEndTime] = useState(new Date(Date.now()))
+    const [endTimeError, setEndTimeError] = useState(false)
 
     const [showDate, setShowDate] = useState(false)
     const [showTime, setShowTime] = useState(false)
@@ -71,12 +73,20 @@ function RequestForm() {
     }
 
     function generateTimeString(time) {
-        return `${time.getHours()}:${time.getMinutes()}`
+        let hours = time.getHours()
+        if (hours.toString().length === 1) {
+            hours = `0${hours}`
+        }
+        let minutes = time.getMinutes()
+        if (minutes.toString().length === 1) {
+            minutes = `0${minutes}`
+        }
+        return `${hours}:${minutes}`
     }
 
     function onChangeDate(event, selectedDate) {
         const currentDate = selectedDate || date;
-        setShowDate(showDate)
+        setShowDate(Platform.OS === 'ios' ? showDate : false)
         setDate(currentDate)
         setDateString(generateDateString(currentDate))
     }
@@ -87,18 +97,29 @@ function RequestForm() {
 
     function onChangeTime(event, selectedTime) {
         let currentTime;
+        let start = startTime;
+        let end = endTime;
         if (startOrEnd === "start") {
             currentTime = selectedTime || startTime;
-            setShowTime(showTime)
+            start = currentTime
+            setShowTime(Platform.OS === 'ios' ? showTime : false)
             setStartTime(currentTime)
             setStartString(generateTimeString(currentTime))
         } else if (startOrEnd === "end") {
             currentTime = selectedTime || endTime;
-            setShowTime(showTime)
+            end = currentTime
+            setShowTime(Platform.OS === 'ios' ? showTime : false)
             setEndTime(currentTime)
             setEndString(generateTimeString(currentTime))
         } else {
             throw (new Error("Time picker should be for start or end, no string supplied"))
+        }
+        if (startString !== "" || endString !== "") {
+            if (start.getTime() > end.getTime()) {
+                setEndTimeError(true)
+            } else {
+                setEndTimeError(false)
+            }
         }
     }
 
@@ -110,6 +131,9 @@ function RequestForm() {
     function checkIsHourlyRateError() {
         if (isNaN(hourlyRate)) {
             setIsHourlyRateError(true)
+        }
+        else {
+            setIsHourlyRateError(false)
         }
     }
 
@@ -129,12 +153,13 @@ function RequestForm() {
             <ScrollView contentContainerStyle={styles.scrollViewStyle}>
                 <Text style={styles.headingStyle}>Request a Worker</Text>
 
-                <View>
+                <View style={{marginBottom: 15}}>
                     <TextInput
                         mode='flat'
                         label={"Hourly rate (£)"}
                         value={hourlyRate}
-                        onChangeText={rate => setHourlyRate(rate)}
+                        onChangeText={rate => {setHourlyRate(rate);
+                                               checkIsHourlyRateError()}}
                         autoCorrect={false}
                         autoCapitalize="none"
                         onEndEditing={checkIsHourlyRateError}
@@ -142,24 +167,23 @@ function RequestForm() {
                         keyboardType="numeric"
                     >
                     </TextInput>
-                    <HelperText
+
+                    {isHourlyRateError && <HelperText
                         type="error"
                         visible={isHourlyRateError}
                     >
                         Hourly rate input is not a number.
-                    </HelperText>
+                    </HelperText>}
                 </View>
 
-                <TouchableWithoutFeedback>
+                <TouchableOpacity onPress={showDatePicker}>
                     <TextInput
                         label='Date of shift'
                         value={dateString}
-                        caretHidden={true}
-                        onFocus={showDatePicker}
-                        onKeyPress={() => Keyboard.dismiss()}
+                        editable={false}
                         style={{marginBottom: 15}}
                     />
-                </TouchableWithoutFeedback>
+                </TouchableOpacity>
 
                 {(showDate && <DateTimePicker
                         testID="dateTimePicker"
@@ -173,28 +197,33 @@ function RequestForm() {
                 )}
 
                 <View style={{flexDirection: "row", marginBottom: 15}}>
-                    <TouchableWithoutFeedback>
+                    <TouchableOpacity onPress={() => showTimePicker("start")} style={{flex: 1}}>
                         <TextInput
                             label='Start Time'
                             value={startString}
-                            caretHidden={true}
-                            onFocus={() => showTimePicker("start")}
-                            onKeyPress={() => Keyboard.dismiss()}
                             style={{flex: 1, marginRight: 5}}
+                            error={endTimeError}
+                            editable={false}
                         />
-                    </TouchableWithoutFeedback>
+                    </TouchableOpacity>
 
-                    <TouchableWithoutFeedback>
+                    <TouchableOpacity onPress={() => showTimePicker("end")} style={{flex: 1}}>
                         <TextInput
-                            label='End time'
+                            label='End Time'
                             value={endString}
-                            caretHidden={true}
-                            onFocus={() => showTimePicker("end")}
-                            onKeyPress={() => Keyboard.dismiss()}
-                            style={{flex: 1, marginLeft: 5}}
+                            style={{flex: 1, marginRight: 5}}
+                            error={endTimeError}
+                            editable={false}
                         />
-                    </TouchableWithoutFeedback>
+                    </TouchableOpacity>
                 </View>
+
+                {endTimeError && <HelperText
+                    type="error"
+                    visible={endTimeError}
+                >
+                    End time must be after start time
+                </HelperText>}
 
                 {(showTime && <DateTimePicker
                         testID="timePicker"
@@ -207,7 +236,8 @@ function RequestForm() {
                     />
                 )}
 
-                <SelectCredentials selectedCredentials={setCredentials} title={"What kind of worker would you like to request?"}>
+                <SelectCredentials selectedCredentials={setCredentials}
+                                   title={"What kind of worker would you like to request?"}>
                 </SelectCredentials>
 
                 <TextInput
@@ -223,6 +253,9 @@ function RequestForm() {
             <View style={{margin: 15}}>
                 <Button
                     mode={'contained'}
+                    disabled={hourlyRate === "" || isHourlyRateError
+                    || dateString === "" || startString === ""
+                    || endString === "" || endTimeError || credentials.length === 0}
                     onPress={() => {
                         sendJobRequest({
                             restaurantId: restaurantId,
