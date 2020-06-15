@@ -132,7 +132,7 @@ export default function RestaurantProfile({route}) {
             <Button icon='cellphone' onPress={() => {
               callPhone(phone)
             }}>
-              {`${phone}`}
+              {`0${phone}`}
             </Button>
           </View>
           <View style={styles.userContactInfoRow}>
