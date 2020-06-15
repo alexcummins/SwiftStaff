@@ -124,7 +124,7 @@ export default function UserCard({data, updateCallBack, workerId, accepted}) {
                       icon="chevron-right"
                       color="black"
                       onPress={() => navigation.navigate("RestaurantProfile", {restaurantId: restaurantId,latitude: restaurantLat,
-                          longitude: restaurantLong, restaurantName: name }) }
+                          longitude: restaurantLong, restaurantName: name, modifyContent: false }) }
                     />
                   }
                 />

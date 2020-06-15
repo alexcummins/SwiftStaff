@@ -26,6 +26,7 @@ export default function RestaurantHomeScreen({data}) {
         console.log(vals)
 
         const restaurant = await getRestaurantProfile({restaurantId: restaurantId});
+        restaurant.modifyContent = true
         setRestaurantData(restaurant)
       })();
 
