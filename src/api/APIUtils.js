@@ -14,6 +14,7 @@ export const API_LOGIN_URL = `${API_BASE_URL}/login`;
 export const API_PROFILE_WORKER = `${API_BASE_URL}/profile/worker`
 export const API_PROFILE_RESTAURANT = `${API_BASE_URL}/profile/restaurant`
 export const API_NEW_RATING_WORKER = `${API_BASE_URL}/new/rating/worker`
+export const API_UPDATE_PROFILE_RESTAURANT = `${API_BASE_URL}/update/profile/login`
 export const API_IMAGE_UPLOAD = `${API_BASE_URL}/uploads`
 export const API_IMAGE_DOWNLOAD = `${API_BASE_URL}/downloads`
 export const API_IMAGE_DOWNLOAD_URI = `${HTTP_PROTOCOL}${API_IMAGE_DOWNLOAD}`
@@ -59,6 +60,14 @@ export async function sendNewWorkerRating(params) {
     if (response.status === 200) {
         return response.data
     }
+}
+
+export async function sendUpdateRestaurantProfile(params) {
+    let response = await sendHttpPutRequest(params, API_UPDATE_PROFILE_RESTAURANT)
+    if (response.status === 200) {
+        return response.data
+    }
+
 }
 
 export async function sendJobRequest(data, restaurantId, expertiseId) {
