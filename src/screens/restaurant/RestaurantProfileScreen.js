@@ -7,24 +7,26 @@ import {
   Text,
   Dimensions,
   ImageBackground,
-  Linking
+  Linking,
+  TextInput
 } from 'react-native';
 import {
   Button,
   IconButton,
   Divider,
 } from 'react-native-paper';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import MapView from 'react-native-maps';
 import MapMarker from 'react-native-maps/lib/components/MapMarker';
-import {API_IMAGE_DOWNLOAD_URI, getRestaurantProfile} from "../../api/APIUtils";
+import {API_IMAGE_DOWNLOAD_URI, getRestaurantProfile, sendUpdateRestaurantProfile} from "../../api/APIUtils";
 import {callPhone} from "../../api/Utils";
 
 export default function RestaurantProfile({route}) {
 
   const [restaurantId, setRestaurantId] = useState(route.params.restaurantId)
+  const [modifyContent, setModifyContent] = useState(route.params.modifyContent)
   const [name, setName] = useState(route.params.restaurantName);
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState(2569984529);
@@ -45,16 +47,16 @@ export default function RestaurantProfile({route}) {
           console.log(route.params)
           const restaurant = await getRestaurantProfile({restaurantId: route.params.restaurantId});
 
-            console.log(restaurant.name)
-            setName(restaurant.name)
-            setAddress(restaurant.address)
-            setPhone(restaurant.phone)
-            setEmail(restaurant.email)
-            setLongitude(restaurant.longitude)
-            setLatitude(restaurant.latitude)
-            setFacebookLink(restaurant.facebookLink)
-            setTwitterLink(restaurant.twitterLink)
-            setInstagramLink(restaurant.instagramLink)
+          console.log(restaurant.name)
+          setName(restaurant.name)
+          setAddress(restaurant.address)
+          setPhone(restaurant.phone)
+          setEmail(restaurant.email)
+          setLongitude(restaurant.longitude)
+          setLatitude(restaurant.latitude)
+          setFacebookLink(restaurant.facebookLink)
+          setTwitterLink(restaurant.twitterLink)
+          setInstagramLink(restaurant.instagramLink)
 
         } catch (e) {
           console.log("Retrieving restaurant profile failed")
@@ -66,45 +68,72 @@ export default function RestaurantProfile({route}) {
     }, [route.params.restaurantId])
   )
 
-  return (
-    <ScrollView>
+  async function updateRestaurantProfile(data, updateAddress) {
+    let response = await sendUpdateRestaurantProfile(data)
+    console.log(JSON.stringify(response))
+    if (updateAddress) {
+      setLongitude(response.longitude)
+      setLatitude(response.latitude)
+    }
+  }
 
-      <ImageBackground
-        source={{uri: profileImage}}
-        style={styles.imageContainer}
-      >
-        <IconButton
-          icon='chevron-left-circle'
-          size={30}
-          color='rgb(237, 237, 237)'
-          style={styles.buttonAlign}
-          onPress = {() => navigation.goBack()}
-        />
-      </ImageBackground>
+  function displayName() {
+    if (!modifyContent) {
+      return (<Text style={styles.userNameText}>{name}</Text>);
+    } else {
+      return (<TextInput
+        label='Establishment Name'
+        defaultValue={name}
+        textContentType='organizationName'
+        // onSubmitEditing={(val) => updateRestaurantProfile({restaurantId: restaurantId, name: val}, false)}
+      />)
+    }
+  }
 
-      <View style={styles.userNameRow}>
-        <Text style={styles.userNameText}>{name}</Text>
-      <View style={styles.userContactInfoContainer}>
+  function displayPhone() {
+    const phoneNumber = `0${phone}`
+    if (!modifyContent) {
+      return (<View style={styles.userContactInfoRow}>
+        <Button icon='cellphone' onPress={() => {
+          callPhone(phone)
+        }}>
+          {phoneNumber}
+        </Button>
+      </View>)
+    } else {
+      return (<TextInput
+        label='Phone'
+        defaultValue={phoneNumber}
+        textContentTyoe='telephoneNumber'
+        onSubmitEditing={(val) => {
+          //TODO:
+        }}
+      />)
+    }
+  }
 
-      </View>
-        <View style={styles.userContactInfoRow}>
-          <Button icon='cellphone' onPress={() => {
-            callPhone(phone)
-          }}>
-            0{phone}
-          </Button>
-        </View>
-        <View style={styles.userContactInfoRow}>
-          <Button icon='email' onPress={() => {
-            Linking.openURL(`mailto:${email}`)
-          }}> {email}
-          </Button>
-        </View>
-      </View>
+  function displayEmail() {
+    if (!modifyContent) {
+      return (<View style={styles.userContactInfoRow}>
+        <Button icon='email' onPress={() => Linking.openURL(`mailto:${email}`)}>
+          {email}
+        </Button>
+      </View>)
+    } else {
+      return (<TextInput
+        label='Email'
+        defaultValue={email}
+        textContentType='emailAddress'
+        onSubmitEditing={(val) => {
+          //TODO:
+        }}
+      />)
+    }
+  }
 
-      <Divider />
-
-      <View style={styles.socialRow}>
+  function displaySocialMediaLinks() {
+    if (!modifyContent) {
+      return (<View style={styles.socialRow}>
         <IconButton
           disabled={!twitterLink.length}
           icon='twitter'
@@ -126,15 +155,33 @@ export default function RestaurantProfile({route}) {
           color='#bc2a8d'
           onPress={() => Linking.openURL(instagramLink)}
         />
-      </View>
+      </View>)
+    } else {
+      //TODO: update
+    }
+  }
 
-      <Divider />
+  function displayAddress() {
+    if (!modifyContent) {
+      return (
+        <View style={[styles.userContactInfoRow, {paddingTop: 5, paddingBottom: 10}]}>
+          <Button icon='map-marker'/>
+          <Text style={styles.userContactInfoText}> {address} </Text>
+        </View>)
+    } else {
+      return (<TextInput
+        label='Address'
+        defaultValue={address}
+        textContentType='fullStreetAddress'
+        onSubmitEditing={(val) => {
+          // TODO:
+        }}
+      />)
+    }
+  }
 
-      <View style={[styles.userContactInfoRow, {paddingTop: 5, paddingBottom: 10}]}>
-        <Button icon='map-marker' />
-        <Text style={styles.userContactInfoText}> {address} </Text>
-      </View>
-
+  function displayMap() {
+    return (
       <View style={styles.container}>
         <MapView style={styles.mapStyle} showsUserLocation={true}
                  initialRegion={{
@@ -145,7 +192,46 @@ export default function RestaurantProfile({route}) {
                  }}>
           <MapMarker coordinate={{latitude: latitude, longitude: longitude}}/>
         </MapView>
+      </View>)
+  }
+
+
+  return (
+    <ScrollView>
+
+      <ImageBackground
+        source={{uri: profileImage}}
+        style={styles.imageContainer}
+      >
+        <IconButton
+          icon='chevron-left-circle'
+          size={30}
+          color='rgb(237, 237, 237)'
+          style={styles.buttonAlign}
+          onPress={() => navigation.goBack()}
+        />
+      </ImageBackground>
+
+      <View style={styles.userNameRow}>
+        {displayName()}
+        <View style={styles.userContactInfoContainer}>
+
+        </View>
+        {displayPhone()}
+        {displayEmail()}
       </View>
+
+      <Divider/>
+
+      {displaySocialMediaLinks()}
+
+      <Divider/>
+
+      {displayAddress()}
+      {displayMap({latitude, longitude})}
+
+      {/*todo: change display address*/}
+
 
     </ScrollView>
   )
@@ -215,7 +301,8 @@ const styles = StyleSheet.create({
   },
   mapStyle: {
     width,
-    height: width * (3/4),
+    height: width * (3 / 4),
   },
 
 });
+
