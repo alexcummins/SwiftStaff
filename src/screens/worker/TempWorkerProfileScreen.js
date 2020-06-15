@@ -7,7 +7,7 @@ import {
     Dimensions
 } from 'react-native';
 import {ScrollView, TouchableOpacity} from "react-native";
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import ProfileCardBasicInfo from "../../components/ProfileCardBasicInfo";
 import ProfileCardList from "../../components/ProfileCardList";
@@ -16,14 +16,15 @@ import navigate from "../../RootNavigation";
 import {API_IMAGE_DOWNLOAD_URI, getWorkerProfile} from "../../api/APIUtils"
 import Modal from "react-native-modal";
 import RateWorkerPopUp from "../../components/RateWorkerPopUp";
-import {Button} from "react-native-paper";
+import {Button, IconButton} from "react-native-paper";
 import {imagePicker} from "../../api/Utils";
-import LoadingPopUp from "../../components/LoadingPopUp";
+import {add} from "react-native-reanimated";
 
 export default function WorkerProfile({route}) {
 
     const [visibility, setVisibility] = useState(false)
-    const [loading, setLoading] = useState(true)
+
+    const navigation = useNavigation()
 
     const [userId, setUserId] = useState(route.params.workerId)
     const [firstName, setFirstName] = useState('')
@@ -33,28 +34,11 @@ export default function WorkerProfile({route}) {
     const [phoneNumber, setPhoneNumber] = useState(7654321234);
     const [ratingTotal, setRatingTotal] = useState(5)
     const [ratingCount, setRatingCount] = useState(1)
-    const [hide, setHide] = useState(false)
-    const [skillsAndQualities, setSkillsAndQualities] = useState([
-        {name: 'Collaborative'},
-        {name: 'Hardworking'},
-        {name: 'Til-trained'},
-        {name: 'Interpersonal'},
-        {name: 'Teamwork'},
-    ])
-    const [qualifications, setQualifications] = useState([
-        {name: 'Driver\'s License'},
-        {name: 'Food Hygiene Certificate'},
-        {name: 'Clean-Driving Certificate'},
-    ])
-    const [experience, setExperience] = useState([
-        {name: '2 years, Corporate Concierge, The SSE Arena'},
-        {name: '1 year, Waiter, Romulo Cafe'},
-    ])
-
-    const [personalStatement, setPersonalStatement] = useState('My name is John, ' +
-        'I am very hardworking and ameable. Ever since I was 15, I have been' +
-        'in customer service through volunteering in Marie Curie. I like working with customers ' +
-        'directly and I enjoy the fast-paced customer service orientated nature of Cafe work')
+    const [workerAccess, setWorkerAccess] = useState(false)
+    const [skillsAndQualities, setSkillsAndQualities] = useState([])
+    const [qualifications, setQualifications] = useState([])
+    const [experience, setExperience] = useState([])
+    const [personalStatement, setPersonalStatement] = useState('')
 
     useFocusEffect(
         React.useCallback(() => {
@@ -62,7 +46,7 @@ export default function WorkerProfile({route}) {
            const hideWhenWorkerAccess = async () => {
                await AsyncStorage.getItem('userType', (error, result) => {
                    console.log(result)
-                   setHide(result === '2')
+                   setWorkerAccess(result === '2')
                })
             }
 
@@ -74,13 +58,15 @@ export default function WorkerProfile({route}) {
                     console.log(worker)
                     setFirstName(worker.fname)
                     setLastName(worker.lname)
-                    // Address
+                    setAddress(worker.address)
                     console.log(worker.profileImageId)
                     setProfileImage(`${API_IMAGE_DOWNLOAD_URI}/profile/${worker.profileImageId}`)
                     setPhoneNumber(worker.phone)
-                    // Skills&Qualities
-                    // Experience
-                    // Qualifications
+                    console.log(skillsAndQualities)
+                    console.log(worker.skillsAndQualities)
+                    setSkillsAndQualities(worker.skillsAndQualities)
+                    setQualifications(worker.qualifications)
+                    setExperience(worker.experience)
                     setRatingTotal(worker.ratingTotal)
                     setRatingCount(worker.ratingCount)
                     setPersonalStatement(worker.personalStatement)
@@ -101,18 +87,37 @@ export default function WorkerProfile({route}) {
     }
 
     async function changeProfileImage() {
-        await imagePicker("2", userId, "Profile", setProfileImage, setLoading)
+        await imagePicker("2", userId, "Profile", setProfileImage, true)
     }
 
     return (
         <View style={{flex:1}}>
             <ScrollView style={styles.container}>
                 <View style={styles.header}></View>
-                {/*<Image style={styles.avatar} source={profileImage}/>*/}
-                <TouchableOpacity style={styles.avatarButton}
-                                  onPress={() => changeProfileImage()}>
-                    <Image style={styles.avatar} source={{uri: profileImage}}/>
-                </TouchableOpacity>
+                {workerAccess ?
+                    <IconButton style={styles.settings}
+                                icon="account-edit"
+                                size={height * 0.05}
+                                onPress={() => {navigation.navigate("JobProfileEdit", {
+                                    workerId: userId,
+                                    firstName: firstName,
+                                    lastName: lastName,
+                                    profileImage: profileImage,
+                                    address: address,
+                                    phoneNumber: `0${phoneNumber}`,
+                                    skillsAndQualities: skillsAndQualities,
+                                    qualifications: qualifications,
+                                    experience: experience,
+                                    personalStatement: personalStatement
+                                })}}/>
+                : null}
+                {workerAccess ?
+                    <TouchableOpacity style={styles.avatarButton}
+                                      onPress={() => changeProfileImage()}>
+                        <Image style={styles.avatar} source={{uri: profileImage}}/>
+                    </TouchableOpacity>
+                :   <Image style={styles.untouchableAvatar} source={{uri: profileImage}}/>}
+
                 <View style={styles.body}>
                     <Text style={styles.name}>{firstName}{' '}{lastName}</Text>
                     <ProfileCardBasicInfo data={{ listItemsAndIcons:
@@ -132,7 +137,7 @@ export default function WorkerProfile({route}) {
                         body: personalStatement
                     }} />
                 </View>
-                {!hide ? <View style={styles.placeholder}></View> : null}
+                {!workerAccess ? <View style={styles.placeholder}></View> : <View style={styles.space}></View>}
                 <Modal isVisible={visibility}
                        onBackdropPress={() => toggleShowRateCard()}>
                     <RateWorkerPopUp
@@ -143,9 +148,8 @@ export default function WorkerProfile({route}) {
                         oldRatingCount={ratingCount}
                         closePopUp={toggleShowRateCard}/>
                 </Modal>
-                <LoadingPopUp loading={loading} message="Uploading Image"/>
             </ScrollView>
-            {!hide ?
+            {!workerAccess ?
             <Button icon="gesture-double-tap"
                     mode="contained"
                     dark={true}
@@ -161,6 +165,11 @@ export default function WorkerProfile({route}) {
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 const styles = StyleSheet.create({
+    settings:{
+        top: 0,
+        right: 0,
+        position: 'absolute',
+    },
     container:{
         flex: 1,
         backgroundColor: "rgba(255,255,255,0.7)"
@@ -191,6 +200,18 @@ const styles = StyleSheet.create({
         borderColor: "white",
         backgroundColor: "rgba(255,255,255,0.7)"
     },
+    untouchableAvatar:{
+        flex: 1,
+        height: height*0.2,
+        width: undefined,
+        alignSelf: 'center',
+        top: height*0.1,
+        position: 'absolute',
+        aspectRatio: 1,
+        borderRadius: 63,
+        borderWidth: 4,
+        borderColor: "white",
+    },
     body: {
         flex: 1,
         alignItems: 'stretch',
@@ -207,6 +228,9 @@ const styles = StyleSheet.create({
     },
     placeholder: {
         height: height *0.15
+    },
+    space:{
+        height:height *0.05
     },
     rateButton: {
         position: 'absolute',
