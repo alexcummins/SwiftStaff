@@ -77,6 +77,14 @@ export default function RestaurantProfile({route}) {
     }, [route.params.restaurantId])
   )
 
+  async function openURLOrFail(url : string) {
+    try {
+      await Linking.openURL(url)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
 
   return (
       <ScrollView>
@@ -118,15 +126,13 @@ export default function RestaurantProfile({route}) {
           </View>
           <View style={styles.userContactInfoRow}>
             <Button icon='cellphone' onPress={() => {
-              //TODO: Call
+              callPhone(phone)
             }}>
               {phone}
             </Button>
           </View>
           <View style={styles.userContactInfoRow}>
-            <Button icon='email' onPress={() => {
-              //TODO: Send Email
-            }}> {email}
+            <Button icon='email' onPress={() => openURLOrFail(`mailto:${email}`)}> {email}
             </Button>
           </View>
         </View>
@@ -143,19 +149,19 @@ export default function RestaurantProfile({route}) {
               icon='twitter'
               size={35}
               color='#56ACEE'
-              onPress={() => Linking.openURL(twitterLink)}
+              onPress={() => openURLOrFail(twitterLink)}
           />
           <IconButton
               icon='facebook'
               size={35}
               color='#3B5A98'
-              onPress={() => Linking.openURL(facebookLink)}
+              onPress={() => openURLOrFail(facebookLink)}
           />
           <IconButton
               icon='instagram'
               size={35}
               color='#bc2a8d'
-              onPress={() => Linking.openURL(instagramLink)}
+              onPress={() => openURLOrFail(instagramLink)}
           />
         </View>
 
