@@ -7,150 +7,187 @@ import {
   Text,
   Dimensions,
   ImageBackground,
-  Linking
+  Linking,
+  TextInput
 } from 'react-native';
 import {
   Button,
   IconButton,
   Divider,
 } from 'react-native-paper';
-import { useFocusEffect } from '@react-navigation/native';
+import {useFocusEffect} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {CommonActions, useNavigation} from '@react-navigation/native';
 import MapView from 'react-native-maps';
 import MapMarker from 'react-native-maps/lib/components/MapMarker';
-import {getRestaurantProfile} from "../../api/APIUtils";
+import {API_IMAGE_DOWNLOAD_URI, getRestaurantProfile} from "../../api/APIUtils";
+import {callPhone} from "../../api/Utils";
 
 export default function RestaurantProfile({route}) {
 
-  const [name, setName] = useState(route.params.restaurantName);
-  const [address, setAddress] = useState("");
-  const [phone, setPhone] = useState(2569984529);
-  const [email, setEmail] = useState("")
-  const [longitude, setLongitude] = useState(route.params.longitude);
-  const [latitude, setLatitude] = useState(route.params.latitude);
-  const [facebookLink, setFacebookLink] = useState("https://facebook.com");
-  const [twitterLink, setTwitterLink] = useState("https://twitter.com");
-  const [instagramLink, setInstagramLink] = useState("https://instagram.com");
-  const [profileImage, setprofileImage] = useState('../../../resources/img/restaurantfront.jpg');
+  const [restaurantId, setRestaurantId] = useState(route.params.restaurantId)
+
+  const [name, setName] = useState('');
+  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
+  const [email, setEmail] = useState('')
+  const [longitude, setLongitude] = useState(0.0);
+  const [latitude, setLatitude] = useState(0.0);
+  const [facebookLink, setFacebookLink] = useState("");
+  const [twitterLink, setTwitterLink] = useState("");
+  const [instagramLink, setInstagramLink] = useState("");
+  const [profileImage, setProfileImage] = useState(`${API_IMAGE_DOWNLOAD_URI}/profile/${restaurantId}`);
+  const [description, setDescription] = useState('asdsahdasgidgisahdfjsahkjdfbsakfb')
+
+  const [workerAccess, setWorkerAccess] = useState(true)
   const navigation = useNavigation();
 
   useFocusEffect(
     React.useCallback(() => {
+
+      const hideWhenWorkerAccess = async () => {
+        await AsyncStorage.getItem('userType', (error, result) => {
+          console.log(result)
+          setWorkerAccess(result === '2')
+        })
+      }
+
       const fetchRestaurantProfile = async () => {
         try {
           console.log(route.params)
           const restaurant = await getRestaurantProfile({restaurantId: route.params.restaurantId});
 
-            console.log(restaurant.name)
-            setName(restaurant.name)
-            setAddress(restaurant.address)
-            setPhone(restaurant.phone)
-            setEmail(restaurant.email)
-            setLongitude(restaurant.longitude)
-            setLatitude(restaurant.latitude)
-            // TODO:
-            setFacebookLink(restaurant.facebookLink)
-            setTwitterLink(restaurant.twitterLink)
-            setInstagramLink(restaurant.instagramLink)
-            // set Photo
+          console.log(restaurant.name)
+          setName(restaurant.name)
+          setAddress(restaurant.address)
+          setPhone(`0${restaurant.phone}`)
+          setEmail(restaurant.email)
+          setLongitude(restaurant.longitude)
+          setLatitude(restaurant.latitude)
+          setFacebookLink(restaurant.facebookLink)
+          setTwitterLink(restaurant.twitterLink)
+          setInstagramLink(restaurant.instagramLink)
+          setDescription(restaurant.description)
 
         } catch (e) {
           console.log("Retrieving restaurant profile failed")
-          console.log(route.params)
           console.log(route.params.restaurantId)
-          // console.log(e.getMessage())
         }
       }
+      let hidePromise = hideWhenWorkerAccess()
       let promise = fetchRestaurantProfile()
     }, [route.params.restaurantId])
   )
 
+  async function openURLOrFail(url : string) {
+    try {
+      await Linking.openURL(url)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+
   return (
-    <ScrollView>
+      <ScrollView>
+        <ImageBackground
+            // TODO: Make image source requirement dynamic
+            source={require('../../../resources/img/restaurantfront.jpg')}
+            style={styles.imageContainer}
+        >
+          <IconButton
+              icon='chevron-left-circle'
+              size={height * 0.05}
+              color='rgb(237, 237, 237)'
+              style={styles.buttonAlign}
+              onPress = {() => navigation.goBack()}
+          />
+          { !workerAccess ?
+              <IconButton style={styles.settings}
+                          icon="settings"
+                          size={height * 0.05}
+                          color='rgb(237, 237, 237)'
+                          onPress={() => {navigation.navigate("RestaurantProfileEdit", {
+                              restaurantId: restaurantId,
+                              name: name,
+                              address: address,
+                              phone: phone,
+                              email: address,
+                              facebookLink: facebookLink,
+                              twitterLink: twitterLink,
+                              instagramLink: instagramLink,
+                              profileImage: profileImage,
+                              description: description
+                          })}}/>
+              : null}
+        </ImageBackground>
 
-      <ImageBackground
-        // TODO: Make image source requirement dynamic
-        source={require('../../../resources/img/restaurantfront.jpg')}
-        style={styles.imageContainer}
-      >
-        <IconButton
-          icon='chevron-left-circle'
-          size={30}
-          color='rgb(237, 237, 237)'
-          style={styles.buttonAlign}
-          onPress = {() => navigation.goBack()}
-        />
-      </ImageBackground>
+        <View style={styles.userNameRow}>
+          <Text style={styles.userNameText}>{name}</Text>
+          <View style={styles.userContactInfoContainer}>
 
-      <View style={styles.userNameRow}>
-        <Text style={styles.userNameText}>{name}</Text>
-      <View style={styles.userContactInfoContainer}>
-
-      </View>
-        <View style={styles.userContactInfoRow}>
-          <Button icon='cellphone' onPress={() => {
-            //TODO: Call
-          }}>
-            {phone}
-          </Button>
+          </View>
+          <View style={styles.userContactInfoRow}>
+            <Button icon='cellphone' onPress={() => {
+              callPhone(phone)
+            }}>
+              {phone}
+            </Button>
+          </View>
+          <View style={styles.userContactInfoRow}>
+            <Button icon='email' onPress={() => openURLOrFail(`mailto:${email}`)}> {email}
+            </Button>
+          </View>
         </View>
-        <View style={styles.userContactInfoRow}>
-          <Button icon='email' onPress={() => {
-            //TODO: Send Email
-          }}> {email}
-          </Button>
+
+        <Divider />
+
+
+        <View style={styles.userBioRow}>
+          <Text style={styles.userBioText}>{description}</Text>
         </View>
-      </View>
 
-      <Divider />
+        <View style={styles.socialRow}>
+          <IconButton
+              icon='twitter'
+              size={35}
+              color='#56ACEE'
+              onPress={() => openURLOrFail(twitterLink)}
+          />
+          <IconButton
+              icon='facebook'
+              size={35}
+              color='#3B5A98'
+              onPress={() => openURLOrFail(facebookLink)}
+          />
+          <IconButton
+              icon='instagram'
+              size={35}
+              color='#bc2a8d'
+              onPress={() => openURLOrFail(instagramLink)}
+          />
+        </View>
 
+        <Divider />
 
-      {/*<View style={styles.userBioRow}>*/}
-      {/*  <Text style={styles.userBioText}>Our mission is to serve the downtown business community by providing the highest-quality coffees, sandwiches, snacks, baked goods, noodles, rice and specialty laksa and Laksam in an atmosphere that meets the needs of customers who are in a hurry as well as those who want a place to relax and enjoy their beverages and food.</Text>*/}
-      {/*</View>*/}
+        <View style={[styles.userContactInfoRow, {paddingTop: 5, paddingBottom: 10}]}>
+          <Button icon='map-marker' />
+          <Text style={styles.userContactInfoRow}> {address} </Text>
+        </View>
 
-      <View style={styles.socialRow}>
-        <IconButton
-          icon='twitter'
-          size={35}
-          color='#56ACEE'
-          onPress={() => Linking.openURL(twitterLink)}
-        />
-        <IconButton
-          icon='facebook'
-          size={35}
-          color='#3B5A98'
-          onPress={() => Linking.openURL(facebookLink)}
-        />
-        <IconButton
-          icon='instagram'
-          size={35}
-          color='#bc2a8d'
-          onPress={() => Linking.openURL(instagramLink)}
-        />
-      </View>
+        <View style={styles.container}>
+          <MapView style={styles.mapStyle} showsUserLocation={true}
+                   initialRegion={{
+                     latitude: latitude,
+                     longitude: longitude,
+                     latitudeDelta: 0.1,
+                     longitudeDelta: 0.1,
+                   }}>
+            <MapMarker coordinate={{latitude: latitude, longitude: longitude}}/>
+          </MapView>
+        </View>
 
-      <Divider />
-
-      <View style={[styles.userContactInfoRow, {paddingTop: 5, paddingBottom: 10}]}>
-        <Button icon='map-marker' />
-        <Text style={styles.userContactInfoRow}> {address} </Text>
-      </View>
-
-      <View style={styles.container}>
-        <MapView style={styles.mapStyle} showsUserLocation={true}
-                 initialRegion={{
-                   latitude: latitude,
-                   longitude: longitude,
-                   latitudeDelta: 0.1,
-                   longitudeDelta: 0.1,
-                 }}>
-          <MapMarker coordinate={{latitude: latitude, longitude: longitude}}/>
-        </MapView>
-      </View>
-
-    </ScrollView>
+      </ScrollView>
   )
 
 }
@@ -158,13 +195,20 @@ export default function RestaurantProfile({route}) {
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 const styles = StyleSheet.create({
+  settings:{
+    top: height * 0.04,
+    right: 0,
+    position: 'absolute',
+  },
+
   imageContainer: {
     flex: 1,
     height: width * (3 / 5),
   },
   buttonAlign: {
-    alignItems: 'flex-start',
-    marginTop: 30
+    top: height * 0.04,
+    left: 0,
+    position: 'absolute',
   },
   titleContainer: {
     color: 'rgba(237, 237, 237, 0.8)',
@@ -214,8 +258,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   mapStyle: {
-    width,
-    height: width * (3/4),
+    width : width,
+    height: width,
   },
 
 });

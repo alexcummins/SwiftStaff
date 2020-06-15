@@ -15,6 +15,7 @@ import TempWorkerScreens from "./src/screens/worker/TempWorkerScreens";
 import WorkerSignup from "./src/screens/signup/WorkerSignup";
 import RestaurantSignup from "./src/screens/signup/RestaurantSignup";
 import {userTypeEnumClass} from './src/api/Utils';
+import RestaurantProfileEditScreen from "./src/screens/restaurant/RestaurantProfileEditScreen";
 import TempWorkerProfileEditScreen from "./src/screens/worker/TempWorkerProfileEditScreen";
 
 const Stack = createStackNavigator();
@@ -127,8 +128,9 @@ export default function App({navigator}) {
       <Stack.Screen name="RestaurantSignup" component={RestaurantSignup} options={{title: 'Restaurant Signup'}}/>
       <Stack.Screen name="WorkerSignup" component={WorkerSignup} options={{title: 'Worker Signup'}}/>
       <Stack.Screen name="JobProfile" component={TempWorkerProfileScreen} options={{headerShown: true, title: 'Profile'}} />
-      <Stack.Screen name="RestaurantProfile" component={RestaurantProfileScreen} options={{headerShown: false, title: 'Restaurant Profile'}}/>
+      <Stack.Screen name="RestaurantProfile" component={RestaurantProfileScreen} options={{headerShown: false, title: 'Profile'}}/>
       <Stack.Screen name="JobProfileEdit" component={TempWorkerProfileEditScreen} options={{headerShown: true, title: 'Edit Profile'}} />
+      <Stack.Screen name="RestaurantProfileEdit" component={RestaurantProfileEditScreen} options={{headerShown: false, title: 'Edit Profile'}}/>
     </Stack.Navigator>
   )
 }
