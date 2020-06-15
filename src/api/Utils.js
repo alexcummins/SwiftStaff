@@ -84,7 +84,7 @@ export const imagePicker = async (userType : string,
                                   userId: string,
                                   resourceName : string,
                                   setter = (_) => {},
-                                  loading = (_) => {}) => {
+                                  upload = true) => {
 
     checkPermission(PERMISSION_TYPE.photos)
     checkPermission(PERMISSION_TYPE.camera)
@@ -106,17 +106,20 @@ export const imagePicker = async (userType : string,
             console.log('ImagePicker Error: ', response.error);
         } else {
             console.log("Got here")
-            console.log(loading)
             console.log("Loading")
-            loading(true)
-            uploadImage(response.uri, userType, userId, resourceName.toLowerCase()).then(introduceDelay(setter,loading, response.uri))
+            // loading(true)
+            setter(response.uri)
+            if (upload) {
+                uploadImage(response.uri, userType, userId, resourceName.toLowerCase())
+            }
+            // uploadImage(response.uri, userType, userId, resourceName.toLowerCase()).then(introduceDelay(setter,loading, response.uri))
         }
     });
 }
 
-// Delay doesn't actually introduce a delay. Refactor/ Remove
-function introduceDelay(setter = (_) => {}, loading = (_) => {}, uri) {
-    loading(false)
-    setter(uri)
-    console.log("I deleyaed")
-}
+// // Delay doesn't actually introduce a delay. Refactor/ Remove
+// function introduceDelay(setter = (_) => {}, loading = (_) => {}, uri) {
+//     loading(false)
+//     setter(uri)
+//     console.log("I deleyaed")
+// }
