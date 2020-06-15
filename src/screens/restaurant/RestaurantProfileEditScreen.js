@@ -36,6 +36,7 @@ export default function RestaurantProfile({route}) {
     const [twitterLink, setTwitterLink] = useState(route.params.twitterLink);
     const [instagramLink, setInstagramLink] = useState(route.params.instagramLink);
     const [profileImage, setProfileImage] = useState(route.params.profileImage);
+    const [description, setDescription] = useState(route.params.description)
 
     const navigation = useNavigation();
 
@@ -49,7 +50,8 @@ export default function RestaurantProfile({route}) {
             phone: phone,
             facebookLink: facebookLink,
             twitterLink: twitterLink,
-            instagramLink: instagramLink
+            instagramLink: instagramLink,
+            description: description
         })
 
         // API call for images
@@ -108,11 +110,11 @@ export default function RestaurantProfile({route}) {
                 />
             </List.Section>
 
+            <Divider style={{marginTop: height *0.01}}/>
 
-
-            {/*<View style={styles.userBioRow}>*/}
-            {/*  <Text style={styles.userBioText}>Our mission is to serve the downtown business community by providing the highest-quality coffees, sandwiches, snacks, baked goods, noodles, rice and specialty laksa and Laksam in an atmosphere that meets the needs of customers who are in a hurry as well as those who want a place to relax and enjoy their beverages and food.</Text>*/}
-            {/*</View>*/}
+            <View style={styles.userBioRow}>
+                <Text style={styles.userBioText}>{description}</Text>
+            </View>
 
             <View style={styles.socialRow}>
                 <IconButton
@@ -131,6 +133,16 @@ export default function RestaurantProfile({route}) {
                     color='#bc2a8d'
                 />
             </View>
+
+            <List.Section>
+                <List.Subheader>Cafe Description</List.Subheader>
+                <TextInput
+                    multiline={true}
+                    onChangeText={(text) => setDescription(text)}
+                    placeholder="Change your cafe's description"
+                />
+            </List.Section>
+
             <List.Section>
                 <List.Subheader>Social Media Links</List.Subheader>
                 <TextInput

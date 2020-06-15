@@ -37,6 +37,7 @@ export default function RestaurantProfile({route}) {
   const [twitterLink, setTwitterLink] = useState("");
   const [instagramLink, setInstagramLink] = useState("");
   const [profileImage, setProfileImage] = useState(`${API_IMAGE_DOWNLOAD_URI}/profile/${restaurantId}`);
+  const [description, setDescription] = useState('asdsahdasgidgisahdfjsahkjdfbsakfb')
 
   const [workerAccess, setWorkerAccess] = useState(true)
   const navigation = useNavigation();
@@ -66,6 +67,7 @@ export default function RestaurantProfile({route}) {
           setFacebookLink(restaurant.facebookLink)
           setTwitterLink(restaurant.twitterLink)
           setInstagramLink(restaurant.instagramLink)
+          setDescription(restaurant.description)
 
         } catch (e) {
           console.log("Retrieving restaurant profile failed")
@@ -114,7 +116,8 @@ export default function RestaurantProfile({route}) {
                               facebookLink: facebookLink,
                               twitterLink: twitterLink,
                               instagramLink: instagramLink,
-                              profileImage: profileImage
+                              profileImage: profileImage,
+                              description: description
                           })}}/>
               : null}
         </ImageBackground>
@@ -140,9 +143,9 @@ export default function RestaurantProfile({route}) {
         <Divider />
 
 
-        {/*<View style={styles.userBioRow}>*/}
-        {/*  <Text style={styles.userBioText}>Our mission is to serve the downtown business community by providing the highest-quality coffees, sandwiches, snacks, baked goods, noodles, rice and specialty laksa and Laksam in an atmosphere that meets the needs of customers who are in a hurry as well as those who want a place to relax and enjoy their beverages and food.</Text>*/}
-        {/*</View>*/}
+        <View style={styles.userBioRow}>
+          <Text style={styles.userBioText}>{description}</Text>
+        </View>
 
         <View style={styles.socialRow}>
           <IconButton
