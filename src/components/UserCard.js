@@ -85,7 +85,7 @@ export default function UserCard({data, updateCallBack, workerId, accepted}) {
             setAcceptIsLoading(false)
             updateCallBack(newList.jobObjList)
         } else {
-            notifyMessage("Sorry there was an error please check your internet connection and try again!")
+            // notifyMessage("Sorry there was an error please check your internet connection and try again!")
             setAcceptIsLoading(false)
         }
     }
