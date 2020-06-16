@@ -93,6 +93,23 @@ export default function BookingPendingScreen() {
         )
     }
 
+
+  function EmptyPendingOffers(){
+    let shouldShow = jobsList.filter(jobWorkerObj => !jobWorkerObj.jobObj.isConfirmed).length === 0;
+    if (shouldShow) {
+      return (<View>
+        <Card>
+          <Card.Content >
+            <Title>You Have No Pending Jobs Yet!</Title>
+            <Paragraph>To submit a job request head to the request screen!</Paragraph>
+          </Card.Content>
+        </Card>
+      </View>);
+    } else {
+      return null;
+    }
+  }
+
     function jobReviewListAccordionMaker(jobWorkerObj) {
         console.log("JobWorkerObj:")
         console.log(JSON.stringify(jobWorkerObj))
@@ -153,6 +170,7 @@ export default function BookingPendingScreen() {
     return (
         <ScrollView style={{marginTop: 0}}>
             <List.Section style={{marginTop: 15}}>
+              <EmptyPendingOffers/>
                 {jobsList.map(jobReviewListAccordionMaker)}
             </List.Section>
             {deleteBookingConfirmation()}

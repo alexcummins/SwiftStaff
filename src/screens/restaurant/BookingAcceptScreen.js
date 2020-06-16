@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {View, StyleSheet, SafeAreaView, ScrollView} from "react-native";
-import {List, Text} from "react-native-paper";
+import {Card, List, Paragraph, Text, Title} from 'react-native-paper';
 import UserCard from "../../components/UserCard";
 import {useFocusEffect} from "@react-navigation/native";
 import AsyncStorage from "@react-native-community/async-storage";
@@ -63,7 +63,22 @@ export default function BookingAcceptScreen() {
     const updateJobsList = (newList) => {
         setJobsList(newList)
     }
-
+  function EmptyAcceptedOffers(){
+    let shouldShow = jobsList.filter(jobWorkerObj => jobWorkerObj.jobObj.isConfirmed).length === 0;
+    if (shouldShow) {
+      return (<View>
+        <Card >
+          <Card.Content >
+            <Title>You Have No Accepted Jobs Yet!</Title>
+            <Paragraph>To Accept a worker head to the Pending tab!</Paragraph>
+            <Paragraph>To submit a job request head to the Request screen!</Paragraph>
+          </Card.Content>
+        </Card>
+      </View>);
+    } else {
+      return null;
+    }
+  }
 
     function jobReviewListAccordionMaker(jobWorkerObj) {
         if (!jobWorkerObj.jobObj.isConfirmed) {
@@ -97,6 +112,7 @@ export default function BookingAcceptScreen() {
     return (
         <ScrollView>
             <List.Section>
+              <EmptyAcceptedOffers/>
                 {jobsList.map(jobReviewListAccordionMaker)}
             </List.Section>
         </ScrollView>
