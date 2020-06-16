@@ -45,6 +45,7 @@ export default function WorkerReviewCard({worker, jobsId, updateCallBack, showBo
             updateCallBack(newList.jobObjList)
         } else {
             setAcceptIsLoading(false)
+            updateCallBack(newList.jobObjList)
             // notifyMessage("Sorry there was an error please check your internet connection and try again!")
         }
 
@@ -64,6 +65,7 @@ export default function WorkerReviewCard({worker, jobsId, updateCallBack, showBo
             updateCallBack(newList.jobObjList)
         } else {
             setDeclineIsLoading(false)
+            updateCallBack(newList.jobObjList)
             // notifyMessage("Sorry there was an error please check your internet connection and try again!")
         }
     }
