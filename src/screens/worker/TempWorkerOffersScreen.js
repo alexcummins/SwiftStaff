@@ -80,7 +80,7 @@ export default function TempWorkerOffersScreen( props) {
     let shouldShow = jobsList.filter(job => job.workerId !== workerId).length === 0 && !props.accepted;
     if (shouldShow) {
       return (<View>
-        <Card style={{marginTop: 30}}>
+        <Card style={{marginTop: 30 , marginHorizontal: 10}}>
         <Card.Content>
           <Title>No Jobs Currently Available</Title>
           <Paragraph>Make sure to keep you profile update to increase chances of getting a job!</Paragraph>
@@ -92,10 +92,10 @@ export default function TempWorkerOffersScreen( props) {
     }
   }
   function EmptyAcceptedOffers(){
-    let shouldShow = jobsList.filter(job => job.workerId !== workerId).length === 0 && props.accepted;
+    let shouldShow = jobsList.filter(job => job.workerId === workerId).length === 0 && props.accepted;
     if (shouldShow) {
       return (<View>
-        <Card style={{marginTop: 30}}>
+        <Card style={{marginTop: 30,  marginHorizontal: 10}}>
           <Card.Content >
             <Title>You Have Not Accepted Any Jobs Yet!</Title>
             <Paragraph>Make sure to keep you profile update to increase chances of getting a job!</Paragraph>

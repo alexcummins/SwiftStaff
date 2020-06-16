@@ -98,8 +98,8 @@ export default function BookingPendingScreen() {
     let shouldShow = jobsList.filter(jobWorkerObj => !jobWorkerObj.jobObj.isConfirmed).length === 0;
     if (shouldShow) {
       return (<View>
-        <Card>
-          <Card.Content >
+        <Card style={{marginHorizontal: 10}}>
+          <Card.Content  >
             <Title>You Have No Pending Jobs Yet!</Title>
             <Paragraph>To submit a job request head to the request screen!</Paragraph>
           </Card.Content>

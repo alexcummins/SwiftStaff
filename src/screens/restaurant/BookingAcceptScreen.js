@@ -67,7 +67,7 @@ export default function BookingAcceptScreen() {
     let shouldShow = jobsList.filter(jobWorkerObj => jobWorkerObj.jobObj.isConfirmed).length === 0;
     if (shouldShow) {
       return (<View>
-        <Card >
+        <Card style={{marginHorizontal: 10}}>
           <Card.Content >
             <Title>You Have No Accepted Jobs Yet!</Title>
             <Paragraph>To Accept a worker head to the Pending tab!</Paragraph>
