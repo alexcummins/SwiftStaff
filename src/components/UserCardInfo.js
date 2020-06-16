@@ -18,13 +18,13 @@ export default function UserCardInfo({data}) {
             <List.Item
                 title="Hourly pay"
                 description={`£${data.hourlyRate}ph`}
-                descriptionStyle={{fontSize: scale(19)}}
+                descriptionStyle={{fontSize: scale(18)}}
                 left={() => <Text style={{fontSize: 50, color: "#157EFB"}}>•</Text>}
             />
             <List.Item
                 title="Shift Time"
                 description={data.startTime + '-' + data.endTime}
-                descriptionStyle={{fontSize: scale(19)}}
+                descriptionStyle={{fontSize: scale(18)}}
                 descriptionNumberOfLines={3}
                 left={() => <Text style={{fontSize: 50, color: "#157EFB"}}>•</Text>}
             />

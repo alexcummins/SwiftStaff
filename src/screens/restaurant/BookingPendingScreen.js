@@ -17,6 +17,7 @@ export default function BookingPendingScreen() {
     const [jobsList, setJobsList] = useState([]);
     const [confirmDelete, setConfirmDelete] = useState(false)
     const [deleteBookingId, setDeleteBookingId] = useState("")
+    const [timer, setTimer] = useState(setInterval(retrieveNotifications, 5000))
 
     useFocusEffect(
         React.useCallback(() => {
@@ -40,7 +41,7 @@ export default function BookingPendingScreen() {
                     };
 
                     ws.onmessage = (e) => {
-                        console.log(JSON.stringify(e))
+                        // console.log(JSON.stringify(e))
                         if (e.data === 'update') {
                             retrieveNotifications();
                         } else {
@@ -58,7 +59,8 @@ export default function BookingPendingScreen() {
                 },
             );
             return () => {
-                ws.close();
+              clearInterval(timer);
+              ws.close();
             };
 
         }, []))

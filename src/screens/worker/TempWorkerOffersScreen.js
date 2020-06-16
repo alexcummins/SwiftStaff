@@ -10,6 +10,8 @@ let retrieveNotifications = () => {}
 export default function TempWorkerOffersScreen( props) {
   const [jobsList, setJobsList] = useState(props.preFetchDataJobList);
   const [workerId, setWorkerId] = useState('')
+  const [timer, setTimer] = useState(setInterval(retrieveNotifications, 5000))
+
   useFocusEffect(
     React.useCallback(() => {
       var ws = {};
@@ -33,7 +35,7 @@ export default function TempWorkerOffersScreen( props) {
           };
 
           ws.onmessage = (e) => {
-            console.log(JSON.stringify(e))
+            // console.log(JSON.stringify(e))
             if (e.data === 'update') {
               retrieveNotifications();
             } else {
@@ -49,9 +51,9 @@ export default function TempWorkerOffersScreen( props) {
 
         },
       );
-      console.log(jobsList.filter(job => job.workerId !== workerId).length === 0)
 
       return () => {
+        clearInterval(timer);
         ws.close();
       };
 
@@ -83,7 +85,7 @@ export default function TempWorkerOffersScreen( props) {
         <Card style={{marginTop: 30 , marginHorizontal: 10}}>
         <Card.Content>
           <Title>No Jobs Currently Available</Title>
-          <Paragraph>Make sure to keep you profile update to increase chances of getting a job!</Paragraph>
+          <Paragraph>Make sure to keep you profile update to date to increase your chances of getting a job!</Paragraph>
         </Card.Content>
       </Card>
       </View>);
@@ -98,7 +100,7 @@ export default function TempWorkerOffersScreen( props) {
         <Card style={{marginTop: 30,  marginHorizontal: 10}}>
           <Card.Content >
             <Title>You Have Not Accepted Any Jobs Yet!</Title>
-            <Paragraph>Make sure to keep you profile update to increase chances of getting a job!</Paragraph>
+            <Paragraph>Make sure to keep you profile update to date to increase your chances of getting a job!</Paragraph>
           </Card.Content>
         </Card>
       </View>);

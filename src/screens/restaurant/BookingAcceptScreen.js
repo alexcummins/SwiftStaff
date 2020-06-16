@@ -14,6 +14,7 @@ let retrieveNotifications = () => {
 export default function BookingAcceptScreen() {
     const [jobsList, setJobsList] = useState([]);
     const [restaurantId, setRestaurantId] = useState('')
+    const [timer, setTimer] = useState(setInterval(retrieveNotifications, 5000))
 
     useFocusEffect(
         React.useCallback(() => {
@@ -38,7 +39,7 @@ export default function BookingAcceptScreen() {
                     };
 
                     ws.onmessage = (e) => {
-                        console.log(JSON.stringify(e))
+                        // console.log(JSON.stringify(e))
                         if (e.data === 'update') {
                             retrieveNotifications();
                         } else {
@@ -55,7 +56,8 @@ export default function BookingAcceptScreen() {
                 },
             );
             return () => {
-                ws.close();
+              clearInterval(timer);
+              ws.close();
             };
 
         }, []))
