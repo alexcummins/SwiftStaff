@@ -6,16 +6,18 @@ import TempWorkerHomeScreen from './TempWorkerHomeScreen';
 import {getJobRequest} from '../../api/APIUtils';
 import AsyncStorage from '@react-native-community/async-storage'
 
-export default function RestaurantScreens({ navigation }) {
+export default function TempWorkerScreens({ navigation }) {
   const Tab = createMaterialTopTabNavigator();
   const [jobsList, setJobsList] = useState([])
 
   useEffect(() => {
     let workerId;
-    (async () => workerId = await AsyncStorage.getItem("workerId"))
+    (async () => {workerId = await AsyncStorage.getItem("workerId")
+      console.log("sending")
     getJobRequest({workerId: workerId}).then((data) => {
       setJobsList(data.reverse());
     });
+    })();
   }, []);
   let tempOffersScreen = function(){
     return (<TempWorkerOffersScreen preFetchDataJobList={jobsList}/>)
