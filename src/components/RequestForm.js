@@ -67,6 +67,27 @@ function RequestForm() {
     const [extraInfo, setExtraInfo] = useState("")
 
     const [showJobConfirmation, setShowJobConfirmation] = useState(false)
+    const [refresh, setRefresh] = useState(false)
+
+
+    function clearForm(){
+        setHourlyRate("")
+        setIsHourlyRateError(false)
+        setDate(new Date(Date.now()))
+        setDateString(generateDateString(date))
+        setStartOrEnd("start")
+        setStartTime(new Date(Date.now()))
+        setStartString("")
+        setEndString("")
+        setEndTime(new Date(Date.now()))
+        setEndTimeError(false)
+        setShowDate(false)
+        setShowTime(false)
+        setCredentials([])
+        setExtraInfo("")
+        setRefresh(!refresh)
+        setShowJobConfirmation(false)
+    }
 
     function generateDateString(d) {
         return `${d.getDate()}/${d.getMonth() + 1}/${d.getFullYear()}`;
@@ -143,7 +164,7 @@ function RequestForm() {
                 visible={showJobConfirmation}
                 onDismiss={() => setShowJobConfirmation(false)}>
                 <Dialog.Title>Job request successfully submitted.</Dialog.Title>
-                <Button onPress={() => setShowJobConfirmation(false)}>Ok</Button>
+                <Button onPress={() => clearForm()}>Ok</Button>
             </Dialog>
         </Portal>;
     }
@@ -237,7 +258,8 @@ function RequestForm() {
                 )}
 
                 <SelectCredentials selectedCredentials={setCredentials}
-                                   title={"What kind of worker would you like to request?"}>
+                                   title={"What kind of worker would you like to request?"}
+                refresh={refresh}>
                 </SelectCredentials>
 
                 <TextInput

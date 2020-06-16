@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View} from 'react-native'
 import {List, Checkbox, Chip} from 'react-native-paper';
 
@@ -9,10 +9,14 @@ export default function SelectCredentials(props) {
     // Pass in your setState function as this prop.
 
     const [credentials, setCredentials] = useState([])
-
+    const [refresh, setRefresh] = useState(props.refresh)
     const kitchenCredentials = ["Kitchen Porter", "Food Prep Assistant", "Commie Chef", "Chef de Partie", "Head Chef"]
     const fohCredentials = ["Waiting Staff", "Barista", "Bar staff", "Cocktail Staff"]
     const cleaningCredentials = ["General Cleaner"]
+
+    useEffect(() => {
+        setCredentials([]); //children function of interest
+    }, [props.refresh]);
 
     function updateCredentials(credential) {
         if (credentials.includes(credential)) {
