@@ -9,9 +9,12 @@ import React, {useState} from "react";
 import TextInputCancelableList from "../../components/TextInputCancelableList";
 import {imagePicker} from "../../api/Utils";
 import {updateWorkerProfile, uploadImage} from "../../api/APIUtils";
+import {useNavigation} from "@react-navigation/native";
 
 
 export default function TempWorkerProfileEditScreen({route}) {
+
+    const navigation = useNavigation()
 
     const [workerId, setUserId] = useState(route.params.workerId)
     const [firstName, setFirstName] = useState(route.params.firstName)
@@ -43,6 +46,7 @@ export default function TempWorkerProfileEditScreen({route}) {
             experience: experience,
             personalStatement: personalStatement
         })
+        navigation.goBack()
         await uploadImage(profileImage, "2", workerId, "profile")
     }
 

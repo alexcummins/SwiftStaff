@@ -99,7 +99,6 @@ export default function RestaurantProfile({route}) {
           <IconButton
               icon='chevron-left-circle'
               size={height * 0.05}
-              color='rgb(237, 237, 237)'
               style={styles.buttonAlign}
               onPress = {() => navigation.goBack()}
           />
@@ -107,7 +106,6 @@ export default function RestaurantProfile({route}) {
               <IconButton style={styles.settings}
                           icon="settings"
                           size={height * 0.05}
-                          color='rgb(237, 237, 237)'
                           onPress={() => {navigation.navigate("RestaurantProfileEdit", {
                               restaurantId: restaurantId,
                               name: name,
