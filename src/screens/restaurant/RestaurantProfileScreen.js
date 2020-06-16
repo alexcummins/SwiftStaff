@@ -176,7 +176,7 @@ export default function RestaurantProfile({route}) {
 
         <View style={styles.container}>
           <MapView style={styles.mapStyle} showsUserLocation={true}
-                   initialRegion={{
+                   region={{
                      latitude: latitude,
                      longitude: longitude,
                      latitudeDelta: 0.1,
