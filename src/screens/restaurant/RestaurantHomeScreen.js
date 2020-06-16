@@ -1,4 +1,4 @@
-import {Text, View} from 'react-native';
+import {Dimensions, Image, StyleSheet, Text, View} from 'react-native';
 import {Avatar, Button} from 'react-native-paper';
 import React, {useState} from 'react';
 import {CommonActions, useFocusEffect, useNavigation} from '@react-navigation/native';
@@ -52,17 +52,31 @@ export default function RestaurantHomeScreen({data}) {
 
     return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Text>SwiftStaff</Text>
+          <Image source={require('../../../resources/img/SwiftStaffLogoCroppedSmall.png')} style={styles.imageContainer}/>
             <Button
-                icon="logout"
-                mode="contained"
-                onPress={() => logout()}
+              style={{marginTop: 20}}
+              icon="logout"
+              mode="contained"
+              onPress={() => logout()}
             >Logout</Button>
             <Button
-                icon="account-circle"
-                mode="contained"
-                onPress={() => profile()}
+              icon="account-circle"
+              mode="contained"
+              onPress={() => profile()}
+              style={{marginTop: 10}}
             >Profile</Button>
         </View>
     )
 }
+
+
+const width = Dimensions.get('window').width;
+const styles = StyleSheet.create({
+
+  imageContainer: {
+    flex: 1,
+    maxHeight: (width / 6) * 2.2,
+    aspectRatio: 2.2,
+    resizeMode: 'cover'
+  }
+})
