@@ -68,3 +68,7 @@ Currently, deploys to dropbox. [Link](https://www.dropbox.com/sh/mv682zz613b4y6v
 ## Acknowledgments
 
 * Terence is a pretty great dude
+
+## Licence
+
+GNU General Public Licence (See LICENCE)
